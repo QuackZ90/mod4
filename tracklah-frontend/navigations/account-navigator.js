@@ -9,7 +9,9 @@ const AccountStack = createNativeStackNavigator()
 export default function AccountNav(){
     return(
         <AccountStack.Navigator tabBar={()=>null} initialRouteName="welcome">
-            <AccountStack.Screen name = "createLogin" component = {CreateLogin} />
+            <AccountStack.Screen name = "createLogin" component = {CreateLogin} options={{
+                headerShown:false,
+            }} />
             <AccountStack.Screen name = "createAccount" component={CreateAccount} />
             <AccountStack.Screen name = "login" component={Login} />
         </AccountStack.Navigator>
