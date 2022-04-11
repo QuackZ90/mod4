@@ -1,0 +1,66 @@
+const Joi = require('joi');
+const { create } = require('../controller/user.controller');
+
+const createUserSchema = Joi.object({
+    username: Joi.string()
+                .trim()
+                .lowercase()
+                .max(36)
+                .pattern(/^[a-z0-9\.\-_']+$/)
+                .required(),
+    
+    password: Joi.string()
+                .trim()
+                .pattern(/^\S*[A-Z]+\S*$/)   // at least 1 capital
+                .pattern(/^\S*[a-z]+\S*$/)   // at least 1 small letter
+                .pattern(/^\S*[0-9]+\S*$/)   // at least 1 number
+                .required(),
+
+    repeatPassword: Joi.ref('password'),
+
+    name: Joi.string()
+                .trim()
+                .required(),
+
+    email: Joi.string()
+                .trim()
+                .lowercase()
+                .email()
+                .required(),
+    
+});
+
+const loginSchema = Joi.object({
+    username:Joi.string()
+                .trim()
+                .lowercase()
+                .max(36)
+                .pattern(/^[a-z0-9\.\-_']+$/),
+
+    email: Joi.string()
+                .trim()
+                .lowercase()
+                .email(),
+
+    password: Joi.string()
+                .trim()
+                .pattern(/^\S*[A-Z]+\S*$/)   // at least 1 capital
+                .pattern(/^\S*[a-z]+\S*$/)   // at least 1 small letter
+                .pattern(/^\S*[0-9]+\S*$/)   // at least 1 number
+                .required(),
+    
+
+        
+})
+
+const validateCreateUser = function (req, res, next){
+    createUserSchema.validate(req.body);
+    next();
+};
+
+const validateLogin = function (req, res, next){
+    loginSchema.validate(req.body);
+    next();
+};
+
+module.exports = {validateCreateUser, validateLogin};
