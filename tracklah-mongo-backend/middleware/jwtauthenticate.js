@@ -38,7 +38,7 @@ module.exports = {
 
     canEditUser: async(req, res, next) => {
 
-        if(req.user.id != req.body.id && req.user.role != 'admin'){
+        if(req.user.id != req.body.id){
 
             res.status(401);
 
@@ -52,18 +52,18 @@ module.exports = {
         next();
     },
 
-    isAdmin: async(req, res, next) => {
+    // isAdmin: async(req, res, next) => {
 
-        if (req.user.role != 'admin'){
+    //     if (req.user.role != 'admin'){
 
-            res.status(401);
+    //         res.status(401);
 
-            return res.json({
-                status_code: 401,
-                message: "Only Adminstrators are allowed to view."
-            });
-        }
+    //         return res.json({
+    //             status_code: 401,
+    //             message: "Only Adminstrators are allowed to view."
+    //         });
+    //     }
 
-        next();
-    }
+    //     next();
+    // }
 }
