@@ -1,6 +1,10 @@
+require('dotenv').config({ debug: true });
 const {User} = require('../model/index');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const jwt = require('jsonwebtoken');
+const jwtSecret = process.env.JWT_SECRET;
+
 
 const userServices = {
     create: async function (userData){
@@ -33,13 +37,13 @@ const userServices = {
 
         try{
             const newUser = await User.create({
-                hashedPassword,
+                hashedPassword:hashedPassword,
                 username,
                 name,
                 email
             });
 
-            results.status = 200;
+            results.status = 201;
             results.message = `User ${newUser.username} created.`
             results.data = {
                 username:newUser.username,
@@ -54,6 +58,65 @@ const userServices = {
         };
 
         return results;
+    },
+
+    login: async function (credentials){
+
+        let results = {
+            message:null,
+            status:null,
+            jwtToken:null,
+        };
+
+        const {username, email, password} = credentials;
+
+        let existingUser;
+
+        if (username){
+            existingUser = await User.findByPk(username);
+        } else if (email){
+            existingUser = await User.findOne({where:{email}});
+        };
+
+        if (!existingUser){
+            results.status = 401,
+            results.message = "Log in failed due to invalid user.";
+            return results;
+        };
+
+        let passwordVerified = await bcrypt.compare(password, existingUser.hashedPassword);
+
+        if(!passwordVerified){
+            results.status = 401;
+            results.message = "Log in failed due to invalid password.";
+            return results;
+        };
+
+        let token;
+
+        try{
+            token = jwt.sign({
+                username:existingUser.username,
+                mongoId: existingUser.mongoId,
+            }, jwtSecret,{expiresIn: "30 days"})
+
+        } catch(err){
+            console.log(err);
+            results.status = 500;
+            results.message = err;
+            return results
+        }
+
+        let decoded = jwt.decode(token);
+
+        results.status = 201;
+        results.message = "Log in successful";
+        results.jwtToken = token;
+        results.jwtExpires = new Date(decoded.exp*1000);
+
+        return results;
+
+
     }
 }
 

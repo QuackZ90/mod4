@@ -14,4 +14,6 @@ router.get('/',(req, res, next)=>{
 
 router.post('/', validateCreateUser, userController.create);
 
+router.post('/session', validateLogin, userController.login);
+
 module.exports=router;

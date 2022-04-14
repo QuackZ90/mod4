@@ -7,10 +7,24 @@ const userController = {
 
         let results = await userServices.create(req.body);
 
-        res.status(results.status);
-        res.json(results);
+        let {status, ...rest} = results;
 
-    }
+        res.status(status);
+        return res.json(rest);
+
+    },
+
+    login: async(req, res)=>{
+        console.log('login into user:', req.body.username);
+
+        let results = await userServices.login(req.body);
+
+        let {status, ...rest} = results;
+
+        res.status(status);
+        return res.json(rest);
+
+    },
 };
 
 module.exports = userController;
