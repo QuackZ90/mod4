@@ -48,10 +48,7 @@ const loginSchema = Joi.object({
                 .pattern(/^\S*[a-z]+\S*$/)   // at least 1 small letter
                 .pattern(/^\S*[0-9]+\S*$/)   // at least 1 number
                 .required(),
-    
-
-        
-})
+}).xor("username", "email");
 
 const validateCreateUser = function (req, res, next){
     createUserSchema.validate(req.body);
