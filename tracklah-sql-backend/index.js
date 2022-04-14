@@ -1,6 +1,8 @@
 const app = require('./App');
+require('dotenv').config({ debug: true });
 const PORT =3001;
 const {testConnection, syncDatabase} = require ('./model');
+
 
 testConnection();
 syncDatabase();
