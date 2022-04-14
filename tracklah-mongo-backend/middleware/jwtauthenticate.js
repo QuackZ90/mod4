@@ -4,8 +4,12 @@ require('dotenv').config()
 module.exports = {
 
     isLoggedIn: async(req, res, next) => {
+
+        console.log(req.headers);
         
-        const token = req.headers.token;
+        const token = req.headers.authorization; 
+
+        console.log("token", token);
 
         // if no token present, means not logged in
         if (!token) {

@@ -34,17 +34,19 @@ module.exports = {
 
     deleteUser: async (userId) => {
 
-        // allow user to delete their own account via a delete button on the 
-        // user profile page. The account id (or primary key) would be available. 
-
         let result = {
             message: null,
             status: null,
             data: null
         }
 
-        // Check if user is already registered in the system under email address.
+        // Check if user is already registered in the system.
+
+        console.log("UserId", userId);
         const deleteUser = await User.deleteOne({userId: userId});
+
+        console.log("deleteUser",deleteUser);
+
         if (deleteUser.deletedCount < 1){
             result.message = `User does not exist.`;
             result.status = 404;

@@ -1,28 +1,9 @@
-const { User, FollowChef } = require( "../model/model" );
-const bcrypt = require( 'bcrypt' );
-const jwt = require( 'jsonwebtoken' );
+const { User } = require( "../model/model" );
 require('dotenv').config()
-const saltRounds = 10;
-let passwordHash = "";
-const S3ProfilePic = require('aws-sdk/clients/s3');
-const fs = require('fs');
-
-const bucketName = process.env.AWS_BUCKET_NAME;
-const region = process.env.AWS_BUCKET_REGION;
-const accessKeyId = process.env.AWS_ACCESS_KEY;
-const secretAccessKey = process.env.AWS_SECRET_KEY;
-
-const s3ProfilePic = new S3ProfilePic({
-    region,
-    accessKeyId,
-    secretAccessKey
-});
 
 module.exports = {
 
-    register: async (newUserDetails) => {
-
-        await User.sync(); // will create new table if table doesn't exist, otherwise does nth.
+    addItem: async (userId, item) => {
 
         let result = {
             message: null,
@@ -30,265 +11,124 @@ module.exports = {
             data: null,
         }
 
-        // Check if user is already registered in the system under email address.
-        const user = await User.findAll({ where: { email: newUserDetails.email } });
-        if ( user.length != 0 ){
-            result.message = `Email address ${newUserDetails.email} already in use`;
+        // Check if userId exists.
+        const user = await User.findOne({ userId: userId });
+        if ( user === null ){
+            result.message = `User ID ${userId} does not exist`;
             result.status = 404;
             return result;
         }
 
-        // Generate hashed password to store in database
-        try {
-            passwordHash = bcrypt.hashSync(newUserDetails.pwd, saltRounds);
-        } catch(err){
-            console.log(err);
-            result.status = 500;
-            result.message = "User Creation fail. Please try again.";
-            return result;
-        }
+        // If userId exists, we add the item to the end of the items array.
+        user.items.push(item);
+        const updateUser = await user.save();
 
-        // Handling imageUrl for storage -- park a value for now
-
-        const newUser = await User.create(
-            {
-                name: newUserDetails.name,
-                email: newUserDetails.email, 
-                hashedPwd: passwordHash,
-                role: newUserDetails.role,
-                profilePic: newUserDetails.profilePic || "imageURL",
-                noOfFollows: 0
-            }
-        );
-
-        result.data = newUser;
+        result.data = updateUser;
         result.status = 200;
-        result.message = `New Account Registered Successfully.`;
+        result.message = `Item added to userId ${userId} document.`;
         return result;
     },
 
-    showAll: async () => {
+    deleteItem: async (userId, itemId) => {
+
         let result = {
             message: null,
             status: null,
             data: null
         }
 
-        const data = await User.findAll(); // looking for all the users.
+        // Check if userId exists.
+        const user = await User.findOne({ userId: userId });
+        if ( user === null ){
+            result.message = `User ID ${userId} does not exist`;
+            result.status = 404;
+            return result;
+        }
 
+        // Locate the index of the relevant item to delete, and then delete it.
+        const index = user.items.findIndex( e => e._id == itemId);
+        // using a double == sign because the _id is a different type of object.
+
+        user.items.splice(index,1);
+        const updateUser = await user.save();
+
+        result.data = updateUser;
+        result.status = 200;
+        result.message = `Item ID ${itemId} deleted successfully`;
+        return result;
+    },
+
+    showAllItems: async (userId) => {
+
+        let result = {
+            message: null,
+            status: null,
+            data: null
+        }
+
+        // Check if userId exists.
+        const user = await User.findOne({ userId: userId });
+        if ( user === null ){
+            result.message = `User ID ${userId} does not exist`;
+            result.status = 404;
+            return result;
+        }
+
+        const today = new Date();
+        const currentMth = today.getMonth();
+        const currentYear = today.getFullYear();
+        let data;
+
+        console.log("today", today);
+        console.log("CurrentMth", currentMth);
+        console.log("CurrentYear", currentYear);
+
+        const allItemData = user.items;
+
+        switch(currentMth){
+            case 0:
+            case 1:
+            case 2:
+                data = allItemData.filter( (e) => {
+                    let itemMth = new Date(e.date).getMonth();
+                    let itemYear = new Date(e.date).getFullYear();
+
+                    console.log("ItemMth", itemMth);
+                    console.log("ItemYear", itemMth);
+                    
+                    if (itemYear === currentYear && itemMth <= currentMth){
+                        return true;
+                    } else if (itemYear === currentYear-1 && itemMth > currentMth+11-3) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                break;
+
+            default:
+                data = allItemData.filter( (e) => {
+                    let itemMth = new Date(e.date).getMonth();
+                    let itemYear = new Date(e.date).getFullYear();
+
+                    console.log("ItemMth", itemMth);
+                    console.log("ItemYear", itemMth);
+                    
+                    if(itemYear === currentYear && itemMth >= currentMth-3){
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                break;
+        }
+
+        console.log("Data", data);
+
+        result.data = data;
         result.message = "Data fetched successfully from database.";
         result.status = 200;   
-        result.data = data;
 
         return result;
     },
-
-    deleteUser: async (userId) => {
-
-        // allow user to delete their own account via a delete button on the 
-        // user profile page. The account id (or primary key) would be available. 
-
-        let result = {
-            message: null,
-            status: null,
-            data: null
-        }
-
-        // Check if user is already registered in the system under email address.
-        const user = await User.findByPk(userId);
-        if (!user){
-            result.message = `User does not exist.`;
-            result.status = 404;
-            return result;
-        }
-
-        await user.destroy();
-        result.status = 200;
-        result.message = `User ID ${userId} deleted successfully`;
-        return result;
-    },
-
-    login: async (email, password) => {
-
-        let result = {
-            message: null,
-            status: null,
-            jwt: null
-        }
-
-        let match = false;
-
-        if (!email || !password){
-            result.message = `Missing email or password in input.`;
-            result.status = 404;
-            return result;
-        }
-
-        // Look for the email in the database
-        const login = await User.findAll({
-            where: {
-                email : email
-            },
-        });
-
-        // check if email is already registered
-        if ( login.length == 0 ){
-            result.message = `Email: ${email} is not registered.`
-            result.status = 404;
-            return result;
-        }
-
-        match = await bcrypt.compare(password, login[0].hashedPwd);
-
-        if (!match) {
-            result.message = `Login Failed. Please check password.`;
-            result.status = 404;
-            return result;
-        }
-
-        // Generate JWToken here.
-
-        const loginData = {
-            id: login[0].id,
-            email: login[0].email,
-            role: login[0].role
-        };
-
-        const token = jwt.sign(loginData, process.env.JWT_SECRET_KEY);
-        result.jwt = token;
-
-        result.message = `Login Success!`;
-        result.status = 200;
-        return result;        
-    },
-
-    followUser: async (chefId, followerId) => {
-
-        let result = {
-            message: null,
-            status: null,
-            data: null
-        }
-
-        // check if chef and follow belong to user table.
-
-        const chef = await User.findByPk(chefId);
-        const follower = await User.findByPk(followerId);
-
-        if (!chef){
-            result.message = `Chef does not exist.`;
-            result.status = 404;
-            return result;
-        }
-
-        if (!follower){
-            result.message = `Follower does not exist.`;
-            result.status = 404;
-            return result;
-        }
-
-        // check if chef is already followed by follower in the followChef table.
-
-        const chefInTable = await FollowChef.findAll({
-            where: {
-                chefId : chefId,
-                followerId : followerId
-            },
-        });
-
-        if( chefInTable.length !== 0 ){
-            result.message = `Already followed.`;
-            result.status = 404;
-            return result;
-        }
-
-        // if everything is all good, create new item in followChef table and 
-        // edit the User table to increment noOfFollows.
-
-        const newFollow = await FollowChef.create(
-            {
-                chefId: chefId,
-                followerId: followerId
-            }
-        );
-
-        chef.noOfFollows = chef.noOfFollows + 1;
-        await chef.save();
-        
-        result.message = `Follow Completed Successfully!`;
-        result.status = 200;
-        result.data = chef;
-        return result;   
-    },
-
-    unfollowUser: async (chefId, followerId) => {
-
-        let result = {
-            message: null,
-            status: null,
-            data: null
-        }
-
-        // check if chef and follow belong to user table.
-
-        const chef = await User.findByPk(chefId);
-        const follower = await User.findByPk(followerId);
-
-        if (!chef){
-            result.message = `Chef does not exist.`;
-            result.status = 404;
-            return result;
-        }
-
-        if (!follower){
-            result.message = `Follower does not exist.`;
-            result.status = 404;
-            return result;
-        }
-
-        // check if chef is already followed by follower in the followChef table.
-
-        const chefInTable = await FollowChef.findAll({
-            where: {
-                chefId : chefId,
-                followerId: followerId
-            },
-        });
-
-        if( chefInTable.length === 0 ){
-            result.message = `User did not follow this chef yet.`;
-            result.status = 404;
-            return result;
-        }
-
-        console.log("ChefInTable", chefInTable);
-
-        // if everything is all good, delete item in followChef table and 
-        // edit the User table to decrease noOfFollows.
-
-        const toDelete = await FollowChef.findByPk(chefInTable[0].id);
-
-        await toDelete.destroy();
-
-        chef.noOfFollows = chef.noOfFollows - 1;
-        await chef.save();
-        
-        result.message = `Chef Unfollowed.`;
-        result.status = 200;
-        result.data = chef;
-        return result;   
-    },
-
-    showPic: async (chefId) => {
-
-        const chef = await User.findByPk(chefId);
-    
-        const downloadParams = {
-            Key: chef.profilePic,
-            Bucket: bucketName
-        };
-
-        return s3ProfilePic.getObject(downloadParams).createReadStream();
-
-    }
 };

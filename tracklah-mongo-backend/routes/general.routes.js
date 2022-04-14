@@ -8,6 +8,5 @@ router.use("/", (req, res, next) => {
 
 const UserController = require("../controller/user.controller")
 const userController = new UserController();
-router.post("/user", userController.register);
 
 module.exports = router;

@@ -16,8 +16,7 @@ async function testConnection() {
 const userSchema = new mongoose.Schema({
     userId: { type: Number, required: true },
     items: [{
-        itemId: mongoose.Schema.Types.ObjectId,
-        amount: String,
+        amount: mongoose.Types.Decimal128,
         date: String,
         time: String,
         description: String,
