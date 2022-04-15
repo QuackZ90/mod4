@@ -1,8 +1,9 @@
+import React from 'react';
 import{
-    View, 
     Text,
     TouchableOpacity,
     SafeAreaView,
+    StatusBar
 } from 'react-native';
 
 
@@ -13,5 +14,5 @@ export default function CurrencyConverter(){
                 <Text>This page allows you convert currencies.</Text>
             </TouchableOpacity>
         </SafeAreaView>
-    )
+    );
 };

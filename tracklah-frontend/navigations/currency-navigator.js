@@ -1,4 +1,5 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import { createStackNavigator } from "@react-navigation/native-stack";
 import CurrencyConverter from "../containers/App/CurrencyConverter";
 import Home from "../containers/App/Home";
 
