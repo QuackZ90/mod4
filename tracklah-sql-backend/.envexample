@@ -1,0 +1,3 @@
+JWT_SECRET = "jwt_secret"
+MONGO_API = "mongo_api_url"
+LOCALHOST = local host port

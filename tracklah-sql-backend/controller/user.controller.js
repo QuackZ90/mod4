@@ -1,16 +1,76 @@
 const {userServices} = require('../services');
 
+const mongoAPI = require("../api/mongoAPI");
+
 const userController = {
     create: async(req, res)=>{
 
         console.log('creating new user:', req.body);
 
-        let results = await userServices.create(req.body);
+        let userCreation = await userServices.create(req.body);
 
-        let {status, ...rest} = results;
+        let {"status":createStatus, ...createRest} = userCreation;
 
-        res.status(status);
-        return res.json(rest);
+        if (createStatus !== 201){
+            res.status(createStatus);
+            return res.json(createRest);
+        };
+
+        let userLogin = await userServices.login({username:req.body.username, password:req.body.password});
+
+        let {"status":loginStatus, jwtToken, userId, ...loginRest} = userLogin;
+        console.log(userId);
+
+        if (loginStatus !==201){
+            res.status(loginStatus);
+
+            return res.json({
+                userCreation,
+                userLogin,
+            })
+        }
+
+
+        try{
+            let folderCreation = await mongoAPI.post("/protected/user", {userId},
+            {headers:{'authorization':jwtToken}
+            });
+
+            console.log(folderCreation);
+
+            res.status(folderCreation.status);
+            return res.json({
+                userCreation,
+                userLogin,
+                folderCreation:folderCreation.data,
+            });
+
+        }catch(err){
+
+            if (err.response){
+                res.status(err.response.status);
+                console.log(err);
+                return res.json({
+                    userCreation,
+                    userLogin,
+                    folderCreation:err.response.data,
+                })  
+            } else{
+                console.log(err);
+                res.status(500);
+                return res.json({
+                    userCreation,
+                    userLogin,
+                    folderCreation:{
+                        err:err,
+                    }
+                })
+            }
+        }
+
+        
+
+        
 
     },
 
