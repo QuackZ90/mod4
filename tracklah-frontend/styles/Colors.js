@@ -1,7 +1,9 @@
 export default {
     introText: "FFFFFF",
     homeText: "000000",
-    background: "F4E0DB",
+    beige: "F4E0DB",
     drawer: "968484",
-    listBackground: "D3BABA"
+    listBackground: "D3BABA",
+    white: "#fff",
+    border: "#E2E2E2",
 };
