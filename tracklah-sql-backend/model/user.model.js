@@ -7,7 +7,6 @@ module.exports=  function (sequelize){
         username:{
             type:DataTypes.STRING,
             allowNull: false,
-            primaryKey: true,
             validate:{
                 is:/^[a-z0-9\.\-_']+$/
             }
@@ -33,7 +32,7 @@ module.exports=  function (sequelize){
         userId:{
             type:DataTypes.INTEGER,
             autoIncrement:true,
-            unique:true,
+            primaryKey: true,
         }
     }, {
         sequelize,

@@ -16,7 +16,7 @@ const userServices = {
 
         const {username, password, name, email} = userData;
 
-        let user = await User.findByPk(username);
+        let user = await User.findOne({where:{username}});
         
         if(user != null){
             results.status = 403;
@@ -66,6 +66,7 @@ const userServices = {
             message:null,
             status:null,
             jwtToken:null,
+            userId:null,
         };
 
         const {username, email, password} = credentials;
@@ -73,7 +74,7 @@ const userServices = {
         let existingUser;
 
         if (username){
-            existingUser = await User.findByPk(username);
+            existingUser = await User.findOne({where:{username}});
         } else if (email){
             existingUser = await User.findOne({where:{email}});
         };
@@ -97,7 +98,7 @@ const userServices = {
         try{
             token = jwt.sign({
                 username:existingUser.username,
-                mongoId: existingUser.mongoId,
+                userId: existingUser.userId,
             }, jwtSecret,{expiresIn: "30 days"})
 
         } catch(err){
@@ -111,8 +112,10 @@ const userServices = {
 
         results.status = 201;
         results.message = "Log in successful";
+        results.userId = existingUser.userId;
         results.jwtToken = token;
         results.jwtExpires = new Date(decoded.exp*1000);
+
 
         return results;
 

@@ -1,8 +1,9 @@
+require('dotenv').config({ debug: true });
 const testCode = require('../user.service');
 const {User} = require('../../model/index');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const jwtSecret = process.JWT_SECRET;
+const jwtSecret = process.env.JWT_SECRET;
 
 const saltRounds =10;
 jest.mock('../../model/index',()=>{
@@ -56,43 +57,41 @@ const defaultEmailLogin = {
 describe('User creation service test', ()=>{
     test('Test 1: Status 403 returns since username already exists', async ()=>{
 
-        const findByPkMock = jest.spyOn(User,"findByPk").mockResolvedValue({
+        const findOneMock = jest.spyOn(User,"findOne").mockResolvedValue({
             username: "duck",
             hashedPassword: "1234fda34wdfasdf",
             email: "chicks@animalfarm.com",
             name: "duck",
-            mongoId: 3
+            userId: 3
         })
 
         let results = await testCode.create(defaultUserData);
 
-        expect(findByPkMock).toBeCalledWith("duck");
+        expect(findOneMock).toBeCalledWith({where:{username:"duck"}});
         expect(results.status).toBe(403);
     });
 
     test('Test 2: Status 403 return since email already exists', async ()=>{
 
-        const findByPkMock = jest.spyOn(User,"findByPk").mockResolvedValue(null);
-
-        const findOneMock = jest.spyOn(User, "findOne").mockResolvedValue({
-            username: "chicken",
-            hashedPassword: "1234fda34wdfasdf",
-            email: "duckie@fishpond.com",
-            name: "duck",
-            mongoId: 3
-        })
+        const findOneMock = jest.spyOn(User,"findOne")
+            .mockResolvedValueOnce(null)
+            .mockResolvedValueOnce({
+                username: "chicken",
+                hashedPassword: "1234fda34wdfasdf",
+                email: "duckie@fishpond.com",
+                name: "duck",
+                userId: 3
+            })
 
         let results = await testCode.create(defaultUserData);
 
-        expect(findByPkMock).toBeCalledWith("duck");
+        expect(findOneMock).toBeCalledTimes(2);
         expect(findOneMock).toBeCalledWith({where:{email:"duckie@fishpond.com"}});
         expect(results.status).toBe(403);
     });
 
 
-    test('Test 3: Status 200 returned for successful user creation', async ()=>{
-
-        const findByPkMock = jest.spyOn(User,"findByPk").mockResolvedValue(null);
+    test('Test 3: Status 201 returned for successful user creation', async ()=>{
 
         const findOneMock = jest.spyOn(User, "findOne").mockResolvedValue(null);
         
@@ -102,13 +101,13 @@ describe('User creation service test', ()=>{
             email: defaultUserData.email,
             name: defaultUserData.name, 
             hashedPassword: bcryptHashSyncMock,
-            mongoId: 3,
+            userId: 3,
         })
 
 
         let results = await testCode.create(defaultUserData);
 
-        expect(findByPkMock).toBeCalledWith("duck");
+        expect(findOneMock).toBeCalledWith({where:{username:"duck"}});
         expect(findOneMock).toBeCalledWith({where:{email:"duckie@fishpond.com"}});
         expect(bcryptHashSyncMock).toBeCalledWith(defaultUserData.password, saltRounds);
         expect (createMock).toBeCalledWith({
@@ -123,12 +122,12 @@ describe('User creation service test', ()=>{
 
 describe('User Login service test', ()=>{
     test('test 1: returns status 201 when log in is successful based on username and password', async ()=>{
-        const findByPkMock = jest.spyOn(User, "findByPk").mockResolvedValue({
+        const findOneMock = jest.spyOn(User, "findOne").mockResolvedValue({
             username: "duck",
             hashedPassword: "1234fda34wdfasdf",
             email: "duckie@fishpond.com",
             name: "chicken",
-            mongoId: 3,
+            userId: 3,
         });
 
         const compareMock = jest.spyOn(bcrypt, "compare").mockReturnValue(true);
@@ -137,17 +136,17 @@ describe('User Login service test', ()=>{
 
         const decodeMock = jest.spyOn(jwt, 'decode').mockReturnValue({
             username: "duck",
-            mongoId: 3,
+            userId: 3,
             exp: 102390
         })
 
         let results = await testCode.login(defaultUsernameLogin);
 
-        expect(findByPkMock).toBeCalledWith("duck");
+        expect(findOneMock).toBeCalledWith({where:{username:"duck"}});
 
         expect(compareMock).toBeCalledWith("duckie123", "1234fda34wdfasdf");
 
-        expect(signMock).toBeCalledWith({username: "duck", mongoId: 3}, jwtSecret,{expiresIn: "30 days"});
+        expect(signMock).toBeCalledWith({username: "duck", userId: 3}, jwtSecret, {expiresIn: "30 days"});
         expect(results.status).toBe(201);
 
     })
