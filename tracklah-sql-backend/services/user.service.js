@@ -118,6 +118,49 @@ const userServices = {
 
 
         return results;
+    },
+
+    delete: async function (username, tokenData){
+        let results = {
+            status:null,
+            message:null,
+        }
+        if (username!==tokenData.username){
+            results.status = 401;
+            results.message = 'User not authorized to perform this action'
+            return results;
+        }
+
+        let existingUser = await User.findOne({where:{username}});
+
+        console.log(existingUser);
+
+        if(!existingUser){
+            results.status=404;
+            results.message = `${username} not found`;
+            return results;
+        };
+
+        try{
+
+            await User.destroy({where: {username}});
+
+            results.status = 200;
+
+            results.message = `${username} sucessfully deleted`;
+
+            return results;
+        }catch(err){
+
+            console.log(err);
+            results.status = 500;
+
+            results.message = err;
+
+            return results;
+        }
+
+
 
 
     }

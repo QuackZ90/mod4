@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest",
-    "start": "node index.js"
+    "start": "node index.js",
+    "publishToHeroku": "cd ../ && git subtree push --prefix tracklah-sql-backend heroku-tracklah-sql-backend master || true"
   },
   "keywords": [
     "tracklh",

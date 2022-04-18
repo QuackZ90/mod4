@@ -85,6 +85,17 @@ const userController = {
         return res.json(rest);
 
     },
+
+    delete: async(req, res)=>{
+        console.log('deleting user:', req.params.username);
+
+        let results = await userServices.delete(req.params.username, req.token);
+
+        let {status, ...rest} = results;
+
+        res.status(status);
+        return res.json(rest);
+    }
 };
 
 module.exports = userController;
