@@ -8,20 +8,21 @@ import styles from '../../styles/Home-styles';
 import cardStyles from '../../styles/card-styles';
 import Card from '../../components/card';
 
+
 export default function Home(){
 
     return(
         <View style={styles.container}>           
-                <Card style={cardStyles.totalExCard}>
-                    <Text style={cardStyles.totalExText}>Total Expenses</Text>
-                </Card>
+            <Card style={cardStyles.totalExCard}>
+                <Text style={cardStyles.cardContent}>Total Expenses</Text>
+            </Card>
             <TouchableOpacity>
-                <Card style={cardStyles.card2}>
+                <Card style={cardStyles.graphCard}>
                     <Text>Pie Chart</Text>
                 </Card>
             </TouchableOpacity>
             <TouchableOpacity>
-                <Card style={cardStyles.card3}>
+                <Card style={cardStyles.pieCard}>
                     <Text>Graph</Text>
                 </Card>
             </TouchableOpacity>
