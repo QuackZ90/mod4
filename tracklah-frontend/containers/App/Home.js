@@ -3,13 +3,14 @@ import{
     View, 
     Text,
     TouchableOpacity,
+    Button
 } from 'react-native';
-import styles from '../../styles/home-styles';
+import styles from '../../styles/Home-styles';
 import cardStyles from '../../styles/card-styles';
 import Card from '../../components/card';
 
 
-export default function Home(){
+export default function Home({navigation}){
 
     return(
         <View style={styles.container}>
@@ -22,6 +23,7 @@ export default function Home(){
                 <TouchableOpacity>
                     <Card style={cardStyles.graphCard}>
                         <Text>Pie Chart</Text>
+                        <Button title="View Charts" onPress={()=>navigation.navigate("View Charts")} />
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity>
@@ -35,4 +37,4 @@ export default function Home(){
             </Card>
         </View>
     )
-};
+}
