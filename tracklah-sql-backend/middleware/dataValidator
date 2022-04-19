@@ -50,6 +50,7 @@ const loginSchema = Joi.object({
                 .required(),
 }).xor("username", "email");
 
+
 const validateCreateUser = function (req, res, next){
     createUserSchema.validate(req.body);
     next();

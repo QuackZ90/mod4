@@ -16,7 +16,7 @@ const userServices = {
 
         const {username, password, name, email} = userData;
 
-        let user = await User.findByPk(username);
+        let user = await User.findOne({where:{username}});
         
         if(user != null){
             results.status = 403;
@@ -66,6 +66,7 @@ const userServices = {
             message:null,
             status:null,
             jwtToken:null,
+            userId:null,
         };
 
         const {username, email, password} = credentials;
@@ -73,7 +74,7 @@ const userServices = {
         let existingUser;
 
         if (username){
-            existingUser = await User.findByPk(username);
+            existingUser = await User.findOne({where:{username}});
         } else if (email){
             existingUser = await User.findOne({where:{email}});
         };
@@ -97,7 +98,7 @@ const userServices = {
         try{
             token = jwt.sign({
                 username:existingUser.username,
-                mongoId: existingUser.mongoId,
+                userId: existingUser.userId,
             }, jwtSecret,{expiresIn: "30 days"})
 
         } catch(err){
@@ -111,12 +112,86 @@ const userServices = {
 
         results.status = 201;
         results.message = "Log in successful";
+        results.userId = existingUser.userId;
         results.jwtToken = token;
         results.jwtExpires = new Date(decoded.exp*1000);
 
+
         return results;
+    },
 
+    delete: async function (username, tokenData){
+        let results = {
+            status:null,
+            message:null,
+        }
+        if (username!==tokenData.username){
+            results.status = 401;
+            results.message = 'User not authorized to perform this action'
+            return results;
+        }
 
+        let existingUser = await User.findOne({where:{username}});
+
+        console.log(existingUser);
+
+        if(!existingUser){
+            results.status=404;
+            results.message = `${username} not found`;
+            return results;
+        };
+
+        try{
+
+            await User.destroy({where: {username}});
+
+            results.status = 200;
+
+            results.message = `${username} sucessfully deleted`;
+
+            return results;
+        }catch(err){
+
+            console.log(err);
+            results.status = 500;
+
+            results.message = err;
+
+            return results;
+        }
+
+    },
+
+    existingUser: async function (username){
+
+        let results = {
+            status: null,
+            message: null,
+        }
+
+        try{
+
+            const user = await User.findOne({where:{username}});
+
+            results.status = 200;
+
+            if (user){
+                results.message = true;
+            } else{
+                results.message = false;
+            }
+
+            return results;
+
+        } catch(err){
+            console.log(err)
+            results.status =500;
+            results.message = "Search failed.";
+            return results;
+
+        }
+
+        
     }
 }
 
