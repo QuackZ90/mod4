@@ -7,4 +7,4 @@ export default function Home(){
             <Text>This is the home page after login</Text>
         </View>
     )
-}
+};
