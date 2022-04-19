@@ -16,4 +16,4 @@ export default function MainNav(){
 
     </MainStack.Navigator>
     )
-}
+};
