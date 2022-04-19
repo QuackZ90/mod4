@@ -7,4 +7,4 @@ export default function AddExpenses(){
             <Text>This page allows you to add expenses</Text>
         </View>
     )
-}
+};
