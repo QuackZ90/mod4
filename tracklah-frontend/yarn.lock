@@ -1338,10 +1338,10 @@
     sudo-prompt "^9.0.0"
     wcwidth "^1.0.1"
 
-"@react-native-community/datetimepicker@4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-4.0.0.tgz#4629ac3d8d54b4024385f2b2a30bbe13640c6ed3"
-  integrity sha512-q3JfDHX5PI0AxFeMsB6jcHSXODloXAqBVsOfkIvm+YbAe1TUs/xZ3qGazsKVBk9EdFyHO4k+S1Q8tQkEnk2YrQ==
+"@react-native-community/datetimepicker@^6.1.2":
+  version "6.1.2"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.1.2.tgz#a897291bc8ff2394f922721f40692c812f9145a0"
+  integrity sha512-4D21x4eywCY2Ex4BI6tQhUEOOKSruz9uPbGK0azGKZap/etoiPtH3nuG56ACtpmUlu5d1R9zzTlumr02dp39hA==
   dependencies:
     invariant "^2.2.4"
 
@@ -4550,16 +4550,17 @@ react-native-codegen@^0.0.6:
     jscodeshift "^0.11.0"
     nullthrows "^1.1.1"
 
-react-native-dropdown-picker@^5.4.0:
-  version "5.4.0"
-  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.0.tgz#8f5b16c44edf0e9aba152025c9c43683a0dbb32b"
-  integrity sha512-O5jlHb9+MRurVXNL3IrNK4f2HGODxYRoE1n+7MMA0NvrO0Mz7ICwrWZWC3qfbopTBy0ERjIWf+BRQiS2vFnaRQ==
 react-native-dotenv@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/react-native-dotenv/-/react-native-dotenv-3.3.1.tgz#8f399cf28ca77d860d8e7f7323e439fa60a8ca0b"
   integrity sha512-gAKXout1XCwCqJ3QPGoQAF2eRzOHgOnwg3x19z+ssow8bDIksJeKBqvoHDyGziVilAIP1J0bEC9Jf+VF8nFang==
   dependencies:
     dotenv "^10.0.0"
+
+react-native-dropdown-picker@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.0.tgz#8f5b16c44edf0e9aba152025c9c43683a0dbb32b"
+  integrity sha512-O5jlHb9+MRurVXNL3IrNK4f2HGODxYRoE1n+7MMA0NvrO0Mz7ICwrWZWC3qfbopTBy0ERjIWf+BRQiS2vFnaRQ==
 
 react-native-gesture-handler@~2.1.0:
   version "2.1.3"
