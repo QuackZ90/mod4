@@ -13,7 +13,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "publishToHeroku": "cd ../ && git subtree push --prefix tracklah-mongo-backend heroku-tracklah-mongo-backend master || true"
   },
   "author": "",
   "license": "ISC",
