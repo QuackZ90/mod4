@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 import colors from './colors';
 
 const cardStyles = StyleSheet.create({
-    totalExCard: {
+    card: {
         borderRadius: 20,
         elevation: 5,
         backgroundColor: colors.listBackground,
@@ -12,6 +12,12 @@ const cardStyles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
+    },
+    cardContent: {
+        marginHorizontal: 18,
+        marginVertical: 20
+    },
+    totalExCard: {
         width: 218,
         height: 86
     },
@@ -20,36 +26,14 @@ const cardStyles = StyleSheet.create({
         fontWeight: "bold",
         position: "absolute"
     },  
-    card2: {
-        borderRadius: 20,
-        elevation: 5,
-        backgroundColor: colors.listBackground,
-        shadowOffset: {width: 1, height: 1}, 
-        shadowColor: "#fff",
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        marginHorizontal: 4,
-        marginVertical: 6,
+    graphCard: {
+        width: 103,
+        height: 99
+    },
+    pieCard: {
         width: 218,
         height: 86
     },
-    card3: {
-        borderRadius: 20,
-        elevation: 5,
-        backgroundColor: colors.listBackground,
-        shadowOffset: {width: 1, height: 1}, 
-        shadowColor: "#fff",
-        shadowOpacity: 0.3,
-        shadowRadius: 2,
-        marginHorizontal: 4,
-        marginVertical: 6,
-        width: 218,
-        height: 86
-    },
-    cardContent: {
-        marginHorizontal: 18,
-        marginVertical: 20
-    }
 });
 
 export default cardStyles;
