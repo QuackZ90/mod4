@@ -1,5 +1,6 @@
 {
   "expo": {
+    "userInterfaceStyle": "automatic",
     "name": "tracklah-frontend",
     "slug": "tracklah-frontend",
     "version": "1.0.0",
