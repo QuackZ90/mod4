@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
         resizeMode: "stretch",
         width: "350%",
     },
+    circle: {
+        position: "absolute",
+        justifyContent: "center",
+        width: "30%",
+        bottom: 200
+    },
     arrow: {
         position: "absolute",
         justifyContent: "center",
