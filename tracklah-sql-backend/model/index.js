@@ -1,6 +1,8 @@
 const {Sequelize} = require('sequelize');
 const sequelize = new Sequelize('sqlite::memory:');
 
+console.log(process.env.DATABASE_URL);
+
 
 async function testConnection(){
     try{
