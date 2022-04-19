@@ -8,12 +8,11 @@ router.use((req, res, next)=>{
     next();
 });
 
-router.get('/',(req, res, next)=>{
-    return res.json({message:"get request successful"});
-});
+router.get('/',userController.existingUser);
 
 router.post('/', validateCreateUser, userController.create);
 
 router.post('/session', validateLogin, userController.login);
+
 
 module.exports=router;

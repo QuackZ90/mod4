@@ -160,9 +160,38 @@ const userServices = {
             return results;
         }
 
+    },
 
+    existingUser: async function (username){
 
+        let results = {
+            status: null,
+            message: null,
+        }
 
+        try{
+
+            const user = await User.findOne({where:{username}});
+
+            results.status = 200;
+
+            if (user){
+                results.message = true;
+            } else{
+                results.message = false;
+            }
+
+            return results;
+
+        } catch(err){
+            console.log(err)
+            results.status =500;
+            results.message = "Search failed.";
+            return results;
+
+        }
+
+        
     }
 }
 
