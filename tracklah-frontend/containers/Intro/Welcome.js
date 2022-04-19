@@ -4,7 +4,7 @@ import{
     StatusBar,
     Image
 } from 'react-native';
-import styles from '../../styles/WelcomeScreen-styles';
+import styles from '../../styles/welcome-styles';
 
 export default function Welcome(){
     return (
