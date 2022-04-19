@@ -13,6 +13,12 @@ const styles = StyleSheet.create({
         resizeMode: "stretch",
         width: "350%",
     },
+    arrow: {
+        position: "absolute",
+        justifyContent: "center",
+        width: "30%",
+        bottom: 120
+    }
 });
 
 export default styles;
