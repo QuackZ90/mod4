@@ -14,6 +14,10 @@ export default function Welcome(){
                 style={styles.image}
                 source={require('../../assets/TracklahCover.png')}
             />
+            <Image 
+                style={styles.circle}
+                source={require('../../assets/WelcomeCircle.png')}
+            />
             <Image
                 style={styles.arrow}
                 source={require('../../assets/WelcomeArrow.png')}
