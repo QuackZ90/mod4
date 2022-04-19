@@ -9,9 +9,9 @@ export default function MainNav(){
     return(
     <IntroStack.Navigator initialRouteName="welcome" tabBar={()=>null}>
         <IntroStack.Screen name = "welcome" component = {Welcome} />
-        <IntroStack.Screen name = "onbarding1" component = {Onboarding1} />
-        <IntroStack.Screen name = "onbarding2" component = {Onboarding2} />
+        <IntroStack.Screen name = "onboarding1" component = {Onboarding1} />
+        <IntroStack.Screen name = "onboarding2" component = {Onboarding2} />
 
     </IntroStack.Navigator>
     )
-}
+};

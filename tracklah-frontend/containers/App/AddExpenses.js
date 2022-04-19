@@ -185,7 +185,7 @@ export default function AddExpenses(){
 
         </View>
     )
-}
+};
 
 const styles = StyleSheet.create({
     input: {
@@ -219,4 +219,5 @@ const styles = StyleSheet.create({
         fontWeight: "700",
         margin: 12,
     }
-  });
+});
+
