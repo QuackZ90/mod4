@@ -5,7 +5,7 @@ import{
     TouchableOpacity,
     Button
 } from 'react-native';
-import styles from '../../styles/home-styles';
+import styles from '../../styles/Home-styles';
 import cardStyles from '../../styles/card-styles';
 import Card from '../../components/card';
 

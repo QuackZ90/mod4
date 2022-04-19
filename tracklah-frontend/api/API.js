@@ -1,9 +1,8 @@
 import axios from 'axios';
 import {API_URL, API_TOKEN} from "@env"
 
-
-console.log(API_TOKEN)
-console.log(API_URL)
+console.log("Using API_TOKEN:",API_TOKEN) //Comment out later
+console.log("Running API_URL",API_URL) //Comment out later
 
 export const API = axios.create({
     baseURL: API_URL,
