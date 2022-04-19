@@ -134,6 +134,25 @@ const userController = {
             userDeletion: results
 
         });
+    },
+
+    existingUser: async (req, res)=>{
+
+        let username = req.query.check;
+
+        console.log(username);
+
+        if(!username){
+            res.status(400);
+            return res.json({message:"Invalid search"});
+        }
+
+        let results = await userServices.existingUser(username);
+
+        let {status, ...rest} = results;
+
+        res.status(status);
+        return res.json(rest);
     }
 };
 
