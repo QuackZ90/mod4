@@ -16,4 +16,4 @@ export default function AccountNav(){
             <AccountStack.Screen name = "login" component={Login} />
         </AccountStack.Navigator>
     )
-}
+};
