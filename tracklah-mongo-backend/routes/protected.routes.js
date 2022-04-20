@@ -16,5 +16,6 @@ router.delete("/user", jwtauthenticate.canEditUser, userController.deleteUser);
 router.post("/items", userController.addItem);
 router.delete("/items", userController.deleteItem);
 router.get("/items", userController.showAllItems);
+router.get("/currentmonthitems", userController.showCurrentMonthItems);
 
 module.exports = router;
