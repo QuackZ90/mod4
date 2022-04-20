@@ -1,7 +1,8 @@
-import {View, Text, Button, TextInput, Pressable} from 'react-native';
+import { ScrollView,View, Text, Button, TextInput, Pressable} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
+import createLoginStyles from '../../styles/createLogin';
 
 import userAccountAPI from '../../api/userAccount';
 import expensesAPI from '../../api/expenses';
@@ -106,41 +107,44 @@ export default function CreateAccount({navigation}){
 
 
     return(
-        <View style={{justifyContent:"center",flex:1,}}>
-            <Text>Create Account Page</Text>
+        <View style={createLoginStyles.container}>
+
+            <Text>Name</Text><TextInput style={createLoginStyles.input} name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
             
-            <Text>Username</Text><TextInput name = 'username' id = 'username' value = {username} onChangeText={text=>{
+            <Text>Username</Text><TextInput style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
                 handleTextUpdate(text, setUsername);
                 validateUsername(text);
             }}autoCapitalize='none'></TextInput>
             {!validUsername && <Text>Username must be at least 3 characters long, and contains only alphanumeric, ".", "-" and/or "_"</Text>}
             {existingUser && <Text>Username taken. Please try another username.</Text>}
 
-            <Text>Password</Text><TextInput name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <Text>Email</Text><TextInput style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
+                handleTextUpdate(text, setEmail);
+                validateEmail(text);
+            }} keyboardType='email-address'></TextInput>
+            {!validEmail && <Text>Please enter a valid email.</Text>}
+
+            <Text>Password</Text><TextInput style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
                 validatePassword(text);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
             {!validPassword && <><Text>Password must be at least 6 characters long.</Text><Text>Password must have at least 1 captial letter.</Text><Text>Password must have at least 1 small letter.</Text><Text>Password must have at least 1 number.</Text></>}
 
 
-            <Text>Repeat Password</Text><TextInput name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
+            <Text>Repeat Password</Text><TextInput style={createLoginStyles.input} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
                 handleTextUpdate(text, setRepeatPassword);
                 validateRepeatPassword(text);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
             {!validRepeatPassword && <Text>Password does not match. Please ensure that password matches desired password.</Text>}
 
 
-            <Text>Name</Text><TextInput name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
-
-            <Text>Email</Text><TextInput name = 'email' id = 'email' value = {email} onChangeText={text=>{
-                handleTextUpdate(text, setEmail);
-                validateEmail(text);
-            }} keyboardType='email-address'></TextInput>
-            {!validEmail && <Text>Please enter a valid email.</Text>}
 
 
 
-            <Pressable onPress={async()=>{
+
+
+
+            <Pressable style={createLoginStyles.bottomButton} onPress={async()=>{
 
                 setCreationStatus(()=>"loading");
 
@@ -204,7 +208,7 @@ export default function CreateAccount({navigation}){
                             setCreationStatus(()=>"error");
                         }
                     }
-                }} disabled = {(username && validUsername) && (email && validEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name? false: true}>{creationStatus==="loading"?<Text>Loading...</Text>:<Text>Create Account</Text>}</Pressable>
+                }} disabled = {(username && validUsername) && (email && validEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
                 {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
         </View>
     )
