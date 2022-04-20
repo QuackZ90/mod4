@@ -12,8 +12,12 @@ export default function AccountNav(){
             <AccountStack.Screen name = "createLogin" component = {CreateLogin} options={{
                 headerShown:false,
             }} />
-            <AccountStack.Screen name = "createAccount" component={CreateAccount} />
-            <AccountStack.Screen name = "login" component={Login} />
+            <AccountStack.Screen name = "createAccount" component={CreateAccount} options={{
+                title:"Sign Up Page"
+            }}/>
+            <AccountStack.Screen name = "login" component={Login} options={{
+                title:"Login Page"
+            }}/>
         </AccountStack.Navigator>
     )
 };

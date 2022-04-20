@@ -7,6 +7,8 @@ import UserContext from '../../contexts/UserContext';
 
 import userAccountAPI from '../../api/userAccount';
 
+import createLoginStyles from '../../styles/createLogin';
+
 export default function Login({navigation}){
 
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
@@ -26,19 +28,19 @@ export default function Login({navigation}){
 
 
     return(
-        <View style={{justifyContent:"center",flex:1,}}>
-            <Text>Login in page</Text>
+        <View style={createLoginStyles.container}>
 
-            <Text>Username</Text><TextInput name = 'username' id = 'username' value = {username} onChangeText={text=>{
+            <Text>Username</Text><TextInput style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
                 handleTextUpdate(text, setUsername);
             }}autoCapitalize='none'></TextInput>
 
 
-            <Text>Password</Text><TextInput name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <Text>Password</Text><TextInput style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
+        
             
-            <Pressable onPress={async()=>{
+            <Pressable style={createLoginStyles.bottomButton} onPress={async()=>{
 
                 setLoginStatus(()=>"loading");
 
@@ -83,7 +85,7 @@ export default function Login({navigation}){
                     }
 
                     }
-                }} disabled = {(username) && (password) && (loginStatus!=="loading")? false: true}>{loginStatus==="loading"?<Text>Loading...</Text>:<Text>Login</Text>}</Pressable>
+                }} disabled = {(username) && (password) && (loginStatus!=="loading")? false: true}>{loginStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Login</Text>}</Pressable>
             {loginStatus==="invalidUserPassword"? <Text>Invalid Username or Password</Text>:null}
             {loginStatus==="error"? <Text>Error processing. Please try again later.</Text>:null}
         </View>
