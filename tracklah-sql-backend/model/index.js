@@ -9,7 +9,7 @@ const sequelize = process.env.DATABASE_URL?
                 require: true,
                 rejectUnauthorized: false
               }
-    })):(new Sequelize('sqlite::memory:'));
+    }})):(new Sequelize('sqlite::memory:'));
 
 
 
