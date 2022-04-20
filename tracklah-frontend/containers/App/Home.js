@@ -8,7 +8,7 @@ import{
     TouchableOpacity,
     Button
 } from 'react-native';
-import styles from '../../styles/Home-styles';
+import styles from '../../styles/home-styles';
 import cardStyles from '../../styles/card-styles';
 import Card from '../../components/card';
 
@@ -31,12 +31,13 @@ export default function Home({navigation}){
                 <TouchableOpacity>
                     <Card style={cardStyles.graphCard}>
                         <Text>Pie Chart</Text>
-                        <Button title="View Charts" onPress={()=>navigation.navigate("View Charts")} />
+                        <Button title="View" onPress={()=>navigation.navigate("Income and Expenses Bar Chart")} />
                     </Card>
                 </TouchableOpacity>
                 <TouchableOpacity>
                     <Card style={cardStyles.pieCard}>
                         <Text>Graph</Text>
+                        <Button title="View" onPress={()=>navigation.navigate("Expense Pie Chart")} />
                     </Card>
                 </TouchableOpacity>
             </View>
@@ -45,4 +46,4 @@ export default function Home({navigation}){
             </Card>
         </View>
     )
-}
+};

@@ -13,7 +13,7 @@ module.exports=  function (sequelize){
         },
 
         hashedPassword:{
-            type: DataTypes.STRING.BINARY,
+            type: DataTypes.STRING,
             allowNull:false,
         },
 
