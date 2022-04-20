@@ -57,7 +57,7 @@ export default function CreateAccount({navigation}){
 
     function handleTextUpdate(value, updateState){
 
-        if (updateState !== setName){
+        if (updateState !== setName && updateState !== setPassword){
             value = value.replace(/\s/,"");
         };
 

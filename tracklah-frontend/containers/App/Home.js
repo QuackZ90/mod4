@@ -1,4 +1,7 @@
 import React from 'react';
+import { useContext } from 'react';
+import UserContext from '../../contexts/UserContext';
+
 import{
     View, 
     Text,
@@ -11,10 +14,15 @@ import btnStyles from '../../styles/button-styles';
 import Card from '../../components/card';
 
 
+
+
 export default function Home({navigation}){
+
+    const {userLoggedIn} = useContext(UserContext);
 
     return(
         <View style={styles.container}>
+            <Text>Welcome {userLoggedIn.username}</Text>
             <View>          
                 <Card style={cardStyles.totalExCard}>
                     <Text style={cardStyles.totalExText}>Total Expenses</Text>
