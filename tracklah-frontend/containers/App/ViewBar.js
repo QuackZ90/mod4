@@ -1,12 +1,13 @@
-import{View, Text, ScrollView} from 'react-native';
+import{View, Text} from 'react-native';
 import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis} from 'victory-native';
-import React from "react";
-import ViewPie from './ViewPie';
+import React, {useContext} from "react";
+import UserContext from '../../contexts/UserContext';
+import expensesAPI from '../../api/expenses';
+import styles from "../../styles/home-styles"
 
-export default function ViewBar(props){
+export default function ViewBar(){
 
-    //get data from ViewPie
-
+    const {userLoggedIn} = useContext(UserContext);
     const chartTitle = "Income and Expenses"
 
     const dataIncomeExpenses = [
@@ -19,9 +20,10 @@ export default function ViewBar(props){
     ]
 
     return(
-        <ScrollView>
-            <View style={{justifyContent:"center", backgroundColor:"#F4E0DB"}}>
-                <Text style={{textAlign:"center", marginTop: 10}}>{chartTitle}</Text>
+            <View style={styles.container}>
+            {/* <View style={{justifyContent:"center", backgroundColor:"#F4E0DB"}}> */}
+            
+                <Text style={{textAlign:"center", marginTop: 20}}>{userLoggedIn.username}'s {chartTitle}</Text>
 
                 {/* Income & Expenses Chart */}
                     <VictoryChart 
@@ -67,6 +69,5 @@ export default function ViewBar(props){
                             />
                     </VictoryChart>
             </View>
-        </ScrollView>
     )
 }
