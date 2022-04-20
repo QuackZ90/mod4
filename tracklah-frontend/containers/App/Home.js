@@ -11,8 +11,7 @@ import{
 import styles from '../../styles/home-styles';
 import cardStyles from '../../styles/card-styles';
 import Card from '../../components/card';
-
-
+import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
 
 
 export default function Home({navigation}){
@@ -28,22 +27,28 @@ export default function Home({navigation}){
                 </Card>
             </View>
             <View style={cardStyles.graphsCard}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.
+                                    navigate("Income and Expenses Bar Chart")}>
                     <Card style={cardStyles.graphCard}>
-                        <Text>Pie Chart</Text>
-                        <Button title="View" onPress={()=>navigation.navigate("Income and Expenses Bar Chart")} />
+                        <Text>Graph</Text>
+                        <Entypo name="bar-graph" size={60} color="black" />
                     </Card>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>navigation.
+                                    navigate("Expenses Pie Chart")}>
                     <Card style={cardStyles.pieCard}>
-                        <Text>Graph</Text>
-                        <Button title="View" onPress={()=>navigation.navigate("Expense Pie Chart")} />
+                        <Text>Pie Chart</Text>
+                        <AntDesign name="piechart" size={60} color="black" />
                     </Card>
                 </TouchableOpacity>
             </View>
             <Card style={cardStyles.exListCard}>
                     <Text>Expense List</Text>
             </Card>
+            <TouchableOpacity onPress={()=>navigation.
+                            navigate("addExpenses")}>
+            <Ionicons name="ios-add-circle-outline" size={60} color="black"/>
+            </TouchableOpacity>
         </View>
     )
 };
