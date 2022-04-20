@@ -3,9 +3,14 @@ import { useState } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
-import {API} from '../../api/API';
+import expensesAPI from '../../api/expenses';
+import { useContext } from 'react';
+import UserContext from '../../contexts/UserContext';
+
 
 export default function AddExpenses(){
+
+    const {userLoggedIn} = useContext(UserContext);
 
     let initialDate = moment().format("MMM Do YYYY");
     let initialTime = moment().format("hh:mm a");
@@ -62,11 +67,19 @@ export default function AddExpenses(){
             spend_vs_earn: spendEarn,
         }
 
+        console.log("userLoggedIn", userLoggedIn);
         console.log(item);
 
-        const { status, data } = await API.post('/protected/items', item);
-        if (status === 200) {
-            console.log(data);
+        await expensesAPI.post(
+            '/protected/items', 
+            item, 
+            { headers: {
+                Authorization : userLoggedIn.jwt
+            }}
+        )
+        .then((response) => {
+            const data = response.data;
+            console.log("Data has been receieved", data);
             Alert.alert(
                 `Hey There!`,
                 `Your ${spendEarn? 'income': 'expense'} item has been added to the list.`,
@@ -74,7 +87,9 @@ export default function AddExpenses(){
                 { text: "OK", onPress: () => console.log("OK Pressed") }
                 ]
             );
-        } else {
+        })
+        .catch((err)=> {
+            console.log(err);
             Alert.alert(
                 `Oh no!`,
                 `An error occurred, do try again as your entry was not added.`,
@@ -82,7 +97,7 @@ export default function AddExpenses(){
                 { text: "OK", onPress: () => console.log("OK Pressed") }
                 ]
             );
-        };
+        });
     };
     
 
