@@ -7,7 +7,8 @@ const sequelize = process.env.DATABASE_URL?
         dialect: 'postgres',
         protocol: 'postgres',
         dialectOptions: {
-            ssl: true
+            ssl: true,
+            rejectUnauthorized: false,
         }
     })):(new Sequelize('sqlite::memory:'));
 
