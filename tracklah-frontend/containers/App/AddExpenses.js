@@ -1,9 +1,9 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert } from 'react-native';
 import { useState } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
-
+import {API} from '../../api/API';
 
 export default function AddExpenses(){
 
@@ -49,7 +49,7 @@ export default function AddExpenses(){
     const toggleSwitchAR = () => setAutoRecur(previousState => !previousState);
     const toggleSwitchSE = () => setSpendEarn(previousState => !previousState);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         item = {
             amount: amount,
             date: date,
@@ -64,12 +64,25 @@ export default function AddExpenses(){
 
         console.log(item);
 
-        // call axios here to input new item to backend database.
-
-        
-      
-
-
+        const { status, data } = await API.post('/protected/items', item);
+        if (status === 200) {
+            console.log(data);
+            Alert.alert(
+                `Hey There!`,
+                `Your ${spendEarn? 'income': 'expense'} item has been added to the list.`,
+                [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
+        } else {
+            Alert.alert(
+                `Oh no!`,
+                `An error occurred, do try again as your entry was not added.`,
+                [
+                { text: "OK", onPress: () => console.log("OK Pressed") }
+                ]
+            );
+        };
     };
     
 
