@@ -9,7 +9,7 @@ import cardStyles from '../../styles/card-styles';
 import Card from '../../components/card';
 
 
-export default function Home(){
+export default function Home(navigation){
 
     return(
         <View style={styles.container}>
@@ -19,12 +19,16 @@ export default function Home(){
                 </Card>
             </View>
             <View style={cardStyles.graphsCard}>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={()=>navigation.navigate('Income and Expenses Bar Chart')}    
+                >
                     <Card style={cardStyles.graphCard}>
                         <Text>Pie Chart</Text>
                     </Card>
                 </TouchableOpacity>
-                <TouchableOpacity>
+                <TouchableOpacity
+                    onPress={()=>navigation.navigate('Expense Pie Chart')}
+                >
                     <Card style={cardStyles.pieCard}>
                         <Text>Graph</Text>
                     </Card>
