@@ -1,7 +1,16 @@
 const {Sequelize} = require('sequelize');
-const sequelize = new Sequelize('sqlite::memory:');
 
 console.log(process.env.DATABASE_URL);
+
+const sequelize = process.env.DATABASE_URL?
+    (new Sequelize(process.env.DATABASE_URL, {
+        dialect: 'postgres',
+        protocol: 'postgres',
+        dialectOptions: {
+            ssl: true
+        }
+    })):(new Sequelize('sqlite::memory:'));
+
 
 
 async function testConnection(){
