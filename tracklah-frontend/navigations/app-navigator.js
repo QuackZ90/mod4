@@ -3,12 +3,15 @@ import AddExpenses from "../containers/App/AddExpenses";
 import Home from "../containers/App/Home";
 import ViewPie from "../containers/App/ViewPie";
 import ViewBar from "../containers/App/ViewBar";
+import colors from '../styles/colors'
 
 const AppStack = createDrawerNavigator();
 
 export default function AppNav(){
     return(
-        <AppStack.Navigator tabBar={()=>null} initialRouteName="home">
+        <AppStack.Navigator tabBar={()=>null} initialRouteName="home" screenOptions={{headerStyle: {
+            backgroundColor: colors.mainBackground,
+          }}}>
             <AppStack.Screen name = "Overview" component = {Home} />
             <AppStack.Screen name = "addExpenses" component = {AddExpenses} />
             <AppStack.Screen name = 'Expenses Pie Chart' component={ViewPie} />
