@@ -57,17 +57,20 @@ export default function Home({navigation}){
 
             </View>
 
-            <Card style={cardStyles.exListCard}>
-                    <Text>Expense List</Text>
-            </Card>
             <TouchableOpacity 
                 onPress={()=>navigation.navigate("addExpenses")}>
             <Ionicons 
                 style={styles.addIcon}
-                name="ios-add-circle-outline"
+                name="add-circle-outline"
                 size= {60} 
             />
             </TouchableOpacity>
+
+            <Card style={cardStyles.exListCard}>
+                    <Text>Expense List</Text>
+            </Card>
+
+
         </View>
     )
 };
