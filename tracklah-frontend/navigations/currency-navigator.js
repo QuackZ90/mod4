@@ -7,7 +7,9 @@ const CurrencyStack = createDrawerNavigator();
 //CurrencyConverter Screen should have a side drawer which displays list of currencies to choose
 export default function CurrencyNav(){
     return(
-        <CurrencyStack.Navigator tabBar={()=>null} initialRouteName="home">
+        <CurrencyStack.Navigator tabBar={()=>null} initialRouteName="home" screenOptions={{headerStyle: {
+            backgroundColor: colors.mainBackground,
+          }}}>
             <CurrencyStack.Screen name = "home" component = {Home} />
             <CurrencyStack.Screen name = "currencyConverter" component = {CurrencyConverter} />
 
