@@ -162,33 +162,58 @@ const userServices = {
 
     },
 
-    existingUser: async function (username){
+    existingUser: async function (data){
 
         let results = {
             status: null,
             message: null,
         }
 
-        try{
+        if(data.username){
 
-            const user = await User.findOne({where:{username}});
+            try{
 
-            results.status = 200;
+                const user = await User.findOne({where:{username:data.username}});
 
-            if (user){
-                results.message = true;
-            } else{
-                results.message = false;
+                results.status = 200;
+
+                if (user){
+                    results.message = true;
+                } else{
+                    results.message = false;
+                }
+
+                return results;
+
+            } catch(err){
+                console.log(err)
+                results.status =500;
+                results.message = "Search failed.";
+                return results;
+
             }
+        }else if (data.email){
+            try{
 
-            return results;
+                const user = await User.findOne({where:{email:data.email}});
 
-        } catch(err){
-            console.log(err)
-            results.status =500;
-            results.message = "Search failed.";
-            return results;
+                results.status = 200;
 
+                if (user){
+                    results.message = true;
+                } else{
+                    results.message = false;
+                }
+
+                return results;
+
+            } catch(err){
+                console.log(err)
+                results.status =500;
+                results.message = "Search failed.";
+                return results;
+
+            }
         }
 
         
