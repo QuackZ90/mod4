@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         resizeMode: "stretch",
-        width: "350%",
+        width: "355%",
     },
     circle: {
         position: "absolute",
