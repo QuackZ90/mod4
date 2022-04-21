@@ -10,8 +10,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         position: "absolute",
-        left: 160,
-        top: 200,
         color: "#D3BABA"
     },
     graphIcon: {
@@ -31,7 +29,6 @@ const styles = StyleSheet.create({
     welcomeText: {
         fontWeight: "bold",
         fontSize: 20,
-        fontFamily: "EuphemiaUCAS-Italic",
         color: "#786767",
         padding: 10,
 
