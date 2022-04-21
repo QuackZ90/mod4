@@ -5,6 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import{
     View, 
     Text,
+    Image,
     TouchableOpacity,
 } from 'react-native';
 import styles from '../../styles/home-styles';
@@ -55,8 +56,12 @@ export default function Home({navigation}){
                     <Text>Expense List</Text>
             </Card>
             <TouchableOpacity 
-            onPress={()=>navigation.navigate("addExpenses")}>
-            <Ionicons name="ios-add-circle-outline" size={60} color="black"/>
+                onPress={()=>navigation.navigate("addExpenses")}>
+            <Ionicons 
+                style={styles.addIcon}
+                name="ios-add-circle-outline"
+                size= {60} 
+            />
             </TouchableOpacity>
         </View>
     )

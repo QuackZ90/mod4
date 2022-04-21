@@ -9,7 +9,7 @@ import styles from '../../styles/welcome-styles';
 export default function Welcome(){
     return (
         <View style={styles.container}>
-            <StatusBar barStyle='light-content'/>
+            <StatusBar barStyle='light-content' backgroundColor={"#F4E0DB"}/>
             <Image
                 style={styles.image}
                 source={require('../../assets/TracklahCover.png')}

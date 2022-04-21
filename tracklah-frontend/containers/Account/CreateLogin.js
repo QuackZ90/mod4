@@ -1,4 +1,4 @@
-import {View, Text, Pressable} from 'react-native';
+import {View, Text, Pressable, StatusBar} from 'react-native';
 import createLoginStyles from '../../styles/createLogin';
 
 
