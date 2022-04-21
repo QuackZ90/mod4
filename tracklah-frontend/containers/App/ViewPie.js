@@ -1,9 +1,11 @@
-import{View, Text} from 'react-native';
+import{View, Text, TouchableOpacity, Alert} from 'react-native';
 import { VictoryPie, VictoryTheme, VictoryLegend, VictoryLabel } from 'victory-native';
 import React, { useState, useEffect, useContext } from "react";
 import expensesAPI from '../../api/expenses'
 import colorScale from '../../components/PieChartColorScale';
 import UserContext from '../../contexts/UserContext';
+import styles from "../../styles/home-styles"
+import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 
 export default function ViewPie(){
@@ -32,23 +34,14 @@ export default function ViewPie(){
         }, [])
 
     // console.log("-----------testing-----------",itemData[0].amount.$numberDecimal);
-    
-    const foodGroceries = itemData.filter(data => data.category == "food")
-    const foodGroceriesTotal = foodGroceries.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const transport = itemData.filter(data => data.category == "transport")
-    const transportTotal = transport.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const entertainment = itemData.filter(data => data.category == "entertainment")
-    const entertainmentTotal = entertainment.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const fashion = itemData.filter(data => data.category == "fashion")
-    const fashionTotal = fashion.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const subUtilities = itemData.filter(data => data.category == "utilities")
-    const subUtilitieTotal = subUtilities.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const healthCare = itemData.filter(data => data.category == "utilities")
-    const healthCareTotal = healthCare.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const misc = itemData.filter(data => data.category == "utilities")
-    const miscTotal = misc.reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
-    const totalExpenses = foodGroceriesTotal + transportTotal + entertainmentTotal + fashionTotal + subUtilitieTotal + healthCareTotal + miscTotal
-
+    const foodGroceriesTotal = itemData.filter(data => data.category == "food").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    const transportTotal = itemData.filter(data => data.category == "transport").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    const entertainmentTotal = itemData.filter(data => data.category == "entertainment").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    const fashionTotal = itemData.filter(data => data.category == "fashion").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    const subUtilitieTotal = itemData.filter(data => data.category == "utilities").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    const healthCareTotal = itemData.filter(data => data.category == "healthcare").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    const miscTotal = itemData.filter(data => data.category == "misc").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
+    //const totalExpenses = foodGroceriesTotal + transportTotal + entertainmentTotal + fashionTotal + subUtilitieTotal + healthCareTotal + miscTotal
 
     const chartTitle = "Current Month Expenses"
 
@@ -64,9 +57,22 @@ export default function ViewPie(){
 
     const legendName = displayData.map(legend => ( { name: legend.category } )) //require { "name": category }
 
+    const exportExp = () => {
+        Alert.alert("Export", "Exporting..." )
+    }
+
     return(
-            <View style={{justifyContent:"center", backgroundColor:"#F4E0DB"}}>
+            <View style={styles.container}>
                 <Text style={{textAlign:"center", marginTop: 20}}>{userLoggedIn.username}'s {chartTitle}</Text>
+                <TouchableOpacity onPress={exportExp}>
+                <AntDesign name="export" size={24} color="black"  style={{ 
+                                                                            height: 25, 
+                                                                            width: 25, 
+                                                                            alignSelf: 'flex-end',
+                                                                            position: 'relative',
+                                                                            right: 50,
+                                                                        }} />
+                </TouchableOpacity>
                     {/* <View style={{ position: 'absolute', top: '17%', left: "39%", width: 80}}>
                         <Text style={{textAlign: 'center', color: '#000000'}}>{pieChartTitle}</Text> */}
                     {/* </View> */}
@@ -96,8 +102,8 @@ export default function ViewPie(){
                       }
                 />
                     {/* Legend */}
-                    {/* try hide legend, select to view all */}
-                    <VictoryLegend x={60} y={10}
+                    <VictoryLegend x={50}
+                    // <VictoryLegend x={30} y={10}
                             title="Category"
                             centerTitle
                             orientation="horizontal"
