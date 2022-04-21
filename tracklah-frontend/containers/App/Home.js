@@ -37,6 +37,7 @@ export default function Home({navigation}){
                     <Entypo name="bar-graph" size={60} color="black" />
                     <Card style={cardStyles.graphCard}></Card>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                     style={btnStyles.button}
                     title="Pie Chart" 
@@ -47,11 +48,12 @@ export default function Home({navigation}){
                 </TouchableOpacity>
 
             </View>
+
             <Card style={cardStyles.exListCard}>
                     <Text>Expense List</Text>
             </Card>
-            <TouchableOpacity onPress={()=>navigation.
-                            navigate("addExpenses")}>
+            <TouchableOpacity 
+            onPress={()=>navigation.navigate("addExpenses")}>
             <Ionicons name="ios-add-circle-outline" size={60} color="black"/>
             </TouchableOpacity>
         </View>
