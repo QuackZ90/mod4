@@ -2,7 +2,8 @@ import{
     View,
     Text,
     Button,
-    Image
+    Image,
+    Pressable
 } from 'react-native';
 import styles from '../../styles/onboard-style';
 
@@ -18,10 +19,9 @@ export default function Onboarding3({navigation}){
                 style={styles.arrow}
                 source={require('../../assets/OnboardArrow.png')}
             />            
-            <Button   
-                title='Get Started' 
-                style={styles.button}
-                onPress={()=>navigation.navigate('account')} />
+            <Pressable   
+                style={styles.bottomButton}
+                onPress={()=>navigation.navigate('account')}><Text style={styles.buttonText}>Get Started</Text></Pressable>
         </View>
     )
 };

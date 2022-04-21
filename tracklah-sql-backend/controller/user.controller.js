@@ -138,21 +138,52 @@ const userController = {
 
     existingUser: async (req, res)=>{
 
-        let username = req.query.check;
+        let username;
+        let email;
 
-        console.log(username);
+        if(req.query.checkusername){
+            username = req.query.checkusername.toLowerCase();
+        }
 
-        if(!username){
+        if (req.query.checkemail){
+            email = req.query.checkemail.toLowerCase();
+        }
+
+        if(!username && !email){
             res.status(400);
             return res.json({message:"Invalid search"});
         }
 
-        let results = await userServices.existingUser(username);
+        if(username && email){
+            res.status(400);
+            return res.json({message:"only 1 query can be accepted"})
+        }
 
-        let {status, ...rest} = results;
 
-        res.status(status);
-        return res.json(rest);
+        console.log(username);
+        console.log(email)
+
+
+
+        if(username){
+
+            let results = await userServices.existingUser({username});
+
+            let {status, ...rest} = results;
+
+            res.status(status);
+            return res.json(rest);
+        }
+
+        if(email){
+
+            let results = await userServices.existingUser({email});
+
+            let {status, ...rest} = results;
+
+            res.status(status);
+            return res.json(rest);
+        }
     }
 };
 

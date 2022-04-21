@@ -33,8 +33,7 @@ const createLoginStyles = StyleSheet.create({
         borderRadius:20,
         paddingLeft:15,
         paddingRight: 15,
-        color:colors.introText
-
+        color:colors.introText,
     },
 
     bottomButton:{
@@ -47,7 +46,14 @@ const createLoginStyles = StyleSheet.create({
         alignItems:'center',
         position:'absolute',
         bottom:43,
+    },
 
+    validInput:{
+        color:'#33AB5F',
+    },
+
+    invalidInput:{
+        color:'#DE3700'
     }
 });
 
