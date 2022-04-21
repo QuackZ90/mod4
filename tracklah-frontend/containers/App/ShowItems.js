@@ -1,9 +1,10 @@
 import { View, Text, StatusBar, StyleSheet, TouchableOpacity, FlatList, Dimensions } from 'react-native';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -66,10 +67,13 @@ export default function ThisMonthItems(props){
         await deleteItem(itemId);
     }
 
-    useEffect( () => {
-        console.log("Calling useEffect in ShowItems");
+    useFocusEffect( 
+        React.useCallback(
+        () => {
+        console.log("Calling useFocusEffect in ShowItems");
         getItems();
-    }, []);
+    }, [])
+    );
 
     const Item = ({ onPress, date, title, amount }) => (
         <View style={styles.item}>
