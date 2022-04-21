@@ -45,7 +45,7 @@ export default function Home({navigation}){
                 <TouchableOpacity
                     style={btnStyles.button}
                     title="Pie Chart" 
-                    onPress={()=>navigation.navigate("Expense Pie Chart")} 
+                    onPress={()=>navigation.navigate("Expenses Pie Chart")} 
                 >
                     <AntDesign 
                         name="piechart" 
