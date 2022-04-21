@@ -57,10 +57,6 @@ export default function Home({navigation}){
 
             </View>
 
-            <Card style={cardStyles.exListCard}>
-                    <Text>Expense List</Text>
-            </Card>
-            
             <TouchableOpacity 
                 onPress={()=>navigation.navigate("addExpenses")}>
             <Ionicons 
@@ -69,6 +65,11 @@ export default function Home({navigation}){
                 size= {60} 
             />
             </TouchableOpacity>
+
+            <Card style={cardStyles.exListCard}>
+                    <Text>Expense List</Text>
+            </Card>
+
 
         </View>
     )

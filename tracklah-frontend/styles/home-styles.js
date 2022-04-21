@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         position: "absolute",
         left: 160,
-        top: 140,
+        top: 200,
         color: "#D3BABA"
     },
     graphIcon: {
