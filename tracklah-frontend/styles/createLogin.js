@@ -33,8 +33,7 @@ const createLoginStyles = StyleSheet.create({
         borderRadius:20,
         paddingLeft:15,
         paddingRight: 15,
-        color:colors.introText
-
+        color:colors.introText,
     },
 
     bottomButton:{

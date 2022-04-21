@@ -109,29 +109,29 @@ export default function CreateAccount({navigation}){
     return(
         <View style={createLoginStyles.container}>
 
-            <Text>Name</Text><TextInput style={createLoginStyles.input} name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
+            <TextInput placeholder='Name' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input}  name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
             
-            <Text>Username</Text><TextInput style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
+            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
                 handleTextUpdate(text, setUsername);
                 validateUsername(text);
             }}autoCapitalize='none'></TextInput>
             {!validUsername && <Text>Username must be at least 3 characters long, and contains only alphanumeric, ".", "-" and/or "_"</Text>}
             {existingUser && <Text>Username taken. Please try another username.</Text>}
 
-            <Text>Email</Text><TextInput style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
+            <TextInput placeholder='Email' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
                 handleTextUpdate(text, setEmail);
                 validateEmail(text);
             }} keyboardType='email-address'></TextInput>
             {!validEmail && <Text>Please enter a valid email.</Text>}
 
-            <Text>Password</Text><TextInput style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
                 validatePassword(text);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
             {!validPassword && <><Text>Password must be at least 6 characters long.</Text><Text>Password must have at least 1 captial letter.</Text><Text>Password must have at least 1 small letter.</Text><Text>Password must have at least 1 number.</Text></>}
 
 
-            <Text>Repeat Password</Text><TextInput style={createLoginStyles.input} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
+            <TextInput placeholder='Repeat Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
                 handleTextUpdate(text, setRepeatPassword);
                 validateRepeatPassword(text);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
