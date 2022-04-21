@@ -1,10 +1,12 @@
-import {View, Text, Button} from 'react-native';
+import {View, Text, Pressable} from 'react-native';
+import createLoginStyles from '../../styles/createLogin';
+
 
 export default function CreateLogin({navigation}){
     return(
-        <View style={{justifyContent:"center",flex:1,}}>
-            <Button title='Login' onPress={()=>navigation.navigate("login")} />
-            <Button title='Create Account' onPress={()=>navigation.navigate("createAccount")} />
+        <View style={[createLoginStyles.container,{justifyContent:'center'}]}>
+            <Pressable style={createLoginStyles.contentButton} onPress={()=>navigation.navigate("createAccount")}><Text style={createLoginStyles.buttonText}>Sign Up</Text></Pressable>
+            <Pressable style={createLoginStyles.contentButton} onPress={()=>navigation.navigate("login")}><Text style={createLoginStyles.buttonText}>Login</Text></Pressable>
         </View>
     )
     

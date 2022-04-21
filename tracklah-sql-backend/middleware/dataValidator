@@ -11,9 +11,9 @@ const createUserSchema = Joi.object({
     
     password: Joi.string()
                 .trim()
-                .pattern(/^\S*[A-Z]+\S*$/)   // at least 1 capital
-                .pattern(/^\S*[a-z]+\S*$/)   // at least 1 small letter
-                .pattern(/^\S*[0-9]+\S*$/)   // at least 1 number
+                .regex(/^\S*[A-Z]+\S*$/)   // at least 1 capital
+                .regex(/^\S*[a-z]+\S*$/)   // at least 1 small letter
+                .regex(/^\S*[0-9]+\S*$/)   // at least 1 number
                 .required(),
 
     repeatPassword: Joi.ref('password'),
@@ -44,21 +44,41 @@ const loginSchema = Joi.object({
 
     password: Joi.string()
                 .trim()
-                .pattern(/^\S*[A-Z]+\S*$/)   // at least 1 capital
-                .pattern(/^\S*[a-z]+\S*$/)   // at least 1 small letter
-                .pattern(/^\S*[0-9]+\S*$/)   // at least 1 number
+                .regex(/^\S*[A-Z]+\S*$/)   // at least 1 capital
+                .regex(/^\S*[a-z]+\S*$/)   // at least 1 small letter
+                .regex(/^\S*[0-9]+\S*$/)   // at least 1 number
                 .required(),
 }).xor("username", "email");
 
 
 const validateCreateUser = function (req, res, next){
-    createUserSchema.validate(req.body);
-    next();
+
+    req.body = createUserSchema.validate(req.body);
+    
+    if (!req.body.error){
+        req.body = req.body.value;
+        next();
+    }else{
+
+        res.status(400);
+        return res.json(req.body.error.details);
+    }
+    
+    
 };
 
 const validateLogin = function (req, res, next){
-    loginSchema.validate(req.body);
-    next();
+    
+    req.body = loginSchema.validate(req.body);
+
+    if (!req.body.error){
+        req.body = req.body.value;
+        next();
+    }else{
+
+        res.status(400);
+        return res.json(req.body.error.details);
+    }
 };
 
 module.exports = {validateCreateUser, validateLogin};

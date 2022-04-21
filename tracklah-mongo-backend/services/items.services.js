@@ -1,5 +1,6 @@
 const { User } = require( "../model/model" );
 require('dotenv').config()
+const moment = require('moment');
 
 module.exports = {
 
@@ -74,9 +75,9 @@ module.exports = {
             return result;
         }
 
-        const today = new Date();
-        const currentMth = today.getMonth();
-        const currentYear = today.getFullYear();
+        const today = moment();
+        const currentMth = today.month();
+        const currentYear = today.year();
         let data;
 
         console.log("today", today);
@@ -90,8 +91,8 @@ module.exports = {
             case 1:
             case 2:
                 data = allItemData.filter( (e) => {
-                    let itemMth = new Date(e.date).getMonth();
-                    let itemYear = new Date(e.date).getFullYear();
+                    let itemMth = moment(e.date,"MMM Do YYYY").month();
+                    let itemYear = moment(e.date,"MMM Do YYYY").year();
 
                     console.log("ItemMth", itemMth);
                     console.log("ItemYear", itemMth);
@@ -108,8 +109,8 @@ module.exports = {
 
             default:
                 data = allItemData.filter( (e) => {
-                    let itemMth = new Date(e.date).getMonth();
-                    let itemYear = new Date(e.date).getFullYear();
+                    let itemMth = moment(e.date,"MMM Do YYYY").month();
+                    let itemYear = moment(e.date,"MMM Do YYYY").year();
 
                     console.log("ItemMth", itemMth);
                     console.log("ItemYear", itemMth);
@@ -122,6 +123,56 @@ module.exports = {
                 });
                 break;
         }
+
+        console.log("Data", data);
+
+        result.data = data;
+        result.message = "Data fetched successfully from database.";
+        result.status = 200;   
+
+        return result;
+    },
+
+    showCurrentMonthItems: async (userId) => {
+
+        let result = {
+            message: null,
+            status: null,
+            data: null
+        }
+
+        // Check if userId exists.
+        const user = await User.findOne({ userId: userId });
+        if ( user === null ){
+            result.message = `User ID ${userId} does not exist`;
+            result.status = 404;
+            return result;
+        }
+
+        const today = moment();
+        const currentMth = today.month();
+        const currentYear = today.year();
+        let data;
+
+        console.log("today", today);
+        console.log("CurrentMth", currentMth);
+        console.log("CurrentYear", currentYear);
+
+        const allItemData = user.items;
+
+        data = allItemData.filter( (e) => {
+            let itemMth = moment(e.date,"MMM Do YYYY").month();
+            let itemYear = moment(e.date,"MMM Do YYYY").year();
+
+            console.log("ItemMth", itemMth);
+            console.log("ItemYear", itemMth);
+            
+            if (itemYear === currentYear && itemMth === currentMth){
+                return true;
+            } else {
+                return false;
+            }
+        });
 
         console.log("Data", data);
 

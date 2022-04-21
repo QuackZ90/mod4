@@ -1,12 +1,14 @@
-import{View, Text, ScrollView} from 'react-native';
+import{View, Text, Alert, TouchableOpacity} from 'react-native';
 import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis} from 'victory-native';
-import React from "react";
-import ViewPie from './ViewPie';
+import React, {useContext} from "react";
+import UserContext from '../../contexts/UserContext';
+import expensesAPI from '../../api/expenses';
+import { AntDesign } from '@expo/vector-icons';
+import styles from "../../styles/home-styles"
 
-export default function ViewBar(props){
+export default function ViewBar(){
 
-    //get data from ViewPie
-
+    const {userLoggedIn} = useContext(UserContext);
     const chartTitle = "Income and Expenses"
 
     const dataIncomeExpenses = [
@@ -18,11 +20,22 @@ export default function ViewBar(props){
         { type: "Expense Mar", amount: 7000},
     ]
 
-    return(
-        <ScrollView>
-            <View style={{justifyContent:"center", backgroundColor:"#F4E0DB"}}>
-                <Text style={{textAlign:"center", marginTop: 10}}>{chartTitle}</Text>
+    const exportIncExp = () => {
+        Alert.alert("Export", "Exporting..." )
+    }
 
+    return(
+            <View style={styles.container}>
+                <Text style={{textAlign:"center", marginTop: 20}}>{userLoggedIn.username}'s {chartTitle}</Text>
+                <TouchableOpacity onPress={exportIncExp}>
+                <AntDesign name="export" size={24} color="black"  style={{ 
+                                                                            height: 25, 
+                                                                            width: 25, 
+                                                                            alignSelf: 'flex-end',
+                                                                            position: 'relative',
+                                                                            right: 50,
+                                                                        }} />
+                </TouchableOpacity>
                 {/* Income & Expenses Chart */}
                     <VictoryChart 
                     domainPadding={50} 
@@ -67,6 +80,5 @@ export default function ViewBar(props){
                             />
                     </VictoryChart>
             </View>
-        </ScrollView>
     )
 }

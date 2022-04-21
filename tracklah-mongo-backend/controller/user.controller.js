@@ -83,6 +83,21 @@ class UserController {
             message: result.message,
         });
     }
+
+    async showCurrentMonthItems(req, res, next){
+
+        // showing all items for the current month + last 3 months only.
+
+        const result = await itemService.showCurrentMonthItems(req.user.userId);
+
+        res.status(result.status);
+
+        return res.json({
+            data: result.data,
+            status_code: result.status,
+            message: result.message,
+        });
+    }
 }
 
 module.exports = UserController;
