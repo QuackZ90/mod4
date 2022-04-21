@@ -1,4 +1,4 @@
-import { ScrollView,View, Text, Button, TextInput, Pressable} from 'react-native';
+import { View, Text, TextInput, Pressable} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
