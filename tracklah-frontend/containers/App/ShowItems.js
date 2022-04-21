@@ -80,7 +80,7 @@ export default function ThisMonthItems(props){
                 <Text style={styles.date}>{date.slice(0,8)}</Text>
                 <Text style={styles.title}>{title}</Text>          
                 <Text style={styles.amount}>${amount.$numberDecimal}</Text>
-                <TouchableOpacity style={styles.trashcontainer}onPress={onPress}>
+                <TouchableOpacity style={styles.trashcontainer} onPress={onPress}>
                         <Ionicons 
                             name="trash-outline"
                             size= {20} 
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
         width: windowWidth,
         justifyContent: 'space-between',
         padding: 10,
+        backgroundColor: "#F4E0DB"
     },
     title: {
         fontSize: 12,

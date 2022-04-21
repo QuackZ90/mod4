@@ -179,7 +179,7 @@ export default function Home({navigation}){
             </View>
             <View>
                 <Card style={cardStyles.exListCard}>
-                        <Text>Expense List</Text>
+                        <Text style={{color: "#E2E2E2"}}>Expense List</Text>
                 </Card>
                 <TouchableOpacity
                     style={{left: 160, top: 120, width: 65, height: 65}} 

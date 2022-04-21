@@ -34,8 +34,8 @@ const cardStyles = StyleSheet.create({
         color: "#E2E2E2",
         marginHorizontal: 10,
         marginVertical: 10,
-        left: 60,
-        top: 20
+        left: "15%",
+        top: "20%"
     },
     graphsCard:{
         flexWrap: "wrap",
