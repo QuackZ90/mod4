@@ -8,7 +8,7 @@ import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 
 
-export default function AddExpenses(){
+export default function AddExpenses({navigation}){
 
     const {userLoggedIn} = useContext(UserContext);
 
@@ -82,9 +82,10 @@ export default function AddExpenses(){
             console.log("Data has been receieved", data);
             Alert.alert(
                 `Hey There!`,
-                `Your ${spendEarn? 'income': 'expense'} item has been added to the list.`,
+                `Your ${spendEarn? 'income': 'expense'} item has been added to the list. Add another item?`,
                 [
-                { text: "OK", onPress: () => console.log("OK Pressed") }
+                { text: "Yes", onPress: () => navigation.navigate("Add Expense or Income Item") },
+                { text: "No, show me all items", onPress: () => navigation.navigate("List Current Month Items") }
                 ]
             );
         })

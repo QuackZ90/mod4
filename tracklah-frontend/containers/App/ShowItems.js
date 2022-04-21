@@ -76,7 +76,7 @@ export default function ThisMonthItems(props){
                 <Text style={styles.date}>{date.slice(0,8)}</Text>
                 <Text style={styles.title}>{title}</Text>          
                 <Text style={styles.amount}>${amount.$numberDecimal}</Text>
-                <TouchableOpacity onPress={onPress}>
+                <TouchableOpacity style={styles.trashcontainer}onPress={onPress}>
                         <Ionicons 
                             name="trash-outline"
                             size= {20} 
@@ -134,11 +134,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         textTransform: 'capitalize',
         fontWeight: 'bold',
+        textAlignVertical: 'center',
     },
     amount: {
         fontSize: 20,
         paddingHorizontal: 10,
         fontWeight: 'bold',
-        alignSelf: 'flex-end',
+        textAlignVertical: 'center',
     },
+    trashcontainer:{
+        flexDirection: 'column',
+        justifyContent: 'center',
+
+    }
 });
