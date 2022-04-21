@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     welcomeText: {
         fontWeight: "bold",
         fontSize: 20,
-        fontFamily: "EuphemiaUCAS-Italic",
         color: "#786767",
         padding: 10,
 
