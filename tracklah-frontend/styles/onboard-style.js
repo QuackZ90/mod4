@@ -25,11 +25,23 @@ const styles = StyleSheet.create({
         width: "30%",
         bottom: 120
     },
-    button: {
-        justifyContent: "center",
-        width: "30%",
-        bottom: 250
-    }
+
+    bottomButton:{
+        flex: 1,
+        backgroundColor: colors.drawer,
+        height: 51,
+        width: '75%',
+        borderRadius:20,
+        justifyContent:'center',
+        alignItems:'center',
+        position:'absolute',
+        bottom:120,
+
+    },
+
+    buttonText:{
+        color: colors.introText,
+    },
 });
 
 export default styles;

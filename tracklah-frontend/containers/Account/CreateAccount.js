@@ -12,7 +12,8 @@ export default function CreateAccount({navigation}){
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [validUsername, setValidUsername] = useState(true);
-    const [existingUser, setExisitingUser] = useState(false)
+    const [existingUser, setExistingUser] = useState(false);
+    const [checkExistingUser, setCheckExistingUser] = useState(false);
     const [password, setPassword] = useState('');
     const [validPassword, setValidPassword] = useState(true);
     const [repeatPassword, setRepeatPassword] = useState('');
@@ -20,6 +21,8 @@ export default function CreateAccount({navigation}){
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [validEmail, setValidEmail] = useState(true);
+    const [existingEmail, setExistingEmail] = useState(false);
+    const [checkExistingEmail, setCheckExistingEmail] = useState(false);
     const [creationStatus, setCreationStatus] = useState("data");
 
     useEffect(async ()=>{
@@ -29,17 +32,19 @@ export default function CreateAccount({navigation}){
         console.log(username+' in useEffect');
 
         if(username && validUsername){
-            console.log(userAccountAPI);
-            timeoutHandler =  setTimeout(async ()=>{
-                console.log(userAccountAPI);
+
+            setCheckExistingUser(()=>true);
+
+            timeoutHandler =  setInterval(async ()=>{
 
                 try{
-                    let results = await userAccountAPI.get('/public/user/?check='+username);
+                    let results = await userAccountAPI.get('/public/user/?checkusername='+username);
 
                     console.log(results);
 
                     if (results.status===200){
-                        setExisitingUser(results.data.message);
+                        setExistingUser(results.data.message);
+                        setCheckExistingUser(()=>false);
                         clearInterval(timeoutHandler);
                     }
                 }catch(err){
@@ -51,7 +56,40 @@ export default function CreateAccount({navigation}){
 
         return(()=>{clearInterval(timeoutHandler)});
 
-    }, [username])
+    }, [username]);
+
+    useEffect(async ()=>{
+
+        let timeoutHandler;
+
+        console.log(email+' in useEffect');
+
+        if(email && validEmail){
+
+            setCheckExistingEmail(()=>true);
+
+            timeoutHandler =  setInterval(async ()=>{
+
+                try{
+                    let results = await userAccountAPI.get('/public/user/?checkemail='+email);
+
+                    console.log(results);
+
+                    if (results.status===200){
+                        setExistingEmail(results.data.message);
+                        setCheckExistingEmail(()=>false);
+                        clearInterval(timeoutHandler);
+                    }
+                }catch(err){
+                    console.log(err);
+                }
+
+            }, 1000)
+        }
+
+        return(()=>{clearInterval(timeoutHandler)});
+
+    }, [email])
 
 
     console.log(userLoggedIn, setUserLoggedIn);
@@ -109,33 +147,49 @@ export default function CreateAccount({navigation}){
     return(
         <View style={createLoginStyles.container}>
 
-            <Text>Name</Text><TextInput style={createLoginStyles.input} name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
+            <TextInput placeholder='Name' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input}  name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
             
-            <Text>Username</Text><TextInput style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
+            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
                 handleTextUpdate(text, setUsername);
                 validateUsername(text);
             }}autoCapitalize='none'></TextInput>
-            {!validUsername && <Text>Username must be at least 3 characters long, and contains only alphanumeric, ".", "-" and/or "_"</Text>}
-            {existingUser && <Text>Username taken. Please try another username.</Text>}
+            {!validUsername && <Text style={createLoginStyles.invalidInput}>Username must be at least 3 characters long, and contains only alphanumeric, ".", "-" and/or "_"</Text>}
+            {(username && existingUser && !checkExistingUser)?<Text style={createLoginStyles.invalidInput}>Username taken. Please try another username.</Text>:null}
+            {(username && !existingUser && !checkExistingUser &&validUsername)? <Text style={createLoginStyles.validInput}>Username available</Text>:null}
+            {checkExistingUser && <Text>Checking if username is available...</Text>}
 
-            <Text>Email</Text><TextInput style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
+            <TextInput placeholder='Email' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
                 handleTextUpdate(text, setEmail);
                 validateEmail(text);
             }} keyboardType='email-address'></TextInput>
-            {!validEmail && <Text>Please enter a valid email.</Text>}
+            {!validEmail && <Text style={createLoginStyles.invalidInput}>Please enter a valid email.</Text>}
+            {(email && existingEmail && !checkExistingEmail)?<Text style={createLoginStyles.invalidInput}>This email is linked to an existing account. Please proceed to login.</Text>:null}
+            {(email && !existingEmail && !checkExistingEmail && validEmail)? <Text Text style={createLoginStyles.validInput}>Email can be used.</Text>:null}
+            {checkExistingEmail && <Text>Checking if email is registered...</Text>}
 
-            <Text>Password</Text><TextInput style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
                 validatePassword(text);
-            }} secureTextEntry={true} autoCapitalize='none'></TextInput>
-            {!validPassword && <><Text>Password must be at least 6 characters long.</Text><Text>Password must have at least 1 captial letter.</Text><Text>Password must have at least 1 small letter.</Text><Text>Password must have at least 1 number.</Text></>}
+            }} secureTextEntry={true} autoCapitalize='none' onBlur={()=>{
+                if (repeatPassword){
+                    validateRepeatPassword(repeatPassword)
+                }
+            }}></TextInput>
+            {!validPassword && 
+                <>
+                    <Text style={createLoginStyles.invalidInput}>Password must be at least 6 characters long.</Text>
+                    <Text style={createLoginStyles.invalidInput}>Password must have at least 1 captial letter.</Text>
+                    <Text style={createLoginStyles.invalidInput}>Password must have at least 1 small letter.</Text>
+                    <Text style={createLoginStyles.invalidInput}>Password must have at least 1 number.</Text>
+                </>
+            }
 
 
-            <Text>Repeat Password</Text><TextInput style={createLoginStyles.input} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
+            <TextInput placeholder='Repeat Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
                 handleTextUpdate(text, setRepeatPassword);
                 validateRepeatPassword(text);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
-            {!validRepeatPassword && <Text>Password does not match. Please ensure that password matches desired password.</Text>}
+            {!validRepeatPassword && <Text style={createLoginStyles.invalidInput}>Password does not match. Please ensure that password matches desired password.</Text>}
 
 
 
@@ -208,7 +262,7 @@ export default function CreateAccount({navigation}){
                             setCreationStatus(()=>"error");
                         }
                     }
-                }} disabled = {(username && validUsername) && (email && validEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
+                }} disabled = {(username && validUsername && !existingUser && !checkExistingUser) && (email && validEmail && !existingUser && !checkExistingEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
                 {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
         </View>
     )
