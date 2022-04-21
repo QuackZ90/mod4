@@ -14,8 +14,8 @@ const cardStyles = StyleSheet.create({
         shadowRadius: 2,
         marginHorizontal: 4,
         marginVertical: 6,
-        marginTop: 20,
-        marginBottom: 20,
+        marginTop: 10,
+        marginBottom: 10,
         marginLeft: 20,
         marginRight: 20
     },
@@ -29,10 +29,12 @@ const cardStyles = StyleSheet.create({
         height: 86,
     },
     totalExText: {
-        fontSize: 40,
+        fontSize: 50,
         color: colors.introText,
-        marginHorizontal: 18,
-        marginVertical: 20
+        marginHorizontal: 10,
+        marginVertical: 10,
+        left: 60,
+        top: 20
     },
     graphsCard:{
         flexWrap: "wrap",

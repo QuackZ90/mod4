@@ -24,7 +24,7 @@ export default function Home({navigation}){
 
             <View>          
                 <Card style={cardStyles.totalExCard}>
-                    <Text style={cardStyles.totalExText}>Total Expenses</Text>
+                    <Text style={cardStyles.totalExText}>$1256.60</Text>
                 </Card>
             </View>
 
@@ -57,18 +57,20 @@ export default function Home({navigation}){
 
             </View>
             <View>
-                <TouchableOpacity 
+                <Card style={cardStyles.exListCard}>
+                        <Text>Expense List</Text>
+                </Card>
+                <TouchableOpacity
+                    style={{left: 160, top: 120, width: 65, height: 65}} 
                     onPress={()=>navigation.navigate("addExpenses")}>
-                <Ionicons 
+                <AntDesign 
                     style={styles.addIcon}
-                    name="add-circle-outline"
+                    name="pluscircle"
                     size= {60} 
                 />
                 </TouchableOpacity>
 
-                <Card style={cardStyles.exListCard}>
-                        <Text>Expense List</Text>
-                </Card>
+
             </View>
 
         </View>
