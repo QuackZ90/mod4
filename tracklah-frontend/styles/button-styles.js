@@ -20,7 +20,7 @@ const btnStyles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 20,
         width: 145,
-        height: 145
+        height: 145,
     },
 });
 

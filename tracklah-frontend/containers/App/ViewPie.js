@@ -7,6 +7,7 @@ import UserContext from '../../contexts/UserContext';
 import styles from "../../styles/home-styles"
 import { AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function ViewPie(){
 
@@ -28,10 +29,13 @@ export default function ViewPie(){
             })
         }
         // Fetch data upon loading
-        useEffect( () => {
-            console.log('ViewPie useEffect')
+        useFocusEffect( 
+            React.useCallback(
+            () => {
+            console.log('ViewPie useFocusEffect')
             getItems();
         }, [])
+        );
 
     // console.log("-----------testing-----------",itemData[0].amount.$numberDecimal);
     const foodGroceriesTotal = itemData.filter(data => data.category == "food").reduce((acc, array ) => acc + Number(array.amount.$numberDecimal), 0)
@@ -94,9 +98,9 @@ export default function ViewPie(){
                         fontSize: 11, fill: "black",
                         },
                     }}
-                    labelRadius={140}
+                    labelRadius={150}
                     labelComponent={
-                        <VictoryLabel angle={0} textAnchor="start" 
+                        <VictoryLabel angle={0} textAnchor="middle" 
                         text={({ datum }) => (datum.amount > 0 ? `${datum.category} \n $${Math.round(datum.amount)}` : "" )}
                         />
                       }
