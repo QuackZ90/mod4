@@ -44,7 +44,7 @@ const cardStyles = StyleSheet.create({
     exListCard: {
         flex: 1,
         width: 218,
-        height: 215
+        height: 215,
     }
 });
 

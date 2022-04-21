@@ -14,6 +14,7 @@ import expensesAPI from '../../api/expenses'
 // import colorScale from '../../components/PieChartColorScale';
 // import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
 import { useFocusEffect } from '@react-navigation/native';
+import colors from '../../styles/colors';
 
 
 export default function Home({navigation}){
@@ -179,7 +180,7 @@ export default function Home({navigation}){
             </View>
             <View>
                 <Card style={cardStyles.exListCard}>
-                        <Text style={{color: "#E2E2E2"}}>Expense List</Text>
+                        <Text style={{color:"#E2E2E2", fontSize:20}}>Expense List</Text>
                 </Card>
                 <TouchableOpacity
                     style={{left: 160, top: 120, width: 65, height: 65}} 
