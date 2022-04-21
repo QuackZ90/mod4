@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         position: "absolute",
         left: 160,
-        top: 170,
+        top: 140,
         color: "#D3BABA"
     },
     graphIcon: {
@@ -27,6 +27,14 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 20,
         left: 20
+    },
+    welcomeText: {
+        fontWeight: "bold",
+        fontSize: 20,
+        fontFamily: "EuphemiaUCAS-Italic",
+        color: "#786767",
+        padding: 10,
+
     }
 });
 

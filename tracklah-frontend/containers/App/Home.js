@@ -5,7 +5,6 @@ import UserContext from '../../contexts/UserContext';
 import{
     View, 
     Text,
-    StatusBar,
     TouchableOpacity,
 } from 'react-native';
 import styles from '../../styles/home-styles';
@@ -21,7 +20,7 @@ export default function Home({navigation}){
 
     return(
         <View style={styles.container}>
-            <Text>Welcome {userLoggedIn.username}</Text>
+            <Text style={styles.welcomeText}>Welcome {userLoggedIn.username}</Text>
 
             <View>          
                 <Card style={cardStyles.totalExCard}>
