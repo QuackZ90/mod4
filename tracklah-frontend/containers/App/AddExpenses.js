@@ -103,7 +103,7 @@ export default function AddExpenses({navigation}){
     
 
     return(
-        <View style={{justifyContent:"center",flex:1, paddingTop:15}}>
+        <View style={{justifyContent:"center",flex:1, paddingTop:15, backgroundColor: "#F4E0DB"}}>
 
             <Text style={styles.text}>Amount:</Text>
             <TextInput
@@ -224,6 +224,8 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         borderWidth: 1,
         padding: 10,
+        backgroundColor: "#D3BABA",
+        borderRadius: 20
     },
     text: {
         marginLeft: 20,
@@ -231,17 +233,18 @@ const styles = StyleSheet.create({
     boldtext: {
         fontWeight: "700",
         margin: 12,
-        color: "#fc8eac",
+        color: "#968484",
     },
     toggleContainer: {
         flexDirection: 'row',
         flex:1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: "#F4E0DB"
     },
     button: {
         alignItems: "center",
-        backgroundColor: "#fc8eac",
+        backgroundColor: "#968484",
         padding: 8,
     },
     buttontext: {
