@@ -11,7 +11,8 @@ import styles from '../../styles/home-styles';
 import cardStyles from '../../styles/card-styles';
 import btnStyles from '../../styles/button-styles';
 import Card from '../../components/card';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
+import ShowItems from './ShowItems';
 
 
 export default function Home({navigation}){
