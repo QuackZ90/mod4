@@ -9,10 +9,10 @@ import styles from '../../styles/home-styles';
 import cardStyles from '../../styles/card-styles';
 import btnStyles from '../../styles/button-styles';
 import Card from '../../components/card';
-import { AntDesign, Entypo, Ionicons } from '@expo/vector-icons';
+import { AntDesign, Entypo } from '@expo/vector-icons';
 import expensesAPI from '../../api/expenses'
-import colorScale from '../../components/PieChartColorScale';
-import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
+// import colorScale from '../../components/PieChartColorScale';
+// import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
 import { useFocusEffect } from '@react-navigation/native';
 
 
