@@ -46,7 +46,14 @@ const createLoginStyles = StyleSheet.create({
         alignItems:'center',
         position:'absolute',
         bottom:43,
+    },
 
+    validInput:{
+        color:'#33AB5F',
+    },
+
+    invalidInput:{
+        color:'#DE3700'
     }
 });
 

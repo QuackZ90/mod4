@@ -35,7 +35,7 @@ export default function Login({navigation}){
             }}autoCapitalize='none'></TextInput>
 
 
-            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
         
