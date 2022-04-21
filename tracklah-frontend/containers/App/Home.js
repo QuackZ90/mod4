@@ -62,7 +62,7 @@ export default function Home({navigation}){
                 </Card>
                 <TouchableOpacity
                     style={{left: 160, top: 120, width: 65, height: 65}} 
-                    onPress={()=>navigation.navigate("addExpenses")}>
+                    onPress={()=>navigation.navigate("Add Expense or Income Item")}>
                 <AntDesign 
                     style={styles.addIcon}
                     name="pluscircle"
