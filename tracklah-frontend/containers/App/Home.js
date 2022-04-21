@@ -5,7 +5,7 @@ import UserContext from '../../contexts/UserContext';
 import{
     View, 
     Text,
-    Image,
+    StatusBar,
     TouchableOpacity,
 } from 'react-native';
 import styles from '../../styles/home-styles';
@@ -37,7 +37,10 @@ export default function Home({navigation}){
                 >
                     <Entypo 
                         name="bar-graph" 
-                        size={60} color="lightgrey" />
+                        size={100} 
+                        color="lightgrey" 
+                        style={styles.graphIcon}
+                    />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -47,7 +50,10 @@ export default function Home({navigation}){
                 >
                     <AntDesign 
                         name="piechart" 
-                        size={60} color="lightgrey" />
+                        size={100} 
+                        color="lightgrey" 
+                        style={styles.pieIcon}
+                    />
                 </TouchableOpacity>
 
             </View>

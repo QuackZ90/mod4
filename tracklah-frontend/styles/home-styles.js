@@ -13,6 +13,20 @@ const styles = StyleSheet.create({
         left: 160,
         top: 170,
         color: "#D3BABA"
+    },
+    graphIcon: {
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        top: 25,
+        left: 18
+    },
+    pieIcon: {
+        justifyContent: "center",
+        alignItems: "center",
+        position: "absolute",
+        top: 20,
+        left: 20
     }
 });
 
