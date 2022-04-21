@@ -24,7 +24,7 @@ export default function Home({navigation}){
 
             <View>          
                 <Card style={cardStyles.totalExCard}>
-                    <Text style={cardStyles.totalExText}>Total Expenses</Text>
+                    <Text style={cardStyles.totalExText}>$1256.60</Text>
                 </Card>
             </View>
 
