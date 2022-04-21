@@ -34,8 +34,9 @@ export default function Home({navigation}){
                     title="Graph Chart"
                     onPress={()=>navigation.navigate("Income and Expenses Bar Chart")}
                 >
-                    <Entypo name="bar-graph" size={60} color="black" />
-                    <Card style={cardStyles.graphCard}></Card>
+                    <Entypo 
+                        name="bar-graph" 
+                        size={60} color="lightgrey" />
                 </TouchableOpacity>
 
                 <TouchableOpacity
@@ -43,8 +44,9 @@ export default function Home({navigation}){
                     title="Pie Chart" 
                     onPress={()=>navigation.navigate("Expense Pie Chart")} 
                 >
-                    <AntDesign name="piechart" size={60} color="black" />
-                    <Card style={cardStyles.pieCard}></Card>
+                    <AntDesign 
+                        name="piechart" 
+                        size={60} color="lightgrey" />
                 </TouchableOpacity>
 
             </View>
