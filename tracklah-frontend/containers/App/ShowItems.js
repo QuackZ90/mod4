@@ -34,15 +34,16 @@ export default function ThisMonthItems(props){
         console.log("body in deleteItem", body);
 
         await expensesAPI.delete(
-            '/protected/items', 
-            body,
-            { headers: {
-                Authorization : userLoggedIn.jwt
-            }}
+            '/protected/items', {
+                headers: {
+                    authorization : userLoggedIn.jwt
+                },
+                data: body
+            }        
         )   
         .then((response) => {
             const data = response.data;
-            console.log("Database has been updated", data);
+            console.log("Database has been updated");
         })
         .catch((err)=> {
             console.log(err);
