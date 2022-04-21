@@ -11,6 +11,7 @@ import createLoginStyles from '../../styles/createLogin';
 
 export default function Login({navigation}){
 
+
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [loginStatus, setLoginStatus] = useState("data");
