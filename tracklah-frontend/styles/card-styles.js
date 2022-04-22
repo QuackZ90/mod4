@@ -32,8 +32,8 @@ const cardStyles = StyleSheet.create({
         fontSize: 58,
         fontWeight: "bold",
         color: "#E2E2E2",
-        marginHorizontal: 10,
-        marginVertical: 10,
+        marginRight: 10,
+        marginBottom: 15,
         left: "15%",
         top: "20%"
     },
