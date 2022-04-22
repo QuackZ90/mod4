@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         paddingHorizontal: 10,
         textTransform: 'uppercase',
-        width: 120,
+        width: 100,
         textAlignVertical: 'center',
         textAlign: 'center',
     },
