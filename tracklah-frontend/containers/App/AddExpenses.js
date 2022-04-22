@@ -99,6 +99,16 @@ export default function AddExpenses({navigation}){
                 ]
             );
         });
+
+        // reset the variables to initial state after submission.
+        setAmount(null);
+        setDate(moment().format("MMM Do YYYY"));
+        setTime(moment().format("hh:mm a"))
+        setDes("");
+        setNotes("");
+        setCat(null);
+        setAutoRecur(false);
+        setSpendEarn(false);
     };
     
 
