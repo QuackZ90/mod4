@@ -5,6 +5,7 @@ import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import moment from 'moment';
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -23,6 +24,10 @@ export default function ThisMonthItems(props){
         
         if (status === 200) {
             // console.log("data in getitems", data.data)
+            console.log(data.data);
+            data.data.sort((data1,data2)=>moment(data1.date, "MMM Do YYYY").date()-moment(data2.date, "MMM Do YYYY").date());
+            console.log(data.data);
+
             setListItems(data.data);
         } else {
             console.log("Error in data retrieval");
@@ -102,6 +107,8 @@ export default function ThisMonthItems(props){
             />           
         )
     };
+
+    listItems.sort()
     
     return(
         <View>
