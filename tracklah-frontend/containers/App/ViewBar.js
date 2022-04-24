@@ -1,5 +1,5 @@
 import{View, Text, Alert, TouchableOpacity} from 'react-native';
-import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis} from 'victory-native';
+import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis, Bar} from 'victory-native';
 import React, {useContext} from "react";
 import UserContext from '../../contexts/UserContext';
 import expensesAPI from '../../api/expenses';
@@ -54,6 +54,14 @@ export default function ViewBar(){
                             data={dataIncomeExpenses}
                             x="type"
                             y="amount"
+
+                            dataComponent={
+                                <Bar
+                                  events={{
+                                    onPress: (evt) => Alert.alert(`(${evt.test}, ${evt.test})`) // work on this
+                                  }}
+                                />
+                              }
                         />
                             <VictoryAxis
                             tickLabelComponent={<VictoryLabel angle={-90} y={295} />}
