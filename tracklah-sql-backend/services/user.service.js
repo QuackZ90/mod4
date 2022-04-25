@@ -120,15 +120,10 @@ const userServices = {
         return results;
     },
 
-    delete: async function (username, tokenData){
+    delete: async function (username){
         let results = {
             status:null,
             message:null,
-        }
-        if (username!==tokenData.username){
-            results.status = 401;
-            results.message = 'User not authorized to perform this action'
-            return results;
         }
 
         let existingUser = await User.findOne({where:{username}});
@@ -155,6 +150,49 @@ const userServices = {
             console.log(err);
             results.status = 500;
 
+            results.message = err;
+
+            return results;
+        }
+
+    },
+
+    getUserData: async function (username){
+
+        let results = {
+
+            status:null,
+            message:null,
+            userData:null,
+
+        }
+
+        try{
+
+            let user = await User.findOne({where:{username}})
+
+            if (!user){
+
+                results.status = 404;
+                results.message = `User ${username} not found`;
+
+                return results;
+
+            }
+
+            results.status = 200;
+            results.message = "user found";
+            results.userData = {
+                username:user.username,
+                email:user.email,
+                name:user.name,
+            };
+
+            return results;
+
+        }catch (err){
+
+            results.status = 500;
             results.message = err;
 
             return results;

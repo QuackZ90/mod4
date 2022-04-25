@@ -7,9 +7,7 @@ router.use((req, res, next)=>{
     next();
 });
 
-router.get('/',(req, res, next)=>{
-    return res.json({message:"protected get request successful"});
-});
+router.get('/:username', userController.getUserData);
 
 router.delete('/:username', userController.delete);
 
