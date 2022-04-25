@@ -25,9 +25,9 @@ export default function CreateAccount({navigation}){
     const [checkExistingEmail, setCheckExistingEmail] = useState(false);
     const [creationStatus, setCreationStatus] = useState("data");
 
-    useEffect(async ()=>{
+    useEffect(()=>{
 
-        let timeoutHandler;
+        let timeoutHandler1;
 
         console.log(username+' in useEffect');
 
@@ -35,32 +35,38 @@ export default function CreateAccount({navigation}){
 
             setCheckExistingUser(()=>true);
 
-            timeoutHandler =  setInterval(async ()=>{
+            timeoutHandler1 =  setInterval(async ()=>{
 
                 try{
                     let results = await userAccountAPI.get('/public/user/?checkusername='+username);
 
-                    console.log(results);
+                    console.log("API called to check username:", username, "availability");
+
+                    // console.log(results);
 
                     if (results.status===200){
                         setExistingUser(results.data.message);
                         setCheckExistingUser(()=>false);
-                        clearInterval(timeoutHandler);
+                        clearInterval(timeoutHandler1);
                     }
                 }catch(err){
                     console.log(err);
                 }
 
-            }, 1000)
+            }, 1500)
         }
 
-        return(()=>{clearInterval(timeoutHandler)});
+        return(()=>{
+            clearInterval(timeoutHandler1);
+            setCheckExistingUser(()=>false);
+        });
+        ;
 
     }, [username]);
 
-    useEffect(async ()=>{
+    useEffect(()=>{
 
-        let timeoutHandler;
+        let timeoutHandler2;
 
         console.log(email+' in useEffect');
 
@@ -68,31 +74,32 @@ export default function CreateAccount({navigation}){
 
             setCheckExistingEmail(()=>true);
 
-            timeoutHandler =  setInterval(async ()=>{
+            timeoutHandler2 =  setInterval(async ()=>{
 
                 try{
                     let results = await userAccountAPI.get('/public/user/?checkemail='+email);
 
-                    console.log(results);
+                    //console.log(results);
+                    console.log("API called to check email:", email, "availability");
 
                     if (results.status===200){
                         setExistingEmail(results.data.message);
                         setCheckExistingEmail(()=>false);
-                        clearInterval(timeoutHandler);
+                        clearInterval(timeoutHandler2);
                     }
                 }catch(err){
                     console.log(err);
                 }
 
-            }, 1000)
+            }, 1500)
         }
 
-        return(()=>{clearInterval(timeoutHandler)});
+        return(()=>{clearInterval(timeoutHandler2)});
 
     }, [email])
 
 
-    console.log(userLoggedIn, setUserLoggedIn);
+    //console.log(userLoggedIn, setUserLoggedIn);
 
     function handleTextUpdate(value, updateState){
 
