@@ -208,6 +208,70 @@ const userServices = {
 
     },
 
+    patchUserData: async function (userData){
+
+        let results = {
+            status:null,
+            message:null,
+            userId: null,
+            defaultCurrency: null,
+            name: null,
+            username: null,
+        }
+
+        let {username, password, email, name,} = userData;
+
+        let user = await User.findOne({where:{username}});
+
+        if(!user){
+
+            results.status = 404;
+            results.message = `User ${username} not found`
+            return results;
+
+        }
+
+
+        if (password){
+
+            const hashedPassword = bcrypt.hashSync(password, saltRounds);
+            user.hashedPassword = hashedPassword;
+
+        };
+
+        if (email){
+            user.email = email;
+        }
+
+        if (name){
+            user.name = name;
+        }
+
+        try{
+
+            user.save();
+            user.reload();
+
+            results.status = 200;
+            results.message = 'Update successful';
+
+            results.userId = user.userId;
+            results.defaultCurrency = user.defaultCurrency;
+            results.name = user.name;
+            results.username = user.username;
+
+            return results;
+        }catch(err){
+            results.status = 500;
+            results.message = err;
+
+            return results;
+        }
+
+
+    },
+
+
     existingUser: async function (data){
 
         let results = {
