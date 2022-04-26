@@ -15,6 +15,8 @@ export default function MainNav(){
         username: null,
         userId: null,
         jwt: null,
+        name: null,
+        defaultCurrency:null,
     }
 
     const [userLoggedIn, setUserLoggedIn] = useState(user);
