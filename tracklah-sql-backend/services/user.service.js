@@ -14,7 +14,7 @@ const userServices = {
             data:null
         };
 
-        const {username, password, name, email} = userData;
+        const {username, password, name, email, defaultCurrency} = userData;
 
         let user = await User.findOne({where:{username}});
         
@@ -40,7 +40,8 @@ const userServices = {
                 hashedPassword:hashedPassword,
                 username,
                 name,
-                email
+                email,
+                defaultCurrency
             });
 
             results.status = 201;
@@ -67,6 +68,8 @@ const userServices = {
             status:null,
             jwtToken:null,
             userId:null,
+            jwtExpires:null,
+            defaultCurrency:null,
         };
 
         const {username, email, password} = credentials;
@@ -99,6 +102,8 @@ const userServices = {
             token = jwt.sign({
                 username:existingUser.username,
                 userId: existingUser.userId,
+                defaultCurrency:existingUser.defaultCurrency,
+
             }, jwtSecret,{expiresIn: "30 days"})
 
         } catch(err){
@@ -114,6 +119,7 @@ const userServices = {
         results.message = "Log in successful";
         results.userId = existingUser.userId;
         results.jwtToken = token;
+        results.defaultCurrency = existingUser.defaultCurrency;
         results.jwtExpires = new Date(decoded.exp*1000);
 
 

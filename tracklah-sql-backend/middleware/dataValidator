@@ -1,5 +1,5 @@
 const Joi = require('joi');
-const { create } = require('../controller/user.controller');
+const cc = require('currency-codes');
 
 const createUserSchema = Joi.object({
     username: Joi.string()
@@ -27,6 +27,12 @@ const createUserSchema = Joi.object({
                 .lowercase()
                 .email()
                 .required(),
+
+    defaultCurrency: Joi.string()
+                .trim()
+                .uppercase()
+                .valid(...cc.codes())
+                .required()
     
 });
 
