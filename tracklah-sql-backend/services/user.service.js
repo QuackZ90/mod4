@@ -14,7 +14,7 @@ const userServices = {
             data:null
         };
 
-        const {username, password, name, email} = userData;
+        const {username, password, name, email, defaultCurrency} = userData;
 
         let user = await User.findOne({where:{username}});
         
@@ -40,7 +40,8 @@ const userServices = {
                 hashedPassword:hashedPassword,
                 username,
                 name,
-                email
+                email,
+                defaultCurrency
             });
 
             results.status = 201;
@@ -67,6 +68,9 @@ const userServices = {
             status:null,
             jwtToken:null,
             userId:null,
+            jwtExpires:null,
+            defaultCurrency:null,
+            name:null,
         };
 
         const {username, email, password} = credentials;
@@ -99,6 +103,8 @@ const userServices = {
             token = jwt.sign({
                 username:existingUser.username,
                 userId: existingUser.userId,
+                defaultCurrency:existingUser.defaultCurrency,
+
             }, jwtSecret,{expiresIn: "30 days"})
 
         } catch(err){
@@ -114,21 +120,18 @@ const userServices = {
         results.message = "Log in successful";
         results.userId = existingUser.userId;
         results.jwtToken = token;
+        results.defaultCurrency = existingUser.defaultCurrency;
+        results.name = existingUser.name;
         results.jwtExpires = new Date(decoded.exp*1000);
 
 
         return results;
     },
 
-    delete: async function (username, tokenData){
+    delete: async function (username){
         let results = {
             status:null,
             message:null,
-        }
-        if (username!==tokenData.username){
-            results.status = 401;
-            results.message = 'User not authorized to perform this action'
-            return results;
         }
 
         let existingUser = await User.findOne({where:{username}});
@@ -155,6 +158,49 @@ const userServices = {
             console.log(err);
             results.status = 500;
 
+            results.message = err;
+
+            return results;
+        }
+
+    },
+
+    getUserData: async function (username){
+
+        let results = {
+
+            status:null,
+            message:null,
+            userData:null,
+
+        }
+
+        try{
+
+            let user = await User.findOne({where:{username}})
+
+            if (!user){
+
+                results.status = 404;
+                results.message = `User ${username} not found`;
+
+                return results;
+
+            }
+
+            results.status = 200;
+            results.message = "user found";
+            results.userData = {
+                username:user.username,
+                email:user.email,
+                name:user.name,
+            };
+
+            return results;
+
+        }catch (err){
+
+            results.status = 500;
             results.message = err;
 
             return results;

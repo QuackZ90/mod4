@@ -31,9 +31,9 @@ const createLoginStyles = StyleSheet.create({
         width:'75%',
         margin:5,
         borderRadius:20,
-        paddingLeft:15,
-        paddingRight: 15,
+        paddingHorizontal:15,
         color:colors.introText,
+        fontSize:12,
     },
 
     bottomButton:{

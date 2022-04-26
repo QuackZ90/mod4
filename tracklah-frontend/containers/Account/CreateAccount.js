@@ -1,13 +1,25 @@
-import { View, Text, TextInput, Pressable} from 'react-native';
+import { View, Text, TextInput, Pressable, Alert} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 import createLoginStyles from '../../styles/createLogin';
+import DropDownPicker from 'react-native-dropdown-picker';
+import SelectDropdown from 'react-native-select-dropdown';
+import cc from 'currency-codes';
+import colors from"../../styles/colors";
 
 import userAccountAPI from '../../api/userAccount';
 import expensesAPI from '../../api/expenses';
 
+let currencyList = cc.codes().map(item=>{
+    return {
+        label: item,
+        value: item,
+    }
+})
+
 export default function CreateAccount({navigation}){
+
 
     const {userLoggedIn, setUserLoggedIn} = useContext(UserContext);
     const [username, setUsername] = useState('');
@@ -25,9 +37,15 @@ export default function CreateAccount({navigation}){
     const [checkExistingEmail, setCheckExistingEmail] = useState(false);
     const [creationStatus, setCreationStatus] = useState("data");
 
+
+    const [open, setOpen] = useState(false);
+    const [defaultCurrency, setDefaultCurrency] = useState(null);
+    const [items, setItems] = useState(currencyList)
+
     useEffect(()=>{
 
         let timeoutHandler1;
+        let controllerUserNameCheck = new AbortController()
 
         console.log(username+' in useEffect');
 
@@ -38,7 +56,7 @@ export default function CreateAccount({navigation}){
             timeoutHandler1 =  setInterval(async ()=>{
 
                 try{
-                    let results = await userAccountAPI.get('/public/user/?checkusername='+username);
+                    let results = await userAccountAPI.get('/public/user/?checkusername='+username, {signal: controllerUserNameCheck.signal});
 
                     console.log("API called to check username:", username, "availability");
 
@@ -58,6 +76,7 @@ export default function CreateAccount({navigation}){
 
         return(()=>{
             clearInterval(timeoutHandler1);
+            controllerUserNameCheck.abort();
             setCheckExistingUser(()=>false);
         });
         ;
@@ -67,6 +86,7 @@ export default function CreateAccount({navigation}){
     useEffect(()=>{
 
         let timeoutHandler2;
+        let controllerEmailCheck = new AbortController()
 
         console.log(email+' in useEffect');
 
@@ -77,7 +97,7 @@ export default function CreateAccount({navigation}){
             timeoutHandler2 =  setInterval(async ()=>{
 
                 try{
-                    let results = await userAccountAPI.get('/public/user/?checkemail='+email);
+                    let results = await userAccountAPI.get('/public/user/?checkemail='+email, {signal:controllerEmailCheck.signal});
 
                     //console.log(results);
                     console.log("API called to check email:", email, "availability");
@@ -94,9 +114,14 @@ export default function CreateAccount({navigation}){
             }, 1500)
         }
 
-        return(()=>{clearInterval(timeoutHandler2)});
+        return(()=>{
+            clearInterval(timeoutHandler2);
+            controllerEmailCheck.abort();
+            setCheckExistingEmail(()=>false);
 
-    }, [email])
+        });
+
+    }, [email]);
 
 
     //console.log(userLoggedIn, setUserLoggedIn);
@@ -109,7 +134,7 @@ export default function CreateAccount({navigation}){
 
         updateState(()=>value);
 
-    }
+    };
 
     function validateUsername(value){
         let invalidUsername = /[^a-z0-9\.\-_']+/i
@@ -120,7 +145,7 @@ export default function CreateAccount({navigation}){
         }
 
 
-    }
+    };
 
     function validatePassword(value){
         let containsCapital = /^\S*[A-Z]+\S*$/.test(value);
@@ -131,7 +156,7 @@ export default function CreateAccount({navigation}){
         }else{
             setValidPassword(()=>true);
         }
-    }
+    };
 
     function validateRepeatPassword(value){
         if (value && (value!==password)){
@@ -139,7 +164,7 @@ export default function CreateAccount({navigation}){
         }else{
             setValidRepeatPassword(()=>true);
         }
-    }
+    };
 
     function validateEmail(value){
         let isEmail = /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/i
@@ -147,6 +172,74 @@ export default function CreateAccount({navigation}){
             setValidEmail(()=>false);
         }else{
             setValidEmail(()=>true);
+        }
+    };
+
+    async function handleSubmit(){
+        try{
+
+            let results = await userAccountAPI.post('/public/user',{
+                username,
+                email,
+                password,
+                repeatPassword,
+                name,
+                defaultCurrency
+            });
+
+            console.log(results.data);
+
+            if (results.status === 200){
+                setUserLoggedIn(()=>{
+                    return {
+                        username:results.data.userCreation.data.username,
+                        name: results.data.userLoggedIn.name,
+                        defaultCurrency:results.data.userLoggedIn.defaultCurrency,
+                        userId: results.data.userLogin.userId,
+                        jwt: results.data.userLogin.jwtToken,
+                    }
+                })
+
+                setCreationStatus(()=>"done");
+
+                console.log(userLoggedIn);
+                navigation.navigate("app");
+            }
+
+
+        }catch(err){
+
+            console.log(err);
+
+            try{
+
+                if (err.response.data.userLogin.status ===201){
+                    setUserLoggedIn(()=>{
+                        return {
+                            username:results.data.userCreation.data.username,
+                            name: results.data.userLoggedIn.name,
+                            defaultCurrency:results.data.userLoggedIn.defaultCurrency,
+                            userId: results.data.userLogin.userId,
+                            jwt: results.data.userLogin.jwtToken,
+                        }
+                    })
+
+                    expensesAPI.post("/protected/user", {userId:err.response.data.userLogin.userId},
+                    {headers:{'authorization':err.response.data.userLogin.jwtToken,}}).then(response=>(console.log(response))).catch(err=>{console.log(err)});
+
+                    setCreationStatus(()=>"done");
+
+                    console.log(userLoggedIn);
+                    navigation.navigate("app");
+
+                }
+                else{
+                    console.log(err);
+                    setCreationStatus(()=>"error");
+                }
+            }catch(error){
+                setCreationStatus(()=>"error");
+            }
         }
     }
 
@@ -168,7 +261,7 @@ export default function CreateAccount({navigation}){
             <TextInput placeholder='Email' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
                 handleTextUpdate(text, setEmail);
                 validateEmail(text);
-            }} keyboardType='email-address'></TextInput>
+            }} keyboardType='email-address' autoCapitalize='none'></TextInput>
             {!validEmail && <Text style={createLoginStyles.invalidInput}>Please enter a valid email.</Text>}
             {(email && existingEmail && !checkExistingEmail)?<Text style={createLoginStyles.invalidInput}>This email is linked to an existing account. Please proceed to login.</Text>:null}
             {(email && !existingEmail && !checkExistingEmail && validEmail)? <Text Text style={createLoginStyles.validInput}>Email can be used.</Text>:null}
@@ -198,6 +291,38 @@ export default function CreateAccount({navigation}){
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
             {!validRepeatPassword && <Text style={createLoginStyles.invalidInput}>Password does not match. Please ensure that password matches desired password.</Text>}
 
+            {/* <DropDownPicker 
+                open = {open}
+                value = {defaultCurrency}
+                items = {items}
+                setOpen = {setOpen}
+                setValue = {setDefaultCurrency}
+                setItems = {setItems}
+                placeholder = "Select Default Currency"
+                style={{backgroundColor: colors.drawer, maxheight:35, width:'75%'}}
+                /> */}
+
+            <SelectDropdown
+                data={cc.codes()}
+                onSelect={async (selectedItem, index)=>{
+                    
+                    setDefaultCurrency(()=>selectedItem);
+                }}
+
+                defaultButtonText= "Select default currency"
+                buttonTextAfterSelection = {(selectedItem,index)=>{
+                    return selectedItem
+                }}
+                
+                buttonStyle={createLoginStyles.input}
+                
+                buttonTextStyle={{
+                    color: defaultCurrency?"#FFFFFF":'#FFFFFF99',
+                    textAlign: "left",
+                    fontWeight:"normal",
+                    fontSize:12,
+                    marginHorizontal:0,
+                }}/>
 
 
 
@@ -205,71 +330,17 @@ export default function CreateAccount({navigation}){
 
 
 
-            <Pressable style={createLoginStyles.bottomButton} onPress={async()=>{
+
+
+            <Pressable style={createLoginStyles.bottomButton} onPress={()=>{
 
                 setCreationStatus(()=>"loading");
+                Alert.alert("Confirm submission",
+                            `These fields cannot be edited once submitted. Please confirm.\n\nUsername: ${username}\nDefault Currency: ${defaultCurrency}`,
+                            [{text:"Cancel", onPress:()=>{console.log("Cancelled pressed"); setCreationStatus(()=>"data")},style:"cancel"},
+                            {text:"OK", onPress:()=>{console.log("OK pressed"); handleSubmit();}}]);
 
-                    try{
-
-                        let results = await userAccountAPI.post('/public/user',{
-                            username,
-                            email,
-                            password,
-                            repeatPassword,
-                            name
-                        });
-
-                        console.log(results.data);
-
-                        if (results.status === 200){
-                            setUserLoggedIn(()=>{
-                                return {
-                                    username:results.data.userCreation.data.username,
-                                    userId: results.data.userLogin.userId,
-                                    jwt: results.data.userLogin.jwtToken,
-                                }
-                            })
-
-                            setCreationStatus(()=>"done");
-
-                            console.log(userLoggedIn);
-                            navigation.navigate("app");
-                        }
-
-
-                    }catch(err){
-
-                        console.log(err);
-
-                        try{
-
-                            if (err.response.data.userLogin.status ===201){
-                                setUserLoggedIn(()=>{
-                                    return {
-                                        username:err.response.data.userCreation.data.username,
-                                        userId: err.response.data.userLogin.userId,
-                                        jwt: err.response.data.userLogin.jwtToken, 
-                                    }
-                                })
-
-                                expensesAPI.post("/protected/user", {userId:err.response.data.userLogin.userId},
-                                {headers:{'authorization':err.response.data.userLogin.jwtToken,}}).then(response=>(console.log(response))).catch(err=>{console.log(err)});
-
-                                setCreationStatus(()=>"done");
-
-                                console.log(userLoggedIn);
-                                navigation.navigate("app");
-
-                            }
-                            else{
-                                console.log(err);
-                                setCreationStatus(()=>"error");
-                            }
-                        }catch(error){
-                            setCreationStatus(()=>"error");
-                        }
-                    }
-                }} disabled = {(username && validUsername && !existingUser && !checkExistingUser) && (email && validEmail && !existingUser && !checkExistingEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
+                }} disabled = {(username && validUsername && !existingUser && !checkExistingUser) && (email && validEmail && !existingUser && !checkExistingEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name && defaultCurrency? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
                 {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
         </View>
     )

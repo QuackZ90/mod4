@@ -24,7 +24,9 @@ export default function Home({navigation}){
 
     return(
         <View style={styles.container}>
-            <Text style={styles.welcomeText}>Welcome {userLoggedIn.username}</Text>
+
+            <Text style={styles.welcomeText}>Welcome {userLoggedIn.name}</Text>
+
             <View>          
                 <Card style={cardStyles.totalExCard}>
                     <TouchableOpacity onPress={()=>navigation.navigate("List Current Month Items")}>

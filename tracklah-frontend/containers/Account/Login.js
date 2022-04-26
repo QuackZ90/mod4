@@ -57,9 +57,11 @@ export default function Login({navigation}){
                     if (results.status === 201){
                         setUserLoggedIn(()=>{
                             return {
-                                username,
+                                username:results.data.username,
                                 userId: results.data.userId,
                                 jwt: results.data.jwtToken,
+                                name: results.data.name,
+                                defaultCurrency:results.data.defaultCurrency,
                             }
                         })
 

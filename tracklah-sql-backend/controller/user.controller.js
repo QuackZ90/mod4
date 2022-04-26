@@ -87,15 +87,24 @@ const userController = {
     },
 
     delete: async(req, res)=>{
-        console.log('deleting user:', req.params.username);
+
+        console.log('Checking Authorization for ', req.params.username);
+
+        if (req.params.username!==req.token.username){
+            res.status(401);
+            return res.json({message:'User not authorized to perform this action'});
+        }
 
         let folderDeletion;
 
-        console.log(req.token);
         let jwtToken = req.headers.authorization
-        console.log(req.headers.authorization);
+
+        
+
 
         try{
+
+            console.log("Deleting folder for user:", req.params.username);
             
             folderDeletion = await mongoAPI.delete("/protected/user", {data: {userId: req.token.userId}, headers:{'authorization':jwtToken} });
 
@@ -124,7 +133,9 @@ const userController = {
             }
         }
 
-        let results = await userServices.delete(req.params.username, req.token);
+        onsole.log("Deleting user data for user:", req.params.username);
+
+        let results = await userServices.delete(req.params.username);
 
         let {status, ...rest} = results;
 
@@ -134,6 +145,24 @@ const userController = {
             userDeletion: results
 
         });
+    },
+
+    getUserData: async (req, res)=>{
+
+        if (req.params.username!==req.token.username){
+            res.status(401);
+            return res.json({message:'User not authorized to perform this action'});
+        }
+
+
+        let results = await userServices.getUserData(req.params.username);
+
+        let {status, ...rest} = results;
+
+        res.status(status);
+
+        return res.json(rest);
+
     },
 
     existingUser: async (req, res)=>{
