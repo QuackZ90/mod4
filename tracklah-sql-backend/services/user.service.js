@@ -194,6 +194,7 @@ const userServices = {
                 username:user.username,
                 email:user.email,
                 name:user.name,
+                defaultCurrency:user.defaultCurrency,
             };
 
             return results;
