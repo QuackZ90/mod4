@@ -32,6 +32,12 @@ const styles = StyleSheet.create({
         color: "#786767",
         padding: 10,
 
+    },
+    chart: {
+        flex: 1,
+        backgroundColor: colors.mainBackground,
+        justifyContent: "center",
+        alignItems: "center"
     }
 });
 
