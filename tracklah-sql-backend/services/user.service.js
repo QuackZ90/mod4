@@ -70,6 +70,7 @@ const userServices = {
             userId:null,
             jwtExpires:null,
             defaultCurrency:null,
+            name:null,
         };
 
         const {username, email, password} = credentials;
@@ -120,6 +121,7 @@ const userServices = {
         results.userId = existingUser.userId;
         results.jwtToken = token;
         results.defaultCurrency = existingUser.defaultCurrency;
+        results.name = existingUser.name;
         results.jwtExpires = new Date(decoded.exp*1000);
 
 
