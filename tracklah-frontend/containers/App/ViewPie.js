@@ -61,7 +61,7 @@ export default function ViewPie(){
                         data: {
                         fillOpacity: 0.9, 
                         stroke: "#968484", 
-                        strokeWidth: 0
+                        strokeWidth: 0,
                         },
                         labels: {
                         fontSize: 12, 
@@ -101,7 +101,7 @@ export default function ViewPie(){
                 />
                 <View style={styles.chart}>
                     <VictoryLegend x={pieWidth*0.11} y={0}
-                            title="Categories"
+                            title="Legend:"
                             centerTitle
                             orientation="horizontal"
                             gutter={30}
