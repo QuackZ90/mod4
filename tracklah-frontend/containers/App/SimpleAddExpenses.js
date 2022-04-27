@@ -7,7 +7,6 @@ import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
 import UserContext from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
 
 export default function SimpleAddExpenses({navigation}){
 

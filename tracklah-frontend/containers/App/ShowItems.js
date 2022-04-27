@@ -9,7 +9,7 @@ import moment from 'moment';
 
 const windowWidth = Dimensions.get('window').width;
 
-export default function ThisMonthItems(props){
+export default function ThisMonthItems({navigation}){
 
     const [listItems, setListItems] = useState([]);
     const {userLoggedIn} = useContext(UserContext);
@@ -82,16 +82,16 @@ export default function ThisMonthItems(props){
 
     const Item = ({ onPress, date, title, amount }) => (
         <View style={styles.item}>
-                <Text style={styles.date}>{date.slice(0,8)}</Text>
-                <Text style={styles.title}>{title}</Text>          
-                <Text style={styles.amount}>${amount.$numberDecimal}</Text>
-                <TouchableOpacity style={styles.trashcontainer} onPress={onPress}>
-                        <Ionicons 
-                            name="trash-outline"
-                            size= {20} 
-                        />
-                </TouchableOpacity>
-            </View>
+            {/* <Text style={styles.date}>{date.slice(0,8)}</Text> */}
+            <Text style={styles.title}>{title}</Text>          
+            <Text style={styles.amount}>${amount.$numberDecimal}</Text>
+            <TouchableOpacity style={styles.trashcontainer} onPress={onPress}>
+                    <Ionicons 
+                        name="trash-outline"
+                        size= {20}
+                    />
+            </TouchableOpacity>
+        </View>
     );
 
     const renderItem = ({ item }) => {
@@ -111,33 +111,58 @@ export default function ThisMonthItems(props){
     listItems.sort()
     
     return(
-        <View>
-            <FlatList
-                data={listItems}
-                renderItem={renderItem}
-                keyExtractor={(item) => item._id}
-            />
+        <View style={styles.mainBg}>
+            <View style={styles.pane}>
+                <TouchableOpacity onPress={() => navigation.navigate("Overview")}>
+                    <Ionicons 
+                        name="chevron-down-outline"
+                        size= {20}
+                        color='white'
+                    />
+                </TouchableOpacity>
+                <FlatList
+                    data={listItems}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item._id}
+                />
+            </View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
+    pane: {
+        backgroundColor: "#968484",
+        marginBottom: 60,
+        marginHorizontal: 20,
+        paddingHorizontal: 20,
+        paddingTop: 5,
+        paddingBottom: 20,
+        borderRadius: 20,
+        alignItems: 'center',
+    },
+    mainBg: {
+        backgroundColor: "#F4E0DB",
+    },
     container: {
       flex: 1,
       marginTop: StatusBar.currentHeight || 0,
     },
     item: {
         flexDirection: 'row',
-        width: windowWidth,
+        width: windowWidth*0.8,
         justifyContent: 'space-between',
-        padding: 10,
-        backgroundColor: "#F4E0DB"
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        backgroundColor: "#F4E0DB",
+        borderRadius: 20,
+        marginVertical: 5,
     },
     title: {
         fontSize: 12,
-        paddingHorizontal: 10,
+        paddingHorizontal: 0,
         textTransform: 'uppercase',
-        width: 100,
+        width: 120,
         textAlignVertical: 'center',
         textAlign: 'center',
     },
@@ -150,6 +175,7 @@ const styles = StyleSheet.create({
     },
     amount: {
         fontSize: 20,
+        marginLeft: 70,
         paddingHorizontal: 10,
         fontWeight: 'bold',
         textAlignVertical: 'center',
