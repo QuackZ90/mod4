@@ -1,54 +1,62 @@
 const Joi = require('joi');
-const { create } = require('../controller/user.controller');
+const cc = require('currency-codes');
+
+const username = Joi.string()
+                .trim()
+                .lowercase()
+                .max(36)
+                .pattern(/^[a-z0-9\.\-_']+$/);
+
+const password = Joi.string()
+                .regex(/^\S*[A-Z]+\S*$/)   // at least 1 capital
+                .regex(/^\S*[a-z]+\S*$/)   // at least 1 small letter
+                .regex(/^\S*[0-9]+\S*$/);   // at least 1 number
+                
+
+const repeatPassword = Joi.ref('password');
+
+const name = Joi.string()
+                .trim();
+
+const email = Joi.string()
+                .trim()
+                .lowercase()
+                .email();
+
+const defaultCurrency = Joi.string()
+                .trim()
+                .uppercase()
+                .valid(...cc.codes())
+                .required();
+
+
 
 const createUserSchema = Joi.object({
-    username: Joi.string()
-                .trim()
-                .lowercase()
-                .max(36)
-                .pattern(/^[a-z0-9\.\-_']+$/)
-                .required(),
+    username,
+    password,
+    repeatPassword,
+    name,
+    email,
+    defaultCurrency,
     
-    password: Joi.string()
-                .trim()
-                .regex(/^\S*[A-Z]+\S*$/)   // at least 1 capital
-                .regex(/^\S*[a-z]+\S*$/)   // at least 1 small letter
-                .regex(/^\S*[0-9]+\S*$/)   // at least 1 number
-                .required(),
-
-    repeatPassword: Joi.ref('password'),
-
-    name: Joi.string()
-                .trim()
-                .required(),
-
-    email: Joi.string()
-                .trim()
-                .lowercase()
-                .email()
-                .required(),
-    
-});
+}).and('username', 'password', 'repeatPassword','name','email','defaultCurrency');
 
 const loginSchema = Joi.object({
-    username:Joi.string()
-                .trim()
-                .lowercase()
-                .max(36)
-                .pattern(/^[a-z0-9\.\-_']+$/),
-
-    email: Joi.string()
-                .trim()
-                .lowercase()
-                .email(),
-
+    username,
+    email,
     password: Joi.string()
-                .trim()
-                .regex(/^\S*[A-Z]+\S*$/)   // at least 1 capital
-                .regex(/^\S*[a-z]+\S*$/)   // at least 1 small letter
-                .regex(/^\S*[0-9]+\S*$/)   // at least 1 number
                 .required(),
 }).xor("username", "email");
+
+
+const amendUserSchema = Joi.object({
+    username,   
+    password,
+    repeatPassword,
+    name,
+    email,
+    
+}).with('password', 'repeatPassword');
 
 
 const validateCreateUser = function (req, res, next){
@@ -81,4 +89,16 @@ const validateLogin = function (req, res, next){
     }
 };
 
-module.exports = {validateCreateUser, validateLogin};
+const validateAmendUser = function (req, res, next){
+    req.body = amendUserSchema.validate(req.body);
+
+    if(!req.body.error){
+        req.body = req.body.value;
+        next();
+    }else{
+        res.status(400);
+        return res.json(req.body.error.details);
+    }
+}
+
+module.exports = {validateCreateUser, validateLogin, validateAmendUser};

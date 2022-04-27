@@ -14,7 +14,7 @@ const userServices = {
             data:null
         };
 
-        const {username, password, name, email} = userData;
+        const {username, password, name, email, defaultCurrency} = userData;
 
         let user = await User.findOne({where:{username}});
         
@@ -40,7 +40,8 @@ const userServices = {
                 hashedPassword:hashedPassword,
                 username,
                 name,
-                email
+                email,
+                defaultCurrency
             });
 
             results.status = 201;
@@ -67,6 +68,10 @@ const userServices = {
             status:null,
             jwtToken:null,
             userId:null,
+            jwtExpires:null,
+            defaultCurrency:null,
+            name:null,
+            username: null,
         };
 
         const {username, email, password} = credentials;
@@ -99,6 +104,8 @@ const userServices = {
             token = jwt.sign({
                 username:existingUser.username,
                 userId: existingUser.userId,
+                defaultCurrency:existingUser.defaultCurrency,
+
             }, jwtSecret,{expiresIn: "30 days"})
 
         } catch(err){
@@ -114,21 +121,19 @@ const userServices = {
         results.message = "Log in successful";
         results.userId = existingUser.userId;
         results.jwtToken = token;
+        results.defaultCurrency = existingUser.defaultCurrency;
+        results.name = existingUser.name;
         results.jwtExpires = new Date(decoded.exp*1000);
+        results.username = existingUser.username;
 
 
         return results;
     },
 
-    delete: async function (username, tokenData){
+    delete: async function (username){
         let results = {
             status:null,
             message:null,
-        }
-        if (username!==tokenData.username){
-            results.status = 401;
-            results.message = 'User not authorized to perform this action'
-            return results;
         }
 
         let existingUser = await User.findOne({where:{username}});
@@ -161,6 +166,114 @@ const userServices = {
         }
 
     },
+
+    getUserData: async function (username){
+
+        let results = {
+
+            status:null,
+            message:null,
+            userData:null,
+
+        }
+
+        try{
+
+            let user = await User.findOne({where:{username}})
+
+            if (!user){
+
+                results.status = 404;
+                results.message = `User ${username} not found`;
+
+                return results;
+
+            }
+
+            results.status = 200;
+            results.message = "user found";
+            results.userData = {
+                username:user.username,
+                email:user.email,
+                name:user.name,
+                defaultCurrency:user.defaultCurrency,
+            };
+
+            return results;
+
+        }catch (err){
+
+            results.status = 500;
+            results.message = err;
+
+            return results;
+        }
+
+    },
+
+    patchUserData: async function (userData){
+
+        let results = {
+            status:null,
+            message:null,
+            userId: null,
+            defaultCurrency: null,
+            name: null,
+            username: null,
+        }
+
+        let {username, password, email, name,} = userData;
+
+        let user = await User.findOne({where:{username}});
+
+        if(!user){
+
+            results.status = 404;
+            results.message = `User ${username} not found`
+            return results;
+
+        }
+
+
+        if (password){
+
+            const hashedPassword = bcrypt.hashSync(password, saltRounds);
+            user.hashedPassword = hashedPassword;
+
+        };
+
+        if (email){
+            user.email = email;
+        }
+
+        if (name){
+            user.name = name;
+        }
+
+        try{
+
+            user.save();
+            user.reload();
+
+            results.status = 200;
+            results.message = 'Update successful';
+
+            results.userId = user.userId;
+            results.defaultCurrency = user.defaultCurrency;
+            results.name = user.name;
+            results.username = user.username;
+
+            return results;
+        }catch(err){
+            results.status = 500;
+            results.message = err;
+
+            return results;
+        }
+
+
+    },
+
 
     existingUser: async function (data){
 

@@ -1,5 +1,5 @@
 import { calculateTotal, calculateCategoryTotal } from "./CalculateTotal";
-import colorScale from "./PieChartColorScale";
+import colorScale from "../styles/PieChartColorScale";
 import Card from "./card";
 
 export { 

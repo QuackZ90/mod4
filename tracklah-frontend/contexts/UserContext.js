@@ -5,6 +5,8 @@ const defaultUserContext = {
         username: null,
         userId: null,
         jwt: null,
+        name: null,
+        defaultCurrency:null,
     },
     setUserLoggedIn:(userData)=>{}
 }

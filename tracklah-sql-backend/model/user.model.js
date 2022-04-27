@@ -1,4 +1,5 @@
 const {DataTypes, Model} =  require("sequelize");
+const cc = require('currency-codes');
 
 module.exports=  function (sequelize){
     class User extends Model{};
@@ -33,7 +34,16 @@ module.exports=  function (sequelize){
             type:DataTypes.INTEGER,
             autoIncrement:true,
             primaryKey: true,
-        }
+        },
+
+        defaultCurrency:{
+            type: DataTypes.STRING,
+            validate: {
+                isIn: [cc.codes()],
+            },
+            allowNull:false,
+        },
+
     }, {
         sequelize,
         modelName:'User',

@@ -187,7 +187,7 @@ export default function ViewPie(){
                         data: {
                         fillOpacity: 0.9, 
                         stroke: "#968484", 
-                        strokeWidth: 0
+                        strokeWidth: 0,
                         },
                         labels: {
                         fontSize: 12, 
