@@ -25,13 +25,16 @@ const createLoginStyles = StyleSheet.create({
         color: colors.introText,
     },
 
-    input:{
+    inputBox:{
         backgroundColor: colors.drawer,
         height:34,
         width:'75%',
         margin:5,
         borderRadius:20,
         paddingHorizontal:15,
+    },
+
+    inputText:{
         color:colors.introText,
         fontSize:12,
     },

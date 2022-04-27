@@ -31,12 +31,12 @@ export default function Login({navigation}){
     return(
         <View style={createLoginStyles.container}>
 
-            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
+            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'username' id = 'username' value = {username} onChangeText={text=>{
                 handleTextUpdate(text, setUsername);
             }}autoCapitalize='none'></TextInput>
 
 
-            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
         
