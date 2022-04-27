@@ -13,9 +13,14 @@ const AppStack = createDrawerNavigator();
 export default function AppNav(){
     return(
         <ExpenseProvider>
-        <AppStack.Navigator tabBar={()=>null} initialRouteName="home" screenOptions={{headerStyle: {
-            backgroundColor: colors.mainBackground,
-          }}}>
+        <AppStack.Navigator 
+            tabBar={()=>null} 
+            initialRouteName="home" 
+            screenOptions={{
+                headerStyle: {
+                backgroundColor: colors.mainBackground,
+                }
+          }}>
             <AppStack.Screen name = "Overview" component = {Home} />
             <AppStack.Screen name = "Add Expense Item" component = {SimpleAddExpenses} />
             <AppStack.Screen name = "Add Expense or Income Item" 
