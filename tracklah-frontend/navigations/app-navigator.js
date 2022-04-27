@@ -6,13 +6,11 @@ import ViewPie from "../containers/App/ViewPie";
 import ViewBar from "../containers/App/ViewBar";
 import ShowItems from "../containers/App/ShowItems";
 import colors from '../styles/colors'
-import { ExpenseProvider } from "../contexts/ExpenseContext";
 
 const AppStack = createDrawerNavigator();
 
 export default function AppNav(){
     return(
-        <ExpenseProvider>
         <AppStack.Navigator 
             tabBar={()=>null} 
             initialRouteName="home" 
@@ -33,6 +31,5 @@ export default function AppNav(){
             <AppStack.Screen name = 'Expenses Pie Chart' component={ViewPie} />
             <AppStack.Screen name = 'Income and Expenses Bar Chart' component={ViewBar} />
         </AppStack.Navigator>
-        </ExpenseProvider>
     )
 };

@@ -2,9 +2,9 @@ import{View, Text, TouchableOpacity, Alert, Dimensions, StyleSheet} from 'react-
 import { VictoryPie, VictoryLegend, VictoryLabel, VictoryTooltip } from 'victory-native';
 import React, { useContext, useState } from "react";
 import { UserContext } from '../../contexts';
-import {styles} from "../../styles/"
+import {styles, colorScale} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
-import {colorScale, calculateTotal, calculateCategoryTotal} from '../../components/';
+import {calculateTotal, calculateCategoryTotal} from '../../components/';
 import { useFocusEffect } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
@@ -124,7 +124,7 @@ export default function ViewPie(){
     }, [setSelectedData])
     );
 
-    const chartTitle = `${userLoggedIn.username}'s ${titleLabel}'s Expenses`
+    const chartTitle = `${userLoggedIn.name}'s ${titleLabel}'s Expenses`
 
     const displayData = [
         { category: "Food and \n Groceries", amount: calculateCategoryTotal('food', selectedData)},
