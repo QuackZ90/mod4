@@ -5,18 +5,18 @@ const createLoginStyles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: colors.mainBackground,
-        justifyContent:'flex-start',
-        alignItems:'center',
+        justifyContent: 'flex-start',
+        alignItems: 'center',
         paddingTop: 50,
     },
 
     contentButton:{
         flex: 1,
         backgroundColor: colors.drawer,
-        maxHeight:51,
-        width:124,
-        justifyContent:'center',
-        alignItems:'center',
+        maxHeight: 51,
+        width: 124,
+        justifyContent: 'center',
+        alignItems: 'center',
         borderRadius: 20,
         margin: 15
     },
@@ -42,21 +42,21 @@ const createLoginStyles = StyleSheet.create({
     bottomButton:{
         flex: 1,
         backgroundColor: colors.drawer,
-        height: 51,
+        height: 50,
         width: '75%',
-        borderRadius:20,
-        justifyContent:'center',
-        alignItems:'center',
-        position:'absolute',
-        bottom:43,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 43,
     },
 
     validInput:{
-        color:'#33AB5F',
+        color: '#33AB5F',
     },
 
     invalidInput:{
-        color:'#DE3700'
+        color: '#DE3700'
     }
 });
 

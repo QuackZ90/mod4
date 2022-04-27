@@ -1,27 +1,67 @@
-import React, {useContext} from 'react';
-import { UserContext, ExpenseContext } from '../../contexts';
+import React, {useContext, useState} from 'react';
+import {UserContext} from '../../contexts';
 import{
     View, 
     Text,
     TouchableOpacity,
+    Animated,
+    Dimensions, 
 } from 'react-native';
 import { styles, colors, cardStyles,btnStyles } from '../../styles';
-import {Card, calculateTotal, colorScale} from '../../components';
+import {Card, calculateTotal} from '../../components';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
+import {
+    GestureHandlerRootView,
+    PanGestureHandler
+} from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
+import expensesAPI from '../../api/expenses';
+// import SwipeUp from '../../components/gestureHandlerUp';
 // import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
+
+// const {width} = Dimensions.get('screen');
+// const circleRadius = 30;
 
 export default function Home({navigation}){
 
     const {userLoggedIn} = useContext(UserContext);
-    const {itemData} = useContext(ExpenseContext);
-        
-    const totalExpenses = calculateTotal(false,itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString which has memory leak issue. Display as string with thousand separator
-    console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0)
-    
-    const totalIncome = calculateTotal(true, itemData)
-    console.log(`Current Month Total Income: $ ${totalIncome}` ?? 0 )
+    const [itemData, setItemData] = useState([])
 
+    //Get Current Month Items
+    const getItems =  async () => {
+        await expensesAPI.get('protected/currentmonthitems', {
+            headers: {
+                Authorization : userLoggedIn.jwt
+            }
+        })
+            .then((response) => {
+            setItemData(response.data.data);
+            })
+            .catch((err)=> {
+            console.log(err)
+            })
+        }
+
+    useFocusEffect( 
+        React.useCallback(
+        () => {
+        getItems();
+    }, [])
+    );
+
+    const totalExpenses = calculateTotal(false,itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString memory leak issue. Display as string with thousand separator
+    //console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0);
+
+    // touchX = new Animated.Value(width/2 - circleRadius);
+
+    // onPanGestureEvent = Animated.event([{ nativeEvent: { x: this.touchX }}], {
+    //     useNativeDriver: true
+    // });
+
+    let todayData = itemData.filter((item => item.date === moment().format("MMM Do YYYY") ))
+    console.log("todayData", todayData)
+ 
     return(
         <View style={styles.container}>
 
@@ -64,10 +104,25 @@ export default function Home({navigation}){
                     {/* Pie Chart (Small Version) */}
                 </TouchableOpacity>
             </View>
+            <GestureHandlerRootView>
+                <PanGestureHandler>
+                    <View>
+                    {/* <Animated.View
+                        style={[
+                            {transform: [
+                                {
+                                    translateX: Animated.add(this.touchX, new Animated.Value(-circleRadius))
+                                }
+                            ]}
+                        ]}
+                    /> */}
+                        <Card style={cardStyles.exListCard}>
+                                <Text style={{color:"#E2E2E2", fontSize:20}}>Expense List</Text>
+                        </Card>
+                    </View>
+                </PanGestureHandler>
+            </GestureHandlerRootView>
             <View>
-                <Card style={cardStyles.exListCard}>
-                        <Text style={{color:"#E2E2E2", fontSize:20}}>Expense List</Text>
-                </Card>
                 <TouchableOpacity
                     style={{left: 160, top: 120, width: 65, height: 65}} 
                     onPress={()=>navigation.navigate("Add Expense or Income Item")}>
