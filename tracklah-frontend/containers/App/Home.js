@@ -1,20 +1,22 @@
-import React, {useContext} from 'react';
-import { UserContext, ExpenseContext } from '../../contexts';
+import React, {useContext, useState} from 'react';
+import {UserContext} from '../../contexts';
 import{
     View, 
     Text,
     TouchableOpacity,
     Animated,
-    Dimensions
+    Dimensions, 
 } from 'react-native';
 import { styles, colors, cardStyles,btnStyles } from '../../styles';
-import {Card, calculateTotal, colorScale} from '../../components';
+import {Card, calculateTotal} from '../../components';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import {
     GestureHandlerRootView,
     PanGestureHandler
 } from 'react-native-gesture-handler';
+import { useFocusEffect } from '@react-navigation/native';
+import expensesAPI from '../../api/expenses';
 // import SwipeUp from '../../components/gestureHandlerUp';
 // import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
 
@@ -24,13 +26,32 @@ import {
 export default function Home({navigation}){
 
     const {userLoggedIn} = useContext(UserContext);
-    const {itemData} = useContext(ExpenseContext);
-        
-    const totalExpenses = calculateTotal(false,itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString which has memory leak issue. Display as string with thousand separator
-    console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0);
-    
-    const totalIncome = calculateTotal(true, itemData)
-    console.log(`Current Month Total Income: $ ${totalIncome}` ?? 0 );
+    const [itemData, setItemData] = useState([])
+
+    //Get Current Month Items
+    const getItems =  async () => {
+        await expensesAPI.get('protected/currentmonthitems', {
+            headers: {
+                Authorization : userLoggedIn.jwt
+            }
+        })
+            .then((response) => {
+            setItemData(response.data.data);
+            })
+            .catch((err)=> {
+            console.log(err)
+            })
+        }
+
+    useFocusEffect( 
+        React.useCallback(
+        () => {
+        getItems();
+    }, [])
+    );
+
+    const totalExpenses = calculateTotal(false,itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString memory leak issue. Display as string with thousand separator
+    //console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0);
 
     // touchX = new Animated.Value(width/2 - circleRadius);
 
@@ -38,7 +59,9 @@ export default function Home({navigation}){
     //     useNativeDriver: true
     // });
 
-
+    let todayData = itemData.filter((item => item.date === moment().format("MMM Do YYYY") ))
+    console.log("todayData", todayData)
+ 
     return(
         <View style={styles.container}>
 

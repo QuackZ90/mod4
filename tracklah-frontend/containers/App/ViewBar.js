@@ -1,24 +1,36 @@
-import{View, Text, Alert, TouchableOpacity} from 'react-native';
+import{View, Text, Alert, TouchableOpacity, Dimensions} from 'react-native';
 import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis, Bar} from 'victory-native';
 import React, {useContext} from "react";
-import UserContext from '../../contexts/UserContext';
-import expensesAPI from '../../api/expenses';
+import { UserContext, ExpenseContext } from '../../contexts';
+import {styles} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
-import styles from "../../styles/home-styles"
+import {colorScale, calculateTotal, calculateCategoryTotal} from '../../components/';
+import moment from 'moment';
 
 export default function ViewBar(){
 
     const {userLoggedIn} = useContext(UserContext);
+    const {itemData} = useContext(ExpenseContext);
+
     const chartTitle = "Income and Expenses"
+    
+    //const totalExpenses = calculateTotal(false,itemData)
+    //const totalIncome = calculateTotal(true,itemData)
+    //console.log(`Current Month Total Income: $ ${totalIncome}` ?? 0)
+
+    const currentMthYr = moment().format("MMM-YY"); 
 
     const dataIncomeExpenses = [
         { type: "Income Jan", amount: 3000},
-        { type: "Expense Jan", amount: 1800},
-        { type: "Income Feb", amount: 4000},
-        { type: "Expense feb", amount: 2500},
-        { type: "Income Mar", amount: 8000},
-        { type: "Expense Mar", amount: 7000},
+        { type: "Expenses Jan", amount: 1800},
+        { type: "Income Feb", amount: 8000}, // bar chart doesn't show >2,564.99 label to check
+        { type: "Expenses feb", amount: 2500},
+        { type: `Income ${currentMthYr}`, amount: 2000},
+        { type: `Expenses ${currentMthYr}`, amount: 3000},
     ]
+
+    const chartHeight = Dimensions.get("window").height * 0.4
+    const chartWidth = Dimensions.get("window").width;
 
     const exportIncExp = () => {
         Alert.alert("Export", "Exporting..." )
@@ -41,6 +53,7 @@ export default function ViewBar(){
                     domainPadding={50} 
                     theme={VictoryTheme.material}
                     padding={{ left: 100, top: 20, bottom: 100, right: 50 }}
+                    width={chartWidth} height={chartHeight}
                     >
                         <VictoryBar
                             style={{ 
@@ -64,7 +77,7 @@ export default function ViewBar(){
                               }
                         />
                             <VictoryAxis
-                            tickLabelComponent={<VictoryLabel angle={-90} y={295} />}
+                            tickLabelComponent={<VictoryLabel angle={-90} y={chartHeight*0.82} />}
                             // axisLabelComponent={<VictoryLabel />}
                             // label="Income 🟩 / Expense 🟥"
                             // style={{
