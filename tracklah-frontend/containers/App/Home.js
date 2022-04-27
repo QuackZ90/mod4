@@ -15,11 +15,11 @@ import {
     GestureHandlerRootView,
     PanGestureHandler
 } from 'react-native-gesture-handler';
-import SwipeUp from '../../components/gestureHandlerUp';
+// import SwipeUp from '../../components/gestureHandlerUp';
 // import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
 
-const {width} = Dimensions.get('screen');
-const circleRadius = 30;
+// const {width} = Dimensions.get('screen');
+// const circleRadius = 30;
 
 export default function Home({navigation}){
 
