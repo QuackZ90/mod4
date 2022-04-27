@@ -1,7 +1,7 @@
 const colorScale= [
     "lightskyblue",
     "tomato", 
-    "hotpink", 
+    "lightpink", 
     "orange", 
     "green", 
     "navy", 
