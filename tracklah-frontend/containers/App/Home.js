@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import { UserContext, ExpenseContext } from '../../contexts';
+import { UserContext} from '../../contexts';
 import{
     View, 
     Text,
@@ -14,13 +14,12 @@ import moment from 'moment';
 export default function Home({navigation}){
 
     const {userLoggedIn} = useContext(UserContext);
-    const {itemData} = useContext(ExpenseContext);
-        
+
     const totalExpenses = calculateTotal(false,itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString which has memory leak issue. Display as string with thousand separator
-    console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0)
+    //console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0)
     
-    const totalIncome = calculateTotal(true, itemData)
-    console.log(`Current Month Total Income: $ ${totalIncome}` ?? 0 )
+    //const totalIncome = calculateTotal(true, itemData)
+    //console.log(`Current Month Total Income: $ ${totalIncome}` ?? 0 )
 
     return(
         <View style={styles.container}>

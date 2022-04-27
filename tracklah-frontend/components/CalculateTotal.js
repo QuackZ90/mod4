@@ -1,23 +1,35 @@
-export function calculateTotal (spend_vs_earn = false, data) {
-    let sum = 0;
-    
+export function calculateTotal (spend_vs_earn, data) {
+    let expenses = 0;
+    let income = 0;
+  
     data.forEach( item => {
-        if (item.spend_vs_earn == spend_vs_earn) {
-        sum += Number(item.amount.$numberDecimal)
-        }
+      if (item.spend_vs_earn === spend_vs_earn) {
+        expenses += Number(item.amount.$numberDecimal);
+      } else {
+        income += Number(item.amount.$numberDecimal);
+      }
+      return income.toFixed(2);
     });
-    
-    return sum.toFixed(2); // calculateTotal spend_vs_earn default set to 'false'
-}
+    return expenses.toFixed(2);
+  }
 
-export function calculateCategoryTotal (category, data) {
-    let sum = 0;
+// export function calculateCategoryTotal (category, data) {
+//     let catTotal = 0;
     
-    data.forEach( item => {
-        if (item.category == category) {
-        sum += Number(item.amount.$numberDecimal);
-        }
-    });
+//     data.forEach( item => {
+//         if (item.category == category) {
+//         catTotal += Number(item.amount.$numberDecimal);
+//         }
+//     });
 
-    return sum.toFixed(2);
+//     return catTotal.toFixed(2);
+// }
+
+export function calculateCategoryTotal (category, data = itemData, spend_vs_earn = false) {
+
+  let catTotal = data.filter(item => 
+    item.category == category && item.spend_vs_earn == spend_vs_earn ).reduce((acc, array ) => 
+    acc + Number(array.amount.$numberDecimal), 0)
+
+  return catTotal.toFixed(2);
 }
