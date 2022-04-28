@@ -1,13 +1,14 @@
 import {View, Text, TextInput, Pressable} from 'react-native';
 
-import { useState } from 'react';
+import { useState, useContext, useCallback } from 'react';
 
-import { useContext } from 'react';
 import {UserContext} from '../../contexts/UserContext';
 
 import userAccountAPI from '../../api/userAccount';
 
 import createLoginStyles from '../../styles/createLogin';
+
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function Login({navigation}){
 
@@ -25,7 +26,11 @@ export default function Login({navigation}){
 
         updateState(()=>value);
 
-    }
+    };
+
+    useFocusEffect(useCallback(()=>{
+        setPassword(()=>'');
+    },[]));
 
 
     return(
