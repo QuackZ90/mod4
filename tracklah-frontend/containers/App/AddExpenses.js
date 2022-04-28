@@ -11,6 +11,7 @@ import UserContext from '../../contexts/UserContext';
 export default function AddExpenses({navigation}){
 
     const {userLoggedIn} = useContext(UserContext);
+    const defaultCurr = userLoggedIn.defaultCurrency;
 
     let initialDate = moment().format("MMM Do YYYY");
     let initialTime = moment().format("hh:mm a");
@@ -35,7 +36,6 @@ export default function AddExpenses({navigation}){
     const [ description, setDes ] = useState("");
     const [ notes, setNotes ] = useState("");
     
-
     const [ openDropDown, setOpenDropDown ] = useState(false);
     const [ category, setCat ] = useState(null);
     const [ fixedCat, setFixedCat ] = useState([
@@ -104,8 +104,8 @@ export default function AddExpenses({navigation}){
         setAmount(null);
         setDate(moment().format("MMM Do YYYY"));
         setTime(moment().format("hh:mm a"))
-        setDes("");
-        setNotes("");
+        setDes(null);
+        setNotes(null);
         setCat(null);
         setAutoRecur(false);
         setSpendEarn(false);
@@ -115,111 +115,119 @@ export default function AddExpenses({navigation}){
     return(
         <View style={{justifyContent:"center",flex:1, paddingTop:15, backgroundColor: "#F4E0DB"}}>
 
-            <Text style={styles.text}>Amount:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setAmount}
-                value={amount}
-                placeholder="0.00"
-                keyboardType="numeric"            
-            />
-            <Text style={styles.text}>Date:</Text>
-            <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => setDatePickerVisibility(true)}>
+            <View style={styles.pane}>
+
+                <TouchableOpacity onPress={() => navigation.navigate("Add Expense")}>
+                    <Text style={[styles.text, {color:"#F4E0DB", textTransform:'uppercase', textAlign:'right', padding:0, margin:0,}]}>Switch to the Detailed Form</Text>
+                </TouchableOpacity>
+
+                <Text style={styles.text}>Amount:</Text>
                 <TextInput
                     style={styles.input}
-                    value={date.toString()}
-                    editable={false} // optional
+                    onChangeText={setAmount}
+                    value={amount}
+                    placeholder="0.00"
+                    keyboardType="numeric"            
                 />
-            </TouchableOpacity>
-            <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                onConfirm={(date) => {
-                    setDatePickerVisibility(false); // <- first thing
-                    setDate(moment(date).format("MMM Do YYYY"));
-                }}
-                onCancel={() => setDatePickerVisibility(false)}
-            />      
-            <Text style={styles.text}>Time (optional):</Text>
-            <TouchableOpacity
-                activeOpacity={1}
-                onPress={() => setTimePickerVisibility(true)}>
+                <Text style={styles.text}>Date:</Text>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => setDatePickerVisibility(true)}>
+                    <TextInput
+                        style={styles.input}
+                        value={date.toString()}
+                        editable={false} // optional
+                    />
+                </TouchableOpacity>
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    onConfirm={(date) => {
+                        setDatePickerVisibility(false); // <- first thing
+                        setDate(moment(date).format("MMM Do YYYY"));
+                    }}
+                    onCancel={() => setDatePickerVisibility(false)}
+                />      
+                <Text style={styles.text}>Time (optional):</Text>
+                <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => setTimePickerVisibility(true)}>
+                    <TextInput
+                        style={styles.input}
+                        value={time.toString()}
+                        editable={false} // optional
+                    />
+                </TouchableOpacity>
+                <DateTimePickerModal
+                    mode="time"
+                    locale="en_GB"
+                    isVisible={isTimePickerVisible}
+                    onConfirm={(time) => {
+                        setTimePickerVisibility(false); // <- first thing
+                        setTime(moment(time).format("hh:mm a"));
+                    }}
+                    onCancel={() => setTimePickerVisibility(false)}
+                />
+
+                <Text style={styles.text}>Description:</Text>
                 <TextInput
                     style={styles.input}
-                    value={time.toString()}
-                    editable={false} // optional
+                    onChangeText={setDes}
+                    value={description}         
                 />
-            </TouchableOpacity>
-            <DateTimePickerModal
-                mode="time"
-                locale="en_GB"
-                isVisible={isTimePickerVisible}
-                onConfirm={(time) => {
-                    setTimePickerVisibility(false); // <- first thing
-                    setTime(moment(time).format("hh:mm a"));
-                }}
-                onCancel={() => setTimePickerVisibility(false)}
-            />
 
-            <Text style={styles.text}>Description:</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setDes}
-                value={description}         
-            />
-
-            <Text style={styles.text}>Notes (optional):</Text>
-            <TextInput
-                style={styles.input}
-                onChangeText={setNotes}
-                value={notes}         
-            />
-
-            <Text style={styles.text}>Category:</Text>
-            <DropDownPicker
-                style={styles.input}
-                open={openDropDown}
-                value={category}
-                items={fixedCat}
-                setOpen={setOpenDropDown}
-                setValue={setCat}
-                setItems={setFixedCat}
-                containerStyle={{
-                    width: '94%',
-                }}
-            />
-
-            <View style={styles.toggleContainer}>
-                <Text style={styles.text}>Is this item Auto-recurring?</Text>
-                <Text style={styles.boldtext}>{autorecurring? "YES": "NO"}</Text>
-                <Switch
-                    trackColor={{ false: "#767577", true: "#F4C2C2" }}
-                    thumbColor={autorecurring ? "#fc8eac" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitchAR}
-                    value={autorecurring}
+                <Text style={styles.text}>Notes (optional):</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setNotes}
+                    value={notes}         
                 />
+
+                <Text style={styles.text}>Category:</Text>
+                <DropDownPicker
+                    style={styles.input}
+                    open={openDropDown}
+                    value={category}
+                    items={fixedCat}
+                    setOpen={setOpenDropDown}
+                    setValue={setCat}
+                    setItems={setFixedCat}
+                    containerStyle={{
+                        width: '94%',
+                    }}
+                />
+
+                <View style={styles.toggleContainer}>
+                    <Text style={styles.text}>Is this item Auto-recurring?</Text>
+                    <Text style={styles.boldtext}>{autorecurring? "YES": "NO"}</Text>
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#F4C2C2" }}
+                        thumbColor={autorecurring ? "#fc8eac" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={toggleSwitchAR}
+                        value={autorecurring}
+                    />
+                </View>
+
+                <View style={styles.toggleContainer}>
+                    <Text style={styles.text}>Is this item an Income or Expense?</Text>
+                    <Text style={styles.boldtext}>{spendEarn ? "INCOME": "EXPENSE"}</Text>
+                    <Switch
+                        trackColor={{ false: "#767577", true: "#F4C2C2" }}
+                        thumbColor={spendEarn ? "#fc8eac" : "#f4f3f4"}
+                        ios_backgroundColor="#3e3e3e"
+                        onValueChange={toggleSwitchSE}
+                        value={spendEarn}
+                    />
+                </View>
+
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={handleSubmit}
+                >
+                    <Text style={styles.buttontext}>ADD MY ITEM TO LIST</Text>
+                </TouchableOpacity>
+
             </View>
-
-            <View style={styles.toggleContainer}>
-                <Text style={styles.text}>Is this item an Income or Expense?</Text>
-                <Text style={styles.boldtext}>{spendEarn ? "INCOME": "EXPENSE"}</Text>
-                <Switch
-                    trackColor={{ false: "#767577", true: "#F4C2C2" }}
-                    thumbColor={spendEarn ? "#fc8eac" : "#f4f3f4"}
-                    ios_backgroundColor="#3e3e3e"
-                    onValueChange={toggleSwitchSE}
-                    value={spendEarn}
-                />
-            </View>
-
-            <TouchableOpacity
-                style={styles.button}
-                onPress={handleSubmit}
-            >
-                <Text style={styles.buttontext}>ADD MY ITEM TO LIST</Text>
-            </TouchableOpacity>
 
 
         </View>
@@ -227,6 +235,14 @@ export default function AddExpenses({navigation}){
 };
 
 const styles = StyleSheet.create({
+    pane: {
+        backgroundColor: "#968484",
+        marginBottom: 50,
+        marginHorizontal: 20,
+        paddingHorizontal: 20,
+        paddingVertical: 0,
+        borderRadius: 20,
+    },
     input: {
         height: 40,
         marginHorizontal: 12,
