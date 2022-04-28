@@ -4,21 +4,22 @@ import{
     View, 
     Text,
     TouchableOpacity,
-    Animated,
-    Dimensions, 
+    // Animated,
+    // Dimensions, 
 } from 'react-native';
-import { styles, colors, cardStyles,btnStyles } from '../../styles';
+import { styles, colors, cardStyles, btnStyles } from '../../styles';
 import {Card, calculateTotal} from '../../components';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
-import {
-    GestureHandlerRootView,
-    PanGestureHandler
-} from 'react-native-gesture-handler';
 import { useFocusEffect } from '@react-navigation/native';
 import expensesAPI from '../../api/expenses';
 // import SwipeUp from '../../components/gestureHandlerUp';
 // import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
+// import {
+//     GestureHandlerRootView,
+//     PanGestureHandler
+// } from 'react-native-gesture-handler';
+
 
 // const {width} = Dimensions.get('screen');
 // const circleRadius = 30;
@@ -69,11 +70,9 @@ export default function Home({navigation}){
 
             <View>          
                 <Card style={cardStyles.totalExCard}>
-                    <TouchableOpacity onPress={()=>navigation.navigate("List Current Month Items")}>
                     <Text style={{fontWeight: "bold", color: "#E2E2E2", left:5, fontSize:15}}>{moment().format("MMMM").toString().toUpperCase()} EXPENSES:</Text>
                     <Text style={{color: "#E2E2E2", left:5, fontSize:12}}>(Up till {moment().format("Do MMM").toString()})</Text>
                     <Text style={cardStyles.totalExText}>${totalExpenses}</Text>
-                    </TouchableOpacity>
                 </Card>
             </View>
             <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}]}>
@@ -104,7 +103,7 @@ export default function Home({navigation}){
                     {/* Pie Chart (Small Version) */}
                 </TouchableOpacity>
             </View>
-            <GestureHandlerRootView>
+            {/* <GestureHandlerRootView>
                 <PanGestureHandler>
                     <View>
                     {/* <Animated.View
@@ -116,12 +115,18 @@ export default function Home({navigation}){
                             ]}
                         ]}
                     /> */}
-                        <Card style={cardStyles.exListCard}>
+                        {/* <Card style={cardStyles.exListCard}>
                                 <Text style={{color:"#E2E2E2", fontSize:20}}>Expense List</Text>
                         </Card>
                     </View>
                 </PanGestureHandler>
-            </GestureHandlerRootView>
+            </GestureHandlerRootView> */} 
+            <View>
+                <TouchableOpacity 
+                    onPress={()=>navigation.navigate("List Current Month Items")}>
+                    <Card style={cardStyles.exListCard}/>                    
+                </TouchableOpacity>
+            </View>
             <View>
                 <TouchableOpacity
                     style={{left: 160, top: 120, width: 65, height: 65}} 
