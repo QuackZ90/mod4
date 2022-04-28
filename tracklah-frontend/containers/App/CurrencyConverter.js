@@ -4,23 +4,14 @@ import{
     TouchableOpacity,
     SafeAreaView,
     StatusBar,
-    StyleSheet
 } from 'react-native';
 import colors from '../../styles/colors';
 import { ConversionInput } from '../../components/ConversionInput';
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: colors.beige,
-        flex: 1,
-        justifyContent: "center"
-    },
-});
-
+import currencyStyles from '../../styles/CurrencyConverter-styles';
 
 export default function CurrencyConverter(){
     return(
-        <SafeAreaView style={styles.container}>
+        <SafeAreaView style={currencyStyles.container}>
             <TouchableOpacity>
                 <StatusBar barStyle='light-content' backgroundColor={colors.beige}/>
                 <Text>This page allows you convert currencies.</Text>

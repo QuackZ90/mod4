@@ -7,6 +7,7 @@ import ViewBar from "../containers/App/ViewBar";
 import ShowItems from "../containers/App/ShowItems";
 import colors from '../styles/colors'
 import AmendUserData from "../containers/Account/UserData";
+import CurrencyConverter from "../containers/App/CurrencyConverter";
 
 
 const AppStack = createDrawerNavigator();
@@ -32,6 +33,7 @@ export default function AppNav(){
             <AppStack.Screen name = "List Current Month Items" component = {ShowItems} />
             <AppStack.Screen name = 'Expenses Pie Chart' component={ViewPie} />
             <AppStack.Screen name = 'Income and Expenses Bar Chart' component={ViewBar} />
+            <AppStack.Screen name = 'Currency Converter' component={CurrencyConverter} />
             <AppStack.Screen name = 'Amend User Profile' component={AmendUserData} />
         </AppStack.Navigator>
     )

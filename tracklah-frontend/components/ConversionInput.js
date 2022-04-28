@@ -2,33 +2,9 @@ import {
     TouchableOpacity,
     TextInput,
     View,
-    StyleSheet 
+    Text
 } from "react-native";
-import colors from '../../styles/colors';
-
-const styles = StyleSheet.create({
-    container: {
-        backgroundColor: colors.white,
-        marginVertical: 10,
-        marginHorizontal: 20,
-        borderRadius: 5,
-        flexDirecton: "row"
-    },
-    button: {
-        padding: 15,
-        borderRightColor: colors.border,
-        borderRightWidth: 1,
-    },
-    buttonText: {
-        fontSize: 10,
-        color: colors.beige,
-        fontWeight: "bold"
-    },
-    input: {
-        flex: 1,
-        padding: 10,
-    }
-});
+import styles from '../styles/ConversionInput-styles';
 
 export const ConversionInput = ({text, value, onButtonPress}) => {
 
