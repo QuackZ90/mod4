@@ -1,6 +1,5 @@
 import React from 'react';
 import{
-    Text,
     TouchableOpacity,
     SafeAreaView,
     StatusBar,
@@ -14,8 +13,8 @@ export default function CurrencyConverter(){
         <SafeAreaView style={currencyStyles.container}>
             <TouchableOpacity>
                 <StatusBar barStyle='light-content' backgroundColor={colors.beige}/>
-                <Text>This page allows you convert currencies.</Text>
-                <ConversionInput 
+                <ConversionInput
+                    style={currencyStyles.input} 
                     text="SGD"
                     value="123"
                     onButtonPress={() => alert('todo!')}

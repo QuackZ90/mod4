@@ -3,7 +3,7 @@ import colors from './colors';
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: colors.white,
+        backgroundColor: colors.listBackground,
         marginVertical: 10,
         marginHorizontal: 20,
         borderRadius: 5,
