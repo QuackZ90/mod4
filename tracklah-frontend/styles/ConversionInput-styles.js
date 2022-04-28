@@ -6,8 +6,13 @@ const styles = StyleSheet.create({
         backgroundColor: colors.listBackground,
         marginVertical: 10,
         marginHorizontal: 20,
-        borderRadius: 5,
-        flexDirection: "row"
+        borderRadius: 20,
+        flexDirection: "row",
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
     button: {
         padding: 15,
