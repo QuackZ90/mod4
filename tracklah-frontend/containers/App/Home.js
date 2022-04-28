@@ -76,7 +76,7 @@ export default function Home({navigation}){
                     </TouchableOpacity>
                 </Card>
             </View>
-            <View style={cardStyles.graphsCard}>
+            <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}]}>
                 <TouchableOpacity
                     style={btnStyles.button}
                     title="Graph Chart"

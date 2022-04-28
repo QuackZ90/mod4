@@ -1,16 +1,20 @@
-import { createContext } from "react"
+import { createContext } from "react";
+
+const defaultUserLoggedIn = {
+    username: null,
+    userId: null,
+    jwt: null,
+    name: null,
+    defaultCurrency:null,
+};
 
 const defaultUserContext = {
-    userLoggedIn:{
-        username: null,
-        userId: null,
-        jwt: null,
-        name: null,
-        defaultCurrency:null,
-    },
+    userLoggedIn: defaultUserLoggedIn,
     setUserLoggedIn:(userData)=>{}
 }
 
+
+
 const UserContext = createContext(defaultUserContext);
 
-export default UserContext;
+export {UserContext,defaultUserLoggedIn};

@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Pressable, Alert} from 'react-native';
 import { useState, useEffect, useCallback,useRef } from 'react';
 import { useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import {UserContext, defaultUserLoggedIn} from '../../contexts/UserContext';
 import createLoginStyles from '../../styles/createLogin';
 import cc from 'currency-codes';
 import colors from"../../styles/colors";
@@ -350,7 +350,7 @@ export default function AmendUserData({navigation}){
 
 
 
-            <Pressable style={createLoginStyles.bottomButton} onPress={()=>{
+            <Pressable style={[createLoginStyles.bottomButton,{bottom:145}]} onPress={()=>{
 
                 setCreationStatus(()=>"loading");
                 Alert.alert("Confirm submission",
@@ -361,7 +361,17 @@ export default function AmendUserData({navigation}){
 
                 }} disabled = {((editEmail||editName||editPassword) &&
                                 (userLoggedIn.username && ((email && validEmail && !existingEmail && !checkExistingEmail)||!editEmail) && ((password && validPassword && repeatPassword && validRepeatPassword)||(!editPassword)) && name))? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Update profile</Text>}</Pressable>
-                {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
+            {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
+
+
+
+
+            <Pressable style={createLoginStyles.bottomButton} onPress={()=>{
+
+                    setUserLoggedIn(()=>defaultUserLoggedIn);
+                    navigation.navigate("account");
+
+                }}><Text style={createLoginStyles.buttonText}>Logout</Text></Pressable>
         </View>
     )
 

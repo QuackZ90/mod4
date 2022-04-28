@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Pressable, Alert} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import {UserContext} from '../../contexts/UserContext';
 import createLoginStyles from '../../styles/createLogin';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SelectDropdown from 'react-native-select-dropdown';

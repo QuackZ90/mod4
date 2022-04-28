@@ -1,3 +1,3 @@
-import UserContext from "./UserContext";
+import {UserContext, defaultUserLoggedIn} from "./UserContext";
 
-export {UserContext};
+export {UserContext, defaultUserLoggedIn};

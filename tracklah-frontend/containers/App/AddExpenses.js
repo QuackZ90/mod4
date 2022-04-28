@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
 import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import {UserContext} from '../../contexts/UserContext';
 
 
 export default function AddExpenses({navigation}){
