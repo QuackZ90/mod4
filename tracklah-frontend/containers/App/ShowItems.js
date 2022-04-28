@@ -2,7 +2,7 @@ import { View, Text, StatusBar, StyleSheet, TouchableOpacity, FlatList, Dimensio
 import React, { useState, useEffect } from 'react';
 import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
-import {UserContext} from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import moment from 'moment';
