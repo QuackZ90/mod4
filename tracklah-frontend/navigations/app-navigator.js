@@ -6,7 +6,6 @@ import ViewPie from "../containers/App/ViewPie";
 import ViewBar from "../containers/App/ViewBar";
 import ShowItems from "../containers/App/ShowItems";
 import colors from '../styles/colors'
-import { ExpenseProvider } from "../contexts/ExpenseContext";
 import AmendUserData from "../containers/Account/UserData";
 
 
