@@ -1,12 +1,11 @@
 import { View, Text, TextInput, Pressable, Alert} from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useContext } from 'react';
 import {UserContext} from '../../contexts/UserContext';
 import createLoginStyles from '../../styles/createLogin';
-import DropDownPicker from 'react-native-dropdown-picker';
 import SelectDropdown from 'react-native-select-dropdown';
 import cc from 'currency-codes';
-import colors from"../../styles/colors";
+import { useFocusEffect } from '@react-navigation/native';
 
 import userAccountAPI from '../../api/userAccount';
 import expensesAPI from '../../api/expenses';
@@ -39,6 +38,23 @@ export default function CreateAccount({navigation}){
 
 
     const [defaultCurrency, setDefaultCurrency] = useState(null);
+
+    useFocusEffect(useCallback(()=>{
+        setUsername('');
+        setValidUsername(true);
+        setExistingUser(false);
+        setCheckExistingUser(false);
+        setPassword('');
+        setValidPassword(true);
+        setRepeatPassword('');
+        setValidRepeatPassword(true);
+        setName('');
+        setEmail('');
+        setValidEmail(true);
+        setExistingEmail(false);
+        setCheckExistingEmail(false);
+        setCreationStatus('data');
+    },[]))
 
     useEffect(()=>{
 
@@ -191,8 +207,8 @@ export default function CreateAccount({navigation}){
                 setUserLoggedIn(()=>{
                     return {
                         username:results.data.userCreation.data.username,
-                        name: results.data.userLoggedIn.name,
-                        defaultCurrency:results.data.userLoggedIn.defaultCurrency,
+                        name: results.data.userLogin.name,
+                        defaultCurrency:results.data.userLogin.defaultCurrency,
                         userId: results.data.userLogin.userId,
                         jwt: results.data.userLogin.jwtToken,
                     }
@@ -214,11 +230,11 @@ export default function CreateAccount({navigation}){
                 if (err.response.data.userLogin.status ===201){
                     setUserLoggedIn(()=>{
                         return {
-                            username:results.data.userCreation.data.username,
-                            name: results.data.userLoggedIn.name,
-                            defaultCurrency:results.data.userLoggedIn.defaultCurrency,
-                            userId: results.data.userLogin.userId,
-                            jwt: results.data.userLogin.jwtToken,
+                            username:err.response.data.userCreation.data.username,
+                            name: err.response.data.userLoggedIn.name,
+                            defaultCurrency:err.response.data.userLoggedIn.defaultCurrency,
+                            userId: err.response.data.userLogin.userId,
+                            jwt: err.reponse.data.userLogin.jwtToken,
                         }
                     })
 
@@ -239,7 +255,48 @@ export default function CreateAccount({navigation}){
                 setCreationStatus(()=>"error");
             }
         }
+    };
+
+
+    function UsernameWarnings(){
+        return(
+            <>
+                {!validUsername && <Text style={createLoginStyles.invalidInput}>Username must be at least 3 characters long, and contains only alphanumeric, ".", "-" and/or "_"</Text>}
+                {(username && existingUser && !checkExistingUser)?<Text style={createLoginStyles.invalidInput}>Username taken. Please try another username.</Text>:null}
+                {(username && !existingUser && !checkExistingUser &&validUsername)? <Text style={createLoginStyles.validInput}>Username available</Text>:null}
+                {checkExistingUser && <Text>Checking if username is available...</Text>}
+            </>
+        )
     }
+
+    function EmailWarnings(){
+        return(
+            <>
+                {!validEmail && <Text style={createLoginStyles.invalidInput}>Please enter a valid email.</Text>}
+                {(email && existingEmail && !checkExistingEmail)?<Text style={createLoginStyles.invalidInput}>This email is linked to an existing account. Please proceed to login.</Text>:null}
+                {(email && !existingEmail && !checkExistingEmail && validEmail)? <Text Text style={createLoginStyles.validInput}>Email can be used.</Text>:null}
+                {checkExistingEmail && <Text>Checking if email is registered...</Text>}
+            </>
+        )
+    };
+
+    function PasswordWarnings(){
+
+        return(
+            <>
+                {!validPassword && 
+                    <>
+                        <Text style={createLoginStyles.invalidInput}>Password must be at least 6 characters long.</Text>
+                        <Text style={createLoginStyles.invalidInput}>Password must have at least 1 captial letter.</Text>
+                        <Text style={createLoginStyles.invalidInput}>Password must have at least 1 small letter.</Text>
+                        <Text style={createLoginStyles.invalidInput}>Password must have at least 1 number.</Text>
+                    </>
+                }
+            </>
+        )
+    };
+
+
 
 
     return(
@@ -251,19 +308,14 @@ export default function CreateAccount({navigation}){
                 handleTextUpdate(text, setUsername);
                 validateUsername(text);
             }}autoCapitalize='none'></TextInput>
-            {!validUsername && <Text style={createLoginStyles.invalidInput}>Username must be at least 3 characters long, and contains only alphanumeric, ".", "-" and/or "_"</Text>}
-            {(username && existingUser && !checkExistingUser)?<Text style={createLoginStyles.invalidInput}>Username taken. Please try another username.</Text>:null}
-            {(username && !existingUser && !checkExistingUser &&validUsername)? <Text style={createLoginStyles.validInput}>Username available</Text>:null}
-            {checkExistingUser && <Text>Checking if username is available...</Text>}
+            <UsernameWarnings />
 
             <TextInput placeholder='Email' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'email' id = 'email' value = {email} onChangeText={text=>{
                 handleTextUpdate(text, setEmail);
                 validateEmail(text);
             }} keyboardType='email-address' autoCapitalize='none'></TextInput>
-            {!validEmail && <Text style={createLoginStyles.invalidInput}>Please enter a valid email.</Text>}
-            {(email && existingEmail && !checkExistingEmail)?<Text style={createLoginStyles.invalidInput}>This email is linked to an existing account. Please proceed to login.</Text>:null}
-            {(email && !existingEmail && !checkExistingEmail && validEmail)? <Text Text style={createLoginStyles.validInput}>Email can be used.</Text>:null}
-            {checkExistingEmail && <Text>Checking if email is registered...</Text>}
+            <EmailWarnings />
+
 
             <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
@@ -273,14 +325,8 @@ export default function CreateAccount({navigation}){
                     validateRepeatPassword(repeatPassword)
                 }
             }}></TextInput>
-            {!validPassword && 
-                <>
-                    <Text style={createLoginStyles.invalidInput}>Password must be at least 6 characters long.</Text>
-                    <Text style={createLoginStyles.invalidInput}>Password must have at least 1 captial letter.</Text>
-                    <Text style={createLoginStyles.invalidInput}>Password must have at least 1 small letter.</Text>
-                    <Text style={createLoginStyles.invalidInput}>Password must have at least 1 number.</Text>
-                </>
-            }
+            <PasswordWarnings />
+
 
 
             <TextInput placeholder='Repeat Password' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{

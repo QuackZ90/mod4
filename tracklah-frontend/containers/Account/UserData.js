@@ -361,7 +361,7 @@ export default function AmendUserData({navigation}){
 
                 }} disabled = {((editEmail||editName||editPassword) &&
                                 (userLoggedIn.username && ((email && validEmail && !existingEmail && !checkExistingEmail)||!editEmail) && ((password && validPassword && repeatPassword && validRepeatPassword)||(!editPassword)) && name))? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Update profile</Text>}</Pressable>
-            {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
+            {creationStatus==="error"? <Text>Unable to connect to Database at the moment. Please try again later.</Text>:null}
 
 
 
