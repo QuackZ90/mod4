@@ -1,4 +1,3 @@
-import { ExpenseContext } from "./ExpenseContext";
-import UserContext from "./UserContext";
+import {UserContext, defaultUserLoggedIn} from "./UserContext";
 
-export {ExpenseContext, UserContext}
+export {UserContext, defaultUserLoggedIn};

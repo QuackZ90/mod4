@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import { createContext, useContext, useState } from "react";
-import UserContext from "../contexts/UserContext";
+import {UserContext, defaultUserLoggedIn} from "../contexts/UserContext";
 
 import IntroNav from "./introduction-navigator";
 import AccountNav from "./account-navigator";
@@ -11,15 +11,10 @@ const MainStack = createNativeStackNavigator();
 
 export default function MainNav(){
 
-    let user = {
-        username: null,
-        userId: null,
-        jwt: null,
-        name: null,
-        defaultCurrency:null,
-    }
+    console.log(UserContext, defaultUserLoggedIn);
 
-    const [userLoggedIn, setUserLoggedIn] = useState(user);
+
+    const [userLoggedIn, setUserLoggedIn] = useState(defaultUserLoggedIn);
 
 
     return(

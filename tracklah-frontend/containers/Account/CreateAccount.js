@@ -1,7 +1,7 @@
 import { View, Text, TextInput, Pressable, Alert} from 'react-native';
 import { useState, useEffect } from 'react';
 import { useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import {UserContext} from '../../contexts/UserContext';
 import createLoginStyles from '../../styles/createLogin';
 import DropDownPicker from 'react-native-dropdown-picker';
 import SelectDropdown from 'react-native-select-dropdown';
@@ -38,9 +38,7 @@ export default function CreateAccount({navigation}){
     const [creationStatus, setCreationStatus] = useState("data");
 
 
-    const [open, setOpen] = useState(false);
     const [defaultCurrency, setDefaultCurrency] = useState(null);
-    const [items, setItems] = useState(currencyList)
 
     useEffect(()=>{
 
@@ -247,9 +245,9 @@ export default function CreateAccount({navigation}){
     return(
         <View style={createLoginStyles.container}>
 
-            <TextInput placeholder='Name' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input}  name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
+            <TextInput placeholder='Name' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]}  name = 'name' id = 'name' value = {name} onChangeText={text=>{handleTextUpdate(text, setName)}} autoCapitalize='words'></TextInput>
             
-            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'username' id = 'username' value = {username} onChangeText={text=>{
+            <TextInput placeholder='Username' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'username' id = 'username' value = {username} onChangeText={text=>{
                 handleTextUpdate(text, setUsername);
                 validateUsername(text);
             }}autoCapitalize='none'></TextInput>
@@ -258,7 +256,7 @@ export default function CreateAccount({navigation}){
             {(username && !existingUser && !checkExistingUser &&validUsername)? <Text style={createLoginStyles.validInput}>Username available</Text>:null}
             {checkExistingUser && <Text>Checking if username is available...</Text>}
 
-            <TextInput placeholder='Email' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'email' id = 'email' value = {email} onChangeText={text=>{
+            <TextInput placeholder='Email' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'email' id = 'email' value = {email} onChangeText={text=>{
                 handleTextUpdate(text, setEmail);
                 validateEmail(text);
             }} keyboardType='email-address' autoCapitalize='none'></TextInput>
@@ -267,7 +265,7 @@ export default function CreateAccount({navigation}){
             {(email && !existingEmail && !checkExistingEmail && validEmail)? <Text Text style={createLoginStyles.validInput}>Email can be used.</Text>:null}
             {checkExistingEmail && <Text>Checking if email is registered...</Text>}
 
-            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'password' id = 'password' value = {password} onChangeText={text=>{
+            <TextInput placeholder='Password' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'password' id = 'password' value = {password} onChangeText={text=>{
                 handleTextUpdate(text, setPassword);
                 validatePassword(text);
             }} secureTextEntry={true} autoCapitalize='none' onBlur={()=>{
@@ -285,22 +283,12 @@ export default function CreateAccount({navigation}){
             }
 
 
-            <TextInput placeholder='Repeat Password' placeholderTextColor="#FFFFFF99" style={createLoginStyles.input} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
+            <TextInput placeholder='Repeat Password' placeholderTextColor="#FFFFFF99" style={[createLoginStyles.inputBox, createLoginStyles.inputText]} name = 'repeatPassword' id = 'repeatPassword' value = {repeatPassword} onChangeText={text=>{
                 handleTextUpdate(text, setRepeatPassword);
                 validateRepeatPassword(text);
             }} secureTextEntry={true} autoCapitalize='none'></TextInput>
             {!validRepeatPassword && <Text style={createLoginStyles.invalidInput}>Password does not match. Please ensure that password matches desired password.</Text>}
 
-            {/* <DropDownPicker 
-                open = {open}
-                value = {defaultCurrency}
-                items = {items}
-                setOpen = {setOpen}
-                setValue = {setDefaultCurrency}
-                setItems = {setItems}
-                placeholder = "Select Default Currency"
-                style={{backgroundColor: colors.drawer, maxheight:35, width:'75%'}}
-                /> */}
 
             <SelectDropdown
                 data={cc.codes()}
@@ -314,20 +302,16 @@ export default function CreateAccount({navigation}){
                     return selectedItem
                 }}
                 
-                buttonStyle={createLoginStyles.input}
+                buttonStyle={createLoginStyles.inputBox}
                 
-                buttonTextStyle={{
-                    color: defaultCurrency?"#FFFFFF":'#FFFFFF99',
+                buttonTextStyle={
+                   { color: defaultCurrency?"#FFFFFF":'#FFFFFF99',
                     textAlign: "left",
                     fontWeight:"normal",
-                    fontSize:12,
                     marginHorizontal:0,
-                }}/>
-
-
-
-
-
+                    fontSize:12,
+                }
+                }/>
 
 
 
@@ -340,7 +324,7 @@ export default function CreateAccount({navigation}){
                             [{text:"Cancel", onPress:()=>{console.log("Cancelled pressed"); setCreationStatus(()=>"data")},style:"cancel"},
                             {text:"OK", onPress:()=>{console.log("OK pressed"); handleSubmit();}}]);
 
-                }} disabled = {(username && validUsername && !existingUser && !checkExistingUser) && (email && validEmail && !existingUser && !checkExistingEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name && defaultCurrency? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
+                }} disabled = {(username && validUsername && !existingUser && !checkExistingUser) && (email && validEmail && !existingEmail && !checkExistingEmail) && (password && validPassword) && (repeatPassword && validRepeatPassword) && name && defaultCurrency? false: true}>{creationStatus==="loading"?<Text style={createLoginStyles.buttonText}>Loading...</Text>:<Text style={createLoginStyles.buttonText}>Create Account</Text>}</Pressable>
                 {creationStatus==="error"? <Text>Error processing. Please try again.</Text>:null}
         </View>
     )
