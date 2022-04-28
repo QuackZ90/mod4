@@ -130,7 +130,7 @@ export default function Home({navigation}){
             <View>
                 <TouchableOpacity
                     style={{left: 160, top: 120, width: 65, height: 65}} 
-                    onPress={()=>navigation.navigate("Add Expense or Income Item")}>
+                    onPress={()=>navigation.navigate("Add Expense Item")}>
                 <AntDesign 
                     style={styles.addIcon}
                     name="pluscircle"
