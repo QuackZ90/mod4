@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
 import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
-import {UserContext} from '../../contexts/UserContext';
+import { UserContext } from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 
 export default function SimpleAddExpenses({navigation}){
@@ -21,7 +21,7 @@ export default function SimpleAddExpenses({navigation}){
         category: null
     };
 
-    const defaultCurr = userLoggedIn.defaultCurrency; // change this later if needed from UserContext
+    const defaultCurr = userLoggedIn.defaultCurrency; // getting the user default currency from userContext
 
     const [ amount, setAmount ] = useState(null);
     const [ date, setDate ] = useState(initialDate);
@@ -45,7 +45,7 @@ export default function SimpleAddExpenses({navigation}){
 
     const colorTick = () => {
         if(date != null && amount != null && description != null & category != null){
-            setTickBgCol('green');
+            setTickBgCol('#34B233'); // green colour
         } else {
             setTickBgCol("#D3BABA");               
         }
@@ -174,7 +174,6 @@ export default function SimpleAddExpenses({navigation}){
                                     style={{alignSelf:'center'}}
                                 />
                             </View>
-                            
                         </TouchableOpacity>
                         <DateTimePickerModal
                             isVisible={isDatePickerVisible}
@@ -235,8 +234,6 @@ const styles = StyleSheet.create({
     innercol: {
         flex:1,
         flexDirection: 'column',
-
-
     },
     inputView:{
         backgroundColor: "#D3BABA",
