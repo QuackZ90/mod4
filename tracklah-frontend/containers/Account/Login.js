@@ -3,7 +3,7 @@ import {View, Text, TextInput, Pressable} from 'react-native';
 import { useState } from 'react';
 
 import { useContext } from 'react';
-import UserContext from '../../contexts/UserContext';
+import {UserContext} from '../../contexts/UserContext';
 
 import userAccountAPI from '../../api/userAccount';
 
