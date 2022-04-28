@@ -70,11 +70,9 @@ export default function Home({navigation}){
 
             <View>          
                 <Card style={cardStyles.totalExCard}>
-                    <TouchableOpacity>
                     <Text style={{fontWeight: "bold", color: "#E2E2E2", left:5, fontSize:15}}>{moment().format("MMMM").toString().toUpperCase()} EXPENSES:</Text>
                     <Text style={{color: "#E2E2E2", left:5, fontSize:12}}>(Up till {moment().format("Do MMM").toString()})</Text>
                     <Text style={cardStyles.totalExText}>${totalExpenses}</Text>
-                    </TouchableOpacity>
                 </Card>
             </View>
             <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}]}>
