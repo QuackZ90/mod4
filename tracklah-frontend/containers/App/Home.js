@@ -27,7 +27,10 @@ import expensesAPI from '../../api/expenses';
 export default function Home({navigation}){
 
     const {userLoggedIn} = useContext(UserContext);
-    const [itemData, setItemData] = useState([])
+    const [itemData, setItemData] = useState([]);
+    const [buttonIconSize, setButtonIconSize] = useState();
+
+    console.log(buttonIconSize);
 
     //Get Current Month Items
     const getItems =  async () => {
@@ -64,41 +67,45 @@ export default function Home({navigation}){
     console.log("todayData", todayData)
  
     return(
-        <View style={styles.container}>
+        <View style={[styles.container,{alignItems:"center"}]}>
 
-            <Text style={styles.welcomeText}>Welcome {userLoggedIn.name}</Text>
+            <View style={styles.row}>
+                <Text style={styles.welcomeText}>Welcome {userLoggedIn.name}</Text>
+            </View>
 
-            <View>          
-                <Card style={cardStyles.totalExCard}>
+            <View style={styles.row}>          
+                <Card>
                     <Text style={{fontWeight: "bold", color: "#E2E2E2", left:5, fontSize:15}}>{moment().format("MMMM").toString().toUpperCase()} EXPENSES:</Text>
                     <Text style={{color: "#E2E2E2", left:5, fontSize:12}}>(Up till {moment().format("Do MMM").toString()})</Text>
                     <Text style={cardStyles.totalExText}>${totalExpenses}</Text>
                 </Card>
             </View>
-            <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}]}>
+            <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}, styles.row]}>
                 <TouchableOpacity
                     style={btnStyles.button}
                     title="Graph Chart"
                     onPress={()=>navigation.navigate("Income and Expenses Bar Chart")}
+                    onLayout={layoutEvent =>
+                        setButtonIconSize(layoutEvent.nativeEvent.layout.width*0.75)
+                      }
                 >
                     <Entypo 
                         name="bar-graph" 
-                        size={100} 
+                        size={buttonIconSize}
                         color="lightgrey" 
-                        style={styles.graphIcon}
                     />
                 {/* Income & Expenses Chart (small version) */}
                 </TouchableOpacity>
                 <TouchableOpacity
                     style={btnStyles.button}
                     title="Pie Chart" 
-                    onPress={()=>navigation.navigate("Expenses Pie Chart")} 
+                    onPress={()=>navigation.navigate("Expenses Pie Chart")}
+
                 >
                     <AntDesign 
                         name="piechart" 
-                        size={100} 
+                        size={buttonIconSize} 
                         color="lightgrey" 
-                        style={styles.pieIcon}
                     />
                     {/* Pie Chart (Small Version) */}
                 </TouchableOpacity>
@@ -121,15 +128,15 @@ export default function Home({navigation}){
                     </View>
                 </PanGestureHandler>
             </GestureHandlerRootView> */} 
-            <View>
+            <View style={styles.row}>
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate("List Current Month Items")}>
-                    <Card style={cardStyles.exListCard}/>                    
+                    <Card/>                    
                 </TouchableOpacity>
             </View>
-            <View>
+            <View style={{position:"absolute", bottom:50}}>
                 <TouchableOpacity
-                    style={{left: 160, top: 120, width: 65, height: 65}} 
+                    style={{borderColor:"red", borderWidth:1}} 
                     onPress={()=>navigation.navigate("Add Expense or Income Item")}>
                 <AntDesign 
                     style={styles.addIcon}
