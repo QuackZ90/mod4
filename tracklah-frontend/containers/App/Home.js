@@ -138,7 +138,7 @@ export default function Home({navigation}){
                 <TouchableOpacity
 
                     style={{borderColor:"red", borderWidth:1}} 
-                    onPress={()=>navigation.navigate("Add Expense or Income Item")}>
+                    onPress={()=>navigation.navigate("Add Expense Item")}>
 
                 <AntDesign 
                     style={styles.addIcon}
