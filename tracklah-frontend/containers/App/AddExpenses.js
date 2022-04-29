@@ -45,6 +45,9 @@ export default function AddExpenses({navigation}){
         {label: 'Subscription and Utilities', value: 'utilities'},
         {label: 'Healthcare', value: 'healthcare'},
         {label: 'All Other Miscellaneous', value: 'misc'},
+        {label: 'Salary', value: 'salary'},
+        {label: 'Business Profits', value: 'business'},
+        {label: 'Interest/Dividends', value: 'dividends'},
     ]);
 
     const [ autorecurring, setAutoRecur ] = useState(false);
@@ -65,7 +68,27 @@ export default function AddExpenses({navigation}){
 
     useEffect(()=>{
         colorTick();
-    },[amount, date, description, category]);
+    },[amount, date, description]);
+
+    useEffect(()=>{
+        colorTick();
+        switch(category){
+            case 'food':
+            case 'transport':
+            case 'entertainment':
+            case 'fashion':
+            case 'utilities':
+            case 'healthcare':
+            case 'misc':
+                setSpendEarn(false);
+                break;
+            case 'salary':
+            case 'business':
+            case 'dividends':
+                setSpendEarn(true);
+                break;
+        }
+    },[category]);
 
     const handleSubmit = async () => {
         item = {
