@@ -9,35 +9,34 @@ const styles = StyleSheet.create({
     addIcon: {
         justifyContent: "center",
         alignItems: "center",
-        position: "absolute",
         color: "#D3BABA"
     },
     graphIcon: {
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        top: 25,
-        left: 18
+        width:"80%",
+        height:"80%",
+        borderColor:"red",
+        borderWidth:1,
     },
     pieIcon: {
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        top: 20,
-        left: 20
+        width:"80%",
+        height:"80%",
     },
     welcomeText: {
         fontWeight: "bold",
         fontSize: 20,
         color: "#786767",
-        padding: 10,
-
     },
     chart: {
         flex: 1,
         backgroundColor: colors.mainBackground,
         justifyContent: "center",
         alignItems: "center"
+    },
+
+    row:{
+        width:"90%",
+        maxWidth:400,
+        marginVertical: "2.5%"
     }
 });
 
