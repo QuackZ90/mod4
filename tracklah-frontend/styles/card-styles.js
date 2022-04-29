@@ -10,7 +10,7 @@ const cardStyles = StyleSheet.create({
         backgroundColor: colors.drawer,
         shadowOffset: {width: 1, height: 1}, 
         shadowColor: "#000",
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.5,
         shadowRadius: 2,
     },
 
