@@ -1,32 +1,65 @@
 import{View, Text, Alert, TouchableOpacity, Dimensions} from 'react-native';
-import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis, Bar} from 'victory-native';
-import React, {useContext} from "react";
-import { UserContext, ExpenseContext } from '../../contexts';
+import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis, Bar, VictoryTooltip} from 'victory-native';
+import React, {useContext, useState} from "react";
+import { UserContext} from '../../contexts';
 import {styles} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
-import {colorScale, calculateTotal, calculateCategoryTotal} from '../../components/';
+import {calculateTotal} from '../../components/';
 import moment from 'moment';
+import expensesAPI from '../../api/expenses'
+import { useFocusEffect } from '@react-navigation/native'
 
 export default function ViewBar(){
 
     const {userLoggedIn} = useContext(UserContext);
-    const {itemData} = useContext(ExpenseContext);
+    const [itemData, setItemData] = useState([]);
 
-    const chartTitle = "Income and Expenses"
     
-    //const totalExpenses = calculateTotal(false,itemData)
-    //const totalIncome = calculateTotal(true,itemData)
-    //console.log(`Current Month Total Income: $ ${totalIncome}` ?? 0)
+    //Get All Items
+    const getAllItems =  async () => {
+        await expensesAPI.get('protected/items', {
+            headers: {
+                Authorization : userLoggedIn.jwt
+            }
+        })
+            .then((response) => {
+            setItemData(response.data.data);
+            //console.log("ViewBar Getting all items:",response.data.data)
+            })
+            .catch((err)=> {
+            console.log(err)
+            })
+        }
+    
+        useFocusEffect( 
+            React.useCallback(
+            () => {
+            //console.log('UseFocusEffect: Getting all items for ViewBar...')
+            getAllItems();
+        }, [])
+        );
+    
 
-    const currentMthYr = moment().format("MMM-YY"); 
+    const chartTitle = `${userLoggedIn.name}'s Income and Expenses`
+    
+    const ourDateFormat = 'MMM Do YYYY'
+    const today = moment()
+    const currentMthYr = moment().format("MMM-YYYY"); 
+    const oneMthAgo = moment().subtract(1, 'month')
+    const twoMthAgo = moment().subtract(2, 'month')
+
+
+    let currentMthData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(today,'month')));
+    let oneMthAgoData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(oneMthAgo,'month')));
+    let twomthAgoData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(twoMthAgo,'month')));
 
     const dataIncomeExpenses = [
-        { type: "Income Jan", amount: 3000},
-        { type: "Expenses Jan", amount: 1800},
-        { type: "Income Feb", amount: 8000}, // bar chart doesn't show >2,564.99 label to check
-        { type: "Expenses feb", amount: 2500},
-        { type: `Income ${currentMthYr}`, amount: 2000},
-        { type: `Expenses ${currentMthYr}`, amount: 3000},
+        { type: `${twoMthAgo.format('MMM-YYYY')} `, amount: Number(calculateTotal(false,twomthAgoData)), spend_vs_earn: false},
+        { type: `${twoMthAgo.format('MMM-YYYY')}`, amount: Number(calculateTotal(true,twomthAgoData)), spend_vs_earn: true},
+        { type: `${oneMthAgo.format('MMM-YYYY')} `, amount: Number(calculateTotal(false,oneMthAgoData)), spend_vs_earn: false},
+        { type: `${oneMthAgo.format('MMM-YYYY')}`, amount: Number(calculateTotal(true,oneMthAgoData)), spend_vs_earn: true}, 
+        { type: `${currentMthYr} `, amount: Number(calculateTotal(false,currentMthData)), spend_vs_earn: false},
+        { type: `${currentMthYr}`, amount: Number(calculateTotal(true,currentMthData)), spend_vs_earn: true},
     ]
 
     const chartHeight = Dimensions.get("window").height * 0.4
@@ -38,7 +71,7 @@ export default function ViewBar(){
 
     return(
             <View style={styles.container}>
-                <Text style={{textAlign:"center", marginTop: 20}}>{userLoggedIn.username}'s {chartTitle}</Text>
+                <Text style={{textAlign:"center", marginTop: 20}}>{chartTitle}</Text>
                 <TouchableOpacity onPress={exportIncExp}>
                 <AntDesign name="export" size={24} color="black"  style={{ 
                                                                             height: 25, 
@@ -59,7 +92,7 @@ export default function ViewBar(){
                             style={{ 
                                 data: { 
                                     fill: ({ datum }) => 
-                                    datum.type.startsWith('Income') ? "green" : "red", //use spend_vs_earn
+                                    datum.spend_vs_earn === true ? "green" : "red",
                                     stroke: "black",
                                     strokeWidth: 2,
                                 } 
@@ -68,13 +101,15 @@ export default function ViewBar(){
                             x="type"
                             y="amount"
 
-                            dataComponent={
-                                <Bar
-                                  events={{
-                                    onPress: (evt) => Alert.alert(`(${evt.test}, ${evt.test})`) // work on this
-                                  }}
-                                />
-                              }
+                            // dataComponent={
+                            //     <Bar
+                            //       events={{
+                            //         onPress: (evt) => Alert.alert(`(${evt.amount})`) // work on this
+                            //       }}
+                            //     />
+                            //   }
+                            labels={({ datum }) => `$ ${datum.amount}`}
+                            labelComponent={<VictoryTooltip dy={0} centerOffset={{ x: 25 }} renderInPortal={false} />}
                         />
                             <VictoryAxis
                             tickLabelComponent={<VictoryLabel angle={-90} y={chartHeight*0.82} />}
@@ -87,7 +122,7 @@ export default function ViewBar(){
                             //     },
                             // }}
                             />
-                            {/* <VictoryLabel text="Income 🟩 / Expense 🟥" x={280} y={30} textAnchor="middle"/> */}
+                            {/* <VictoryLabel text="Income 🟩 / Expense 🟥" x={280} y={25} textAnchor="middle" /> */}
 
                             <VictoryAxis
                             dependentAxis={true}
@@ -100,6 +135,10 @@ export default function ViewBar(){
                                 }}
                             />
                     </VictoryChart>
+                    <View>
+                        <Text style={{textAlign:'center'}}>Income 🟩 / Expense 🟥</Text>
+                        <Text style={{textAlign:'center'}}>Some information here $ $ $ 3 months</Text>
+                    </View>
             </View>
     )
 }
