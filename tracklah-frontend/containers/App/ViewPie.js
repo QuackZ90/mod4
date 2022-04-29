@@ -33,8 +33,6 @@ export default function ViewPie(){
 
     function setSelectDataByPeriod(period) {
 
-        const currentMth = moment().format("MMM"); 
-        const currentYr = moment().format("YYYY");
         const ourDateFormat = 'MMM Do YYYY'
         const today = moment().format()
         const day7before = moment().subtract(7, 'days')
@@ -45,7 +43,7 @@ export default function ViewPie(){
             switch (period) {
                 case "currentmth":
 
-                    let currentmthData = itemData.filter((item => item.date.includes(currentMth && currentYr)))
+                    let currentmthData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(today,'month')));
                     setSelectedData(currentmthData)
                     console.log(`---Filtering data for: ${period}---`, currentmthData)
                     break;
@@ -86,13 +84,13 @@ export default function ViewPie(){
 
                 case "currentyr":
 
-                    let currentYrData = itemData.filter((item => item.date.includes(currentYr)))
+                    let currentYrData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(today,'year')));
                     setSelectedData(currentYrData)
                     console.log(`---Filtering data for: ${period}---`, currentYrData)
                     break;
 
                 default:
-                    let defaultData = itemData.filter( (item => item.date.includes(currentMth && currentYr)))
+                    let defaultData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(today,'month')));
                     setSelectedData(defaultData)
                     console.log(`---Default: Currenth Month Data---`,defaultData)
 
@@ -198,14 +196,12 @@ export default function ViewPie(){
                         labelComponent={<VictoryTooltip
                         renderInPortal={false} 
                         labelComponent={<VictoryLabel lineHeight={1.3} 
-                        // text={({ datum }) => (datum.amount > 0 ? `${datum.category} \n $${Math.round(datum.amount)}` : "" )} 
                         /> }
                     />} 
                     animate={{
                         duration: 2000,
                         easing: "bounce",
-                      }}
-                    
+                      }} 
                     events={[
                     {
                         target: 'data',
