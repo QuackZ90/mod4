@@ -8,19 +8,24 @@ import{
 } from 'react-native';
 import { ConversionInput } from '../../components/ConversionInput';
 import currencyStyles from '../../styles/CurrencyConverter-styles';
-import { Entypo } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function CurrencyConverter(){
     return(
         <SafeAreaView style={currencyStyles.container}>
+            <StatusBar barStyle='dark-content'/>
+            <View>
+                <Ionicons
+                    name="repeat-outline"
+                    size={30}
+                    style={currencyStyles.icon}
+                />
+                <Image
+                    style={currencyStyles.image}
+                    source={require('../../assets/ConverterCircle.png')}
+                />
+            </View>
             <TouchableOpacity>
-                <StatusBar barStyle='dark-content'/>
-                    <View>
-                        <Image
-                            style={currencyStyles.image}
-                            source={require('../../assets/ConverterCircle.png')}
-                        />
-                    </View>
                 <ConversionInput
                     style={currencyStyles.input} 
                     text="SGD"
