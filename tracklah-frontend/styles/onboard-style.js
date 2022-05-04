@@ -4,28 +4,39 @@ import colors from './colors';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
         backgroundColor: colors.mainBackground,
     },
-    text: {
+    title: {
         fontSize: 22,
-        fontWeight: "bold",
+        fontWeight: 'bold',
         color: colors.homeText,
+        padding: '5%',
+        margin: '5%',
+        top: '5%',
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
+    },
+    text: {
+        fontSize: 18,
+        color: colors.homeText,
+        top: '5%',
     },
     circle: {
-        position: "absolute",
-        justifyContent: "center",
-        width: "30%",
+        position: 'absolute',
+        justifyContent: 'center',
+        width: '30%',
         bottom: 200
     },
     arrow: {
-        position: "absolute",
-        justifyContent: "center",
-        width: "30%",
+        position: 'absolute',
+        justifyContent: 'center',
+        width: '30%',
         bottom: 120
     },
-
     bottomButton:{
         flex: 1,
         backgroundColor: colors.drawer,
@@ -36,12 +47,16 @@ const styles = StyleSheet.create({
         alignItems:'center',
         position:'absolute',
         bottom:120,
-
     },
-
     buttonText:{
         color: colors.introText,
     },
+    image1: {
+        position: 'absolute',
+        resizeMode: 'contain',
+        width: '60%',
+        top: '-2%',
+    }
 });
 
 export default styles;
