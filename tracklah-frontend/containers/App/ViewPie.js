@@ -2,7 +2,7 @@ import{View, Text, TouchableOpacity, Alert, Dimensions, StyleSheet} from 'react-
 import { VictoryPie, VictoryLegend, VictoryLabel, VictoryTooltip } from 'victory-native';
 import React, { useContext, useState } from "react";
 import { UserContext } from '../../contexts';
-import {styles, colorScale} from "../../styles/"
+import {chartStyles, colorScale} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
 import {calculateTotal, calculateCategoryTotal} from '../../components/';
 import { useFocusEffect } from '@react-navigation/native'
@@ -156,7 +156,7 @@ export default function ViewPie(){
     }
 
     return(
-            <View style={styles.chart}>
+            <View style={chartStyles.chart}>
                 <Text style={{textAlign:"center", marginTop: 20}}>{chartTitle}</Text>
                 <TouchableOpacity onPress={exportExp}>
                     <AntDesign name="export" size={24} color="black"  style={{ alignSelf: 'flex-end', position: 'relative'}} />
@@ -173,7 +173,7 @@ export default function ViewPie(){
                     setSelectDataByPeriod(item.value)
                     setTitleLabel(item.label)
                     }}
-                    style={tempStyles.dropdownpicker}
+                    style={chartStyles.dropdownpicker}
                 />
                 <VictoryPie
                     width={pieWidth} height={pieHeight}
@@ -201,34 +201,35 @@ export default function ViewPie(){
                     animate={{
                         duration: 2000,
                         easing: "bounce",
+                        onLoad: { duration: 1000 },                       
                       }} 
-                    events={[
-                    {
-                        target: 'data',
-                        eventHandlers: {
-                        onPressIn: () => {
-                            return [
-                            {
-                                target: 'labels',
-                                eventKey: 'all',
-                                mutation: () => ({active: false}),
-                            },
-                            ];
-                        },
-                        onPressOut: () => {
-                            return [
-                            {
-                                target: 'labels',
-                                mutation: () => ({active: true}),
+                    // events={[
+                    // {
+                    //     target: 'data',
+                    //     eventHandlers: {
+                    //     onPressIn: () => {
+                    //         return [
+                    //         {
+                    //             target: 'labels',
+                    //             eventKey: 'all',
+                    //             mutation: () => ({active: false}),
+                    //         },
+                    //         ];
+                    //     },
+                    //     onPressOut: () => {
+                    //         return [
+                    //         {
+                    //             target: 'labels',
+                    //             mutation: () => ({active: true}),
                                 
-                                }
-                            ];
-                        },
-                        },
-                    },
-                    ]}
+                    //             }
+                    //         ];
+                    //     },
+                    //     },
+                    // },
+                    // ]}
                 />
-                <View style={styles.chart}>
+                <View style={chartStyles.chart}>
                     <VictoryLegend x={pieWidth*0.01} y={55}
                             //title="Categories"
                             centerTitle
@@ -239,17 +240,9 @@ export default function ViewPie(){
                             data={legendName}
                             borderPadding={10}
                             width={pieWidth*0.95} 
-                            // style={{ border: { stroke: "black" } }}
-                            // borderComponent={<Border width={pieWidth*0.85}/>}
                     />
                 </View>
             </View>
     )
 }
 
-const tempStyles = StyleSheet.create({
-    dropdownpicker: {
-        backgroundColor: "#D3BABA",
-        borderRadius: 20
-    },
-})
