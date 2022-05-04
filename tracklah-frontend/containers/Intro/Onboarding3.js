@@ -1,7 +1,6 @@
 import{
     View,
     Text,
-    Button,
     Image,
     Pressable
 } from 'react-native';
@@ -10,7 +9,14 @@ import styles from '../../styles/onboard-style';
 export default function Onboarding3({navigation}){
     return(
         <View style={styles.container}>
-            <Text style={styles.text}>Save Easy</Text>
+            <Image 
+                style={styles.image1}
+                source={require('../../assets/money-exchange.png')}
+            />            
+            <Text style={styles.title}>Save Easy</Text>
+            <Text style={styles.text}>With a Currency Converter function, save yourself from the hassle of going on a webpage to find
+            the latest conversion rates! Come onboard and save easy with us!           
+            </Text>
             <Image 
                 style={styles.circle}
                 source={require('../../assets/Onboard3Circle.png')}

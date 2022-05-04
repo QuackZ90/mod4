@@ -22,8 +22,8 @@ const currencyStyles = StyleSheet.create({
         position: "absolute",
         width: screen.width * 0.75,
         height: screen.width * 0.75,
-        left: "50%",
-        top: "100%"
+        left: "20%",
+        top: "20%"
     }
 });
  
