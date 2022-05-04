@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert, ScrollView } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
 import { useState, useEffect } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -28,6 +28,23 @@ export default function AddExpenses({navigation}){
     }
 
     const [ amount, setAmount ] = useState(null);
+    const [ currency, setCurr ] = useState(defaultCurr);
+    const [ openCurrDropDown, setOpenCurrDropDown ] = useState(false);
+    const [ fixedCurr, setFixedCurr ] = useState([
+        {label: 'SGD', value: 'sgd'},
+        {label: 'USD', value: 'usd'},
+        {label: 'MYR', value: 'myr'},
+        {label: 'THB', value: 'thb'},
+        {label: 'AUD', value: 'aud'},
+        {label: 'CNY', value: 'cny'},
+        {label: 'EUR', value: 'eur'},
+        {label: 'TWD', value: 'twd'},
+        {label: 'GBP', value: 'gbp'},
+        {label: 'JPY', value: 'jpy'},
+    ]);
+
+    const [ exchangeRate, setExchangeRate ] = useState(null);
+
     const [ date, setDate ] = useState(initialDate);
     const [ isDatePickerVisible, setDatePickerVisibility ] = useState(false);
     const [ time, setTime ] = useState(initialTime);
@@ -152,14 +169,49 @@ export default function AddExpenses({navigation}){
             <View style={styles.pane}>
 
                 <TouchableOpacity onPress={() => navigation.navigate("Add Expense Item")}>
-                    <Text style={[styles.text, {color:"#F4E0DB", textTransform:'uppercase', textAlign:'right', padding:0, margin:0,}]}>Switch to the Simple Form</Text>
+                    <Text style={[styles.text, {color:"#F4E0DB", textTransform:'uppercase', textAlign:'right', padding:0, margin:0}]}>Switch to the Simple Form</Text>
                 </TouchableOpacity>
 
-                <Text style={[styles.text, {marginTop:5}]}>Amount:</Text>
-                <View style={styles.inputView}>
-                    <Text style={styles.boldtext}>{defaultCurr}$</Text>
+                <Text style={[styles.text, {marginTop:5, paddingTop:0}]}>Amount:</Text>
+                <View style={[styles.inputView, { paddingLeft:15, borderWidth:0 }]}>
+                    <DropDownPicker
+                        style={{
+                            backgroundColor: 'transparent', 
+                            borderRadius: 20, 
+                            paddingVertical:0,
+                            borderWidth:0
+                        }}
+                        open={openCurrDropDown}
+                        value={currency}
+                        items={fixedCurr}
+                        setOpen={setOpenCurrDropDown}
+                        setValue={setCurr}
+                        setItems={setFixedCurr}
+                        placeholder={currency}
+                        searchable={true}
+                        searchPlaceholder="Search..."
+                        listMode="MODAL"
+                        textStyle={[styles.boldtext, { margin:0, borderWidth:0 }]}
+                        containerStyle={{
+                            width: '33%',
+                            paddingVertical:0,                                                  
+                        }}
+                        listItemLabelStyle={{
+                            fontSize:15, 
+                            fontWeight:'normal',
+                        }}
+                        selectedItemLabelStyle={{
+                            fontWeight: "bold"
+                        }}
+                        searchTextInputStyle={{
+                            fontSize:15, 
+                            fontWeight:'normal',
+                        }}
+
+                    />
+                                        
                     <TextInput
-                        style={[styles.input, {alignSelf:'flex-end'}]}
+                        style={[styles.input, {alignSelf:'flex-end', borderWidth:0}]}
                         onChangeText={setAmount}
                         value={amount}
                         placeholder="0.00"
@@ -167,36 +219,76 @@ export default function AddExpenses({navigation}){
                     />
                 </View>
 
-                <Text style={styles.text}>Category:</Text>
-                <DropDownPicker
-                    style={styles.inputView}
-                    open={openDropDown}
-                    value={category}
-                    items={fixedCat}
-                    setOpen={setOpenDropDown}
-                    setValue={setCat}
-                    setItems={setFixedCat}
-                    containerStyle={{
-                        width: '94%',
-                        borderWidth:0,
-                    }}
-                />
-
                 <View style={styles.rowstretch}>
                     <View style={[styles.innercol, {paddingRight:5}]}>
-                        <Text style={[styles.text, {marginLeft:5}]}>Date:</Text>
+                        <Text style={[styles.text, {marginLeft:5, maxWidth:100}]}>Exchange Rate:</Text>
+                        <View style={[styles.inputView, {paddingLeft:0, marginHorizontal:0, alignItems:'center'}]}>
+                            <Text style={[styles.text, {maxWidth:40, marginLeft:15, minHeight:48}]}>{(currency).toUpperCase()}/{defaultCurr}</Text>  
+
+                            <TextInput
+                                style={[styles.input, {margin:0}]}
+                                onChangeText={setExchangeRate}
+                                value={exchangeRate}
+                                placeholder="1.00"
+                                keyboardType="numeric"            
+                            />
+
+                        </View>
+                        
+                    </View>
+
+                    <View style={[styles.innercol, {paddingLeft:5}]}>
+                        <Text style={[styles.text, {marginLeft:5}]}>Exchanged Amt:</Text>
+                        <Text style={[styles.inputView, {
+                            fontSize:20, 
+                            paddingVertical:8, 
+                            paddingRight:20, 
+                            marginHorizontal:0, 
+                            textAlign:'right',
+                            textAlignVertical: 'center',
+                            opacity: 0.7,
+                            color: 'white',
+                            minHeight: 50,
+                        }]}>SGD {amount === null ? 0 : (amount/exchangeRate).toFixed(2)}</Text>                    
+                    </View>
+                </View>
+
+
+
+                <Text style={styles.text}>Category:</Text>
+                <View>
+                    <DropDownPicker
+                        style={styles.inputView}
+                        open={openDropDown}
+                        value={category}
+                        items={fixedCat}
+                        setOpen={setOpenDropDown}
+                        setValue={setCat}
+                        setItems={setFixedCat}
+                        listMode="MODAL"
+                        containerStyle={{
+                            width: '94%',
+                            borderWidth:0,
+                        }}
+                        zIndex={1000}
+                    />
+                </View>
+                    
+
+                <View style={[styles.rowstretch, {marginTop:15, marginBottom:5}]}>
+                    <View style={[styles.innercol, {paddingRight:5}]}>
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => setDatePickerVisibility(true)}>
-                            <View style={[styles.inputView, {marginHorizontal:0, borderWidth:0, paddingLeft:0, paddingRight:10}]}>
+                            <View style={[styles.inputView, {marginHorizontal:0, marginTop:0, paddingVertical:5, paddingRight:15}]}>
                                 <TextInput
-                                    style={[styles.input, {fontSize:15, marginLeft:0}]}
+                                    style={[styles.input, {fontSize:15, marginLeft:0, paddingRight: 0}]}
                                     value={date.toString().slice(0,8)}
                                     editable={false} // optional
                                 />
                                 <Ionicons 
                                     name="calendar-outline"
-                                    size={25}
+                                    size={35}
                                     style={{alignSelf:'center'}}
                                 />
                             </View>
@@ -211,20 +303,19 @@ export default function AddExpenses({navigation}){
                         />
                     </View>
 
-                    <View style={[styles.innercol, {paddingLeft:5}]}>
-                        <Text style={[styles.text, {marginLeft:5}]}>Time (optional):</Text>
+                    <View style={[styles.innercol, {paddingHorizontal: 5}]}>
                         <TouchableOpacity
                             activeOpacity={1}
                             onPress={() => setTimePickerVisibility(true)}>
-                            <View style={[styles.inputView, {marginHorizontal:0, borderWidth:0, paddingLeft:0, paddingRight:10}]}>
+                            <View style={[styles.inputView, {marginHorizontal:0, marginTop:0, paddingVertical:5, paddingRight:10}]}>
                                 <TextInput
-                                    style={[styles.input, {fontSize:15, marginLeft:0}]}
+                                    style={[styles.input, {fontSize:15, marginLeft:0, paddingRight: 0}]}
                                     value={time.toString()}
                                     editable={false} // optional
                                 />
                                 <Ionicons 
                                     name="timer-outline"
-                                    size={25}
+                                    size={35}
                                     style={{alignSelf:'center'}}
                                 />
                             </View>                                
@@ -240,6 +331,20 @@ export default function AddExpenses({navigation}){
                             onCancel={() => setTimePickerVisibility(false)}
                         />
                     </View>
+
+                    <View style={[styles.innercol, {paddingLeft:5, flex: 0.5}]}>
+                        <TouchableOpacity
+                            activeOpacity={1}
+                            onPress={() => setTimePickerVisibility(true)}>
+                            <View style={[styles.inputView, {justifyContent:'center', alignItems:'center', padding:10, marginHorizontal:0, marginTop:0}]}>
+                                <Ionicons 
+                                    name="cloud-upload-outline"
+                                    size={35}
+                                />
+                            </View>                                
+                        </TouchableOpacity>
+
+                    </View>
                 </View>        
 
                 <Text style={styles.text}>Description:</Text>
@@ -253,7 +358,7 @@ export default function AddExpenses({navigation}){
                     />
                 </View>    
 
-                <View style={[styles.toggleContainer, {marginTop: 10}]}>
+                <View style={[styles.toggleContainer, {marginTop: 5}]}>
                     <Text style={[styles.text, {paddingTop:0, paddingBottom:0}]}>Auto-recurring?</Text>
                     <Text style={styles.toggletext}>{autorecurring? "YES": "NO"}</Text>
                     <Switch
@@ -311,7 +416,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 12,
     },
     innercol: {
-        flex:1,
+        flex: 1,
         flexDirection: 'column',
     },
     inputView:{
@@ -320,23 +425,23 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         paddingLeft: 10,
         marginHorizontal: 12,
-        marginTop: 5,
+        marginTop: 2,
     },
     input: {
         height: 50,
-        paddingVertical: 10,
+        paddingVertical: 0,
         paddingRight: 25,
         borderRadius: 20,
         backgroundColor: 'transparent',
         fontSize: 20,
-        width: '75%',
+        width: '67%',
         textAlign: 'right',
         color: 'black',
     },
     text: {
         marginLeft: 20,
         color: 'white',
-        paddingTop: 12,
+        paddingTop: 5,
         paddingBottom: 5,
         textAlign: 'left',
     },
@@ -345,6 +450,7 @@ const styles = StyleSheet.create({
         margin: 12,
         color: "black",
         fontSize: 20,
+        paddingVertical: 0,
     },
     toggleContainer: {
         flexDirection: 'row',
@@ -353,7 +459,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         paddingVertical: 0,
         marginVertical: 0,
-        height: 35,
+        height: 30,
     },
     toggletext: {
         fontWeight: "700",
