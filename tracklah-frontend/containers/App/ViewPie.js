@@ -1,10 +1,10 @@
-import{View, Text, TouchableOpacity, Alert, Dimensions, StyleSheet} from 'react-native';
+import{View, Text, TouchableOpacity, Alert, Dimensions} from 'react-native';
 import { VictoryPie, VictoryLegend, VictoryLabel, VictoryTooltip } from 'victory-native';
 import React, { useContext, useState } from "react";
 import { UserContext } from '../../contexts';
 import {chartStyles, colorScale} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
-import {calculateTotal, calculateCategoryTotal} from '../../components/';
+import { calculateCategoryTotal} from '../../components/';
 import { useFocusEffect } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
@@ -23,6 +23,7 @@ export default function ViewPie(){
     const [items, setItems] = useState([
         {label: 'Current Month', value: 'currentmth'},
         {label: 'Today', value: 'today'},
+        {label: 'Last month', value: 'lastmth'},
         {label: 'Last 7 Days', value: 'last7days'},
         {label: 'Last 30 Days', value: 'last30days'},
         {label: 'Last 60 Days', value: 'last60days'},
@@ -39,6 +40,7 @@ export default function ViewPie(){
         const day30before = moment().subtract(30, 'days')
         const day60before = moment().subtract(60, 'days')
         const day90before = moment().subtract(90, 'days')
+        const lastmth = moment().subtract(1,'months')
 
             switch (period) {
                 case "currentmth":
@@ -53,6 +55,13 @@ export default function ViewPie(){
                     let todayData = itemData.filter((item => item.date === moment().format("MMM Do YYYY") ))
                     setSelectedData(todayData)
                     console.log(`---Filtering data for: ${period}---`, todayData)
+                    break;
+
+                case "lastmth":
+
+                    let lastmthData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(lastmth,'month')));
+                    setSelectedData(lastmthData)
+                    console.log(`---Filtering data for: ${period}---`, lastmthData)
                     break;
 
                 case "last7days":
@@ -117,9 +126,9 @@ export default function ViewPie(){
     useFocusEffect( 
         React.useCallback(
         () => {
-        console.log('UseFocusEffect: Getting all items for ViewPie...')
+        //console.log('UseFocusEffect: Getting all items for ViewPie...')
         getAllItems();
-    }, [setSelectedData])
+    }, [])
     );
 
     const chartTitle = `${userLoggedIn.name}'s ${titleLabel}'s Expenses`
@@ -230,8 +239,10 @@ export default function ViewPie(){
                     // ]}
                 />
                 <View style={chartStyles.chart}>
-                    <VictoryLegend x={pieWidth*0.01} y={55}
-                            //title="Categories"
+                    <VictoryLegend 
+                    // x={pieWidth*0.1} 
+                    y={0.22*pieHeight}
+                            // title="Categories"
                             centerTitle
                             orientation="horizontal"
                             gutter={20}
@@ -239,7 +250,7 @@ export default function ViewPie(){
                             colorScale={colorScale}
                             data={legendName}
                             borderPadding={10}
-                            width={pieWidth*0.95} 
+                            width={pieWidth*0.92} 
                     />
                 </View>
             </View>

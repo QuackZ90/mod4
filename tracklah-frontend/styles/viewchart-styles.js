@@ -12,12 +12,21 @@ export const chartStyles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
+    pielegend: {
+        backgroundColor: colors.listBackground,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 20,
+        width: barChartWidth*0.90,
+        height: barChartHeight*0.5,
+        marginBottom: 10
+    },
     dropdownpicker: {
-        backgroundColor: "#D3BABA",
+        backgroundColor: colors.listBackground,
         borderRadius: 20
     },
     tablecontainer: {
-        backgroundColor: "#D3BABA",
+        backgroundColor: colors.listBackground,
         justifyContent: "center",
         borderRadius: 20,
         margin: '6%',

@@ -14,7 +14,6 @@ export default function ViewBar(){
     const {userLoggedIn} = useContext(UserContext);
     const [itemData, setItemData] = useState([]);
 
-    
     //Get All Items
     const getAllItems =  async () => {
         await expensesAPI.get('protected/items', {
@@ -48,18 +47,17 @@ export default function ViewBar(){
     const oneMthAgo = moment().subtract(1, 'month')
     const twoMthAgo = moment().subtract(2, 'month')
 
-
     let currentMthData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(today,'month')));
     let oneMthAgoData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(oneMthAgo,'month')));
     let twomthAgoData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(twoMthAgo,'month')));
 
     const dataIncomeExpenses = [
-        { type: `${twoMthAgo.format('MMM-YYYY')} `, amount: Number(calculateTotal(false,twomthAgoData)), spend_vs_earn: false},
-        { type: `${twoMthAgo.format('MMM-YYYY')}`, amount: Number(calculateTotal(true,twomthAgoData)), spend_vs_earn: true},
-        { type: `${oneMthAgo.format('MMM-YYYY')} `, amount: Number(calculateTotal(false,oneMthAgoData)), spend_vs_earn: false},
-        { type: `${oneMthAgo.format('MMM-YYYY')}`, amount: Number(calculateTotal(true,oneMthAgoData)), spend_vs_earn: true}, 
-        { type: `${currentMthYr} `, amount: Number(calculateTotal(false,currentMthData)), spend_vs_earn: false},
-        { type: `${currentMthYr}`, amount: Number(calculateTotal(true,currentMthData)), spend_vs_earn: true},
+        { type: `${twoMthAgo.format('MMM-YYYY')} `, amount: Number(calculateTotal(twomthAgoData)), spend_vs_earn: false},
+        { type: `${twoMthAgo.format('MMM-YYYY')}`, amount: Number(calculateTotal(twomthAgoData,true)), spend_vs_earn: true},
+        { type: `${oneMthAgo.format('MMM-YYYY')} `, amount: Number(calculateTotal(oneMthAgoData)), spend_vs_earn: false},
+        { type: `${oneMthAgo.format('MMM-YYYY')}`, amount: Number(calculateTotal(oneMthAgoData,true)), spend_vs_earn: true}, 
+        { type: `${currentMthYr} `, amount: Number(calculateTotal(currentMthData)), spend_vs_earn: false},
+        { type: `${currentMthYr}`, amount: Number(calculateTotal(currentMthData,true)), spend_vs_earn: true},
     ]
 
     const exportIncExp = () => {
@@ -67,7 +65,6 @@ export default function ViewBar(){
     }
 
     const displayTable = () => {
-
 
         return (
             <View style={chartStyles.tablecontainer}>
@@ -129,7 +126,6 @@ export default function ViewBar(){
                 </View>
             </View>
         )
-        
     }
 
     return(
@@ -174,34 +170,15 @@ export default function ViewBar(){
                             y="amount"
                             labels={({ datum }) => `$ ${datum.amount}`}
                             labelComponent={<VictoryTooltip dy={0} centerOffset={{ x: 25 }} renderInPortal={false} />}
-                            // events={[{
-                            //     target: "data",
-                            //     eventHandlers: {
-                            //       onPressIn: () => {
-                            //         return [
-                            //           {
-                            //             target: "data",
-                            //             mutation: (props) => {
-                            //               const fill = props.style && props.style.fill;
-                            //               return fill === "#968484" ? null : { style: { fill: "#968484" } };
-                            //             }
-                            //           }
-                            //         ];
-                            //       },
-                            //     }
-                            //   }]}
                         />
                             <VictoryAxis
                             tickLabelComponent={<VictoryLabel angle={-90} y={barChartHeight*0.82} />}
                             style={{
                                 axisLabel: { padding: 85},
                                 grid: { stroke: 'none' },
-                                // tickLabels: { fill: 'black' }, // or orignal grey better?
-                                // axis: { stroke: 'black' },
                                 }}
                             label="Month / Year"
                             axisLabelComponent={<VictoryLabel 
-                                // style={{ fill: 'black'}}
                                 />}
                             animate={{
                                 duration: 2000,
@@ -211,14 +188,11 @@ export default function ViewBar(){
                             <VictoryAxis
                             dependentAxis={true}
                             axisLabelComponent={<VictoryLabel 
-                                // style={{ fill: 'black'}}
                                 />}
                             label="Amount"
                             style={{
                                 axisLabel: { padding: 50 },
                                 grid: { stroke: 'none' },
-                                // tickLabels: { fill: 'black'}, 
-                                // axis: { stroke: 'black' },
                                 }}
                             animate={{
                                 duration: 2000,
