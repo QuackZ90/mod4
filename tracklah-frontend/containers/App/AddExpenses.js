@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert, Platform } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert, Modal, Image } from 'react-native';
 import { useState, useEffect } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -7,7 +7,7 @@ import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
-
+import * as ImagePicker from 'expo-image-picker';
 
 export default function AddExpenses({navigation}){
 
@@ -43,7 +43,7 @@ export default function AddExpenses({navigation}){
         {label: 'JPY', value: 'jpy'},
     ]);
 
-    const [ exchangeRate, setExchangeRate ] = useState(null);
+    const [ exchangeRate, setExchangeRate ] = useState(1);
 
     const [ date, setDate ] = useState(initialDate);
     const [ isDatePickerVisible, setDatePickerVisibility ] = useState(false);
@@ -73,6 +73,48 @@ export default function AddExpenses({navigation}){
     const toggleSwitchAR = () => setAutoRecur(previousState => !previousState);
     const toggleSwitchSE = () => setSpendEarn(previousState => !previousState);
 
+    const [image, setImage] = useState(null);
+    const [imgModalVisible, setImgModalVisible] = useState(false);
+
+    const pickImage = async () => {
+        // This function is to allow use to pick image from their library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+    };
+
+    const snapImage = async () => {
+        // This function is to allow use of camera to snap an image of the receipt.
+
+        let permission = await ImagePicker.requestCameraPermissionsAsync();
+
+        console.log("camera permission", permission);
+
+        let result = await ImagePicker.launchCameraAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
+    
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImage(result.uri);
+        }
+    };
+
+
+    
     const [ tickBgCol, setTickBgCol ] = useState("#D3BABA");
 
     const colorTick = () => {
@@ -234,7 +276,6 @@ export default function AddExpenses({navigation}){
                             />
 
                         </View>
-                        
                     </View>
 
                     <View style={[styles.innercol, {paddingLeft:5}]}>
@@ -333,9 +374,76 @@ export default function AddExpenses({navigation}){
                     </View>
 
                     <View style={[styles.innercol, {paddingLeft:5, flex: 0.5}]}>
+                        <Modal
+                            animationType="slide"
+                            transparent={false}
+                            visible={imgModalVisible}
+                            presentationStyle="fullScreen"
+                            onRequestClose={() => {
+                              Alert.alert("Modal has been closed.");
+                              setImgModalVisible(!imgModalVisible);
+                            }}
+                        >
+                            <View style={styles.modalContainer}>
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={styles.modalButton}
+                                    onPress={pickImage}>
+                                        
+                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
+                                        Select Receipt Image from Gallery
+                                    </Text>
+                                    
+
+                                </TouchableOpacity>
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={styles.modalButton}
+                                    onPress={snapImage}>
+
+                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
+                                        Use Camera to Capture Receipt Image
+                                    </Text>
+                                    
+                                </TouchableOpacity>
+
+                                <View style={{width: 300, height: 300, backgroundColor:'transparent', borderWidth:1, alignSelf:'center'}}>
+                                    {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
+                                </View>          
+
+
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={[styles.modalButton]}
+                                    onPress={() => {
+                                        setImgModalVisible(!imgModalVisible);
+                                        if(image === null){
+                                            Alert.alert("No image selected.");
+                                        }
+                                    }}>
+                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
+                                        OK
+                                    </Text>                                    
+                                </TouchableOpacity>
+
+                                <TouchableOpacity
+                                    activeOpacity={1}
+                                    style={[styles.modalButton]}
+                                    onPress={() => {
+                                        setImage(null);
+                                        setImgModalVisible(!imgModalVisible);
+                                        console.log("cancel button clicked", image);                                     
+                                    }}>
+                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
+                                        Cancel
+                                    </Text>                                    
+                                </TouchableOpacity>
+                            </View>
+                            
+                        </Modal>
                         <TouchableOpacity
                             activeOpacity={1}
-                            onPress={() => setTimePickerVisibility(true)}>
+                            onPress={() => setImgModalVisible(!imgModalVisible)}>
                             <View style={[styles.inputView, {justifyContent:'center', alignItems:'center', padding:10, marginHorizontal:0, marginTop:0}]}>
                                 <Ionicons 
                                     name="cloud-upload-outline"
@@ -478,6 +586,16 @@ const styles = StyleSheet.create({
         marginTop: 0,
         zIndex: 10,
         top: 25,
+    },
+    modalButton:{
+        backgroundColor: "#D3BABA",
+        padding: 10,
+        margin: 10,
+        borderRadius: 20,
+    },
+    modalContainer: {
+        flexDirection: 'column',
+
     },
 });
 
