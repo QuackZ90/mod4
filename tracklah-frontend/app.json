@@ -32,6 +32,15 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Access your photo of your receipt to upload.",
+          "cameraPermission": "Take a picture of your receipt to upload"
+        }
+      ]
+    ]
   }
 }
