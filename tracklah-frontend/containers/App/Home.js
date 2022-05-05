@@ -4,6 +4,7 @@ import{
     View, 
     Text,
     TouchableOpacity,
+    FlatList
     // Animated,
     // Dimensions, 
 } from 'react-native';
@@ -131,7 +132,11 @@ export default function Home({navigation}){
             <View style={styles.row}>
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate("List Current Month Items")}>
-                    <Card/>                    
+                    <Card>
+                        <FlatList>
+                        [{todayData}]
+                        </FlatList>
+                    </Card>                   
                 </TouchableOpacity>
             </View>
             <View style={{position:"absolute", bottom:50}}>

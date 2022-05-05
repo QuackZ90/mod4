@@ -16,14 +16,16 @@ const currencyStyles = StyleSheet.create({
         width: screen.width * 0.50,
         height: screen.width * 0.50,
         left: "25%",
-        bottom: "10%"
+        bottom: "10%",
+        resizeMode: 'contain',
     },
     icon: {
         position: "absolute",
         width: screen.width * 0.75,
         height: screen.width * 0.75,
         left: "20%",
-        top: "20%"
+        top: "20%",
+
     }
 });
  
