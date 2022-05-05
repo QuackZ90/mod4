@@ -15,7 +15,6 @@ import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import expensesAPI from '../../api/expenses';
 // import SwipeUp from '../../components/gestureHandlerUp';
-// import { VictoryPie, VictoryTheme, VictoryAxis, VictoryLabel, VictoryChart, VictoryBar} from 'victory-native';
 // import {
 //     GestureHandlerRootView,
 //     PanGestureHandler
@@ -55,8 +54,7 @@ export default function Home({navigation}){
     }, [])
     );
 
-    const totalExpenses = calculateTotal(false, itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString memory leak issue. Display as string with thousand separator
-    //console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0);
+    const totalExpenses = calculateTotal(itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Thousand separator(String)
 
     // touchX = new Animated.Value(width/2 - circleRadius);
 
@@ -65,7 +63,7 @@ export default function Home({navigation}){
     // });
 
     let todayData = itemData.filter((item => item.date === moment().format("MMM Do YYYY") ))
-    console.log("todayData", todayData)
+    //console.log("todayData", todayData)
  
     const Item = ({ onPress, date, title, amount }) => (
         <View style={styles.item}>

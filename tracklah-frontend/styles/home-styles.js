@@ -26,12 +26,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: "#786767",
     },
-    chart: {
-        flex: 1,
-        backgroundColor: colors.mainBackground,
-        justifyContent: "center",
-        alignItems: "center"
-    },
     row:{
         width: "90%",
         maxWidth: 400,
