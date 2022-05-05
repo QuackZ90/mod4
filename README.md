@@ -10,3 +10,6 @@ Features:
 - See overview in Pie Chart/ Graph
 - Currency conversion
 - Export file
+
+Attributions:
+<a href="https://www.flaticon.com/free-stickers/economy" title="economy stickers">Economy stickers created by paulalee - Flaticon</a>

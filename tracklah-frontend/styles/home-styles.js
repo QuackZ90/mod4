@@ -12,14 +12,14 @@ const styles = StyleSheet.create({
         color: "#D3BABA"
     },
     graphIcon: {
-        width:"80%",
-        height:"80%",
-        borderColor:"red",
-        borderWidth:1,
+        width: "80%",
+        height: "80%",
+        borderColor: "red",
+        borderWidth: 1,
     },
     pieIcon: {
-        width:"80%",
-        height:"80%",
+        width: "80%",
+        height: "80%",
     },
     welcomeText: {
         fontWeight: "bold",
@@ -32,10 +32,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center"
     },
-
     row:{
-        width:"90%",
-        maxWidth:400,
+        width: "90%",
+        maxWidth: 400,
         marginVertical: "2.5%"
     }
 });
