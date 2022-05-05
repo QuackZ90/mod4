@@ -4,10 +4,11 @@ import{
     View, 
     Text,
     TouchableOpacity,
+    FlatList
     // Animated,
     // Dimensions, 
 } from 'react-native';
-import { styles, colors, cardStyles, btnStyles } from '../../styles';
+import { styles, cardStyles, btnStyles } from '../../styles';
 import {Card, calculateTotal} from '../../components';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
@@ -45,7 +46,7 @@ export default function Home({navigation}){
             .catch((err)=> {
             console.log(err)
             })
-        }
+        };
 
     useFocusEffect( 
         React.useCallback(
@@ -54,7 +55,7 @@ export default function Home({navigation}){
     }, [])
     );
 
-    const totalExpenses = calculateTotal(false,itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString memory leak issue. Display as string with thousand separator
+    const totalExpenses = calculateTotal(false, itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // better than toLocaleString memory leak issue. Display as string with thousand separator
     //console.log(`Current Month Total Expenses: $ ${totalExpenses}` ?? 0);
 
     // touchX = new Animated.Value(width/2 - circleRadius);
@@ -66,6 +67,30 @@ export default function Home({navigation}){
     let todayData = itemData.filter((item => item.date === moment().format("MMM Do YYYY") ))
     console.log("todayData", todayData)
  
+    const Item = ({ onPress, date, title, amount }) => (
+        <View style={styles.item}>
+            {/* <Text style={styles.date}>{date.slice(0,8)}</Text> */}
+            <Text style={styles.title}>{title}</Text>          
+            <Text style={styles.amount}>${amount.$numberDecimal}</Text>
+        </View>
+    );
+
+    const renderItem = ({ item }) => {
+
+        // console.log("item in renderItem", item);
+
+        return (
+            <Item 
+                onPress={()=>handleDeleteItem(item._id)}
+                date={item.date}
+                title={item.description}
+                amount={item.amount}
+            />           
+        )
+    };
+
+    todayData.sort();
+
     return(
         <View style={[styles.container,{alignItems:"center"}]}>
 
@@ -131,7 +156,14 @@ export default function Home({navigation}){
             <View style={styles.row}>
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate("List Current Month Items")}>
-                    <Card/>                    
+                    <Card>
+                        <FlatList
+                        data={todayData}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item._id}
+                        >
+                        </FlatList>
+                    </Card>                   
                 </TouchableOpacity>
             </View>
             <View style={{position:"absolute", bottom:50}}>
