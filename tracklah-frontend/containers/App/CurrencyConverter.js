@@ -22,7 +22,7 @@ export default function CurrencyConverter(){
         <SafeAreaView style={currencyStyles.container}>
             <StatusBar barStyle='dark-content'/>
             <View style={currencyStyles.view}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => alert('todo!')}>
                     <Image
                         style={currencyStyles.image}
                         source={require('../../assets/ConverterCircle.png')}
