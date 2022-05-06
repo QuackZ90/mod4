@@ -6,8 +6,8 @@ const screen = Dimensions.get('window');
 const currencyStyles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
         backgroundColor: colors.mainBackground,
+        justifyContent: "center"
     },
     view: {
         backgroundColor: colors.drawer,
