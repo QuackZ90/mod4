@@ -239,24 +239,43 @@ export default function AddExpenses({navigation}){
                         placeholder={currency}
                         searchable={true}
                         searchPlaceholder="Search..."
+                        searchPlaceholderTextColor="white"
+                        searchContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}
+                        searchTextInputStyle={{
+                            color: "white",
+                            backgroundColor: "#968484",
+                            borderWidth: 0,
+                            borderRadius: 20,
+                            fontSize: 15,
+                            fontWeight: 'normal',
+                        }}
                         listMode="MODAL"
+                        modalContentContainerStyle={{
+                            backgroundColor: "#F4E0DB",
+                        }}
+                        listItemContainerStyle={{
+                            backgroundColor: "#968484",
+                            borderRadius: 20,
+                            height: 40,
+                            margin: 5,
+                        }}
+                        listItemLabelStyle={{
+                            color: "white",
+                            fontSize: 15,
+                            fontWeight: 'normal',
+                        }}
+                        selectedItemLabelStyle={{
+                            fontWeight: "bold"
+                        }}
+                        CloseIconComponent={() => <MyCloseIcon/>}  
                         textStyle={[styles.boldtext, { margin:0, borderWidth:0 }]}
                         containerStyle={{
                             width: '33%',
                             paddingVertical:0,                                                  
                         }}
-                        listItemLabelStyle={{
-                            fontSize:15, 
-                            fontWeight:'normal',
-                        }}
-                        selectedItemLabelStyle={{
-                            fontWeight: "bold"
-                        }}
-                        searchTextInputStyle={{
-                            fontSize:15, 
-                            fontWeight:'normal',
-                        }}
-
+                        
                     />
                                         
                     <TextInput
