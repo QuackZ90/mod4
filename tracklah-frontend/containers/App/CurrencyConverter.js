@@ -4,22 +4,17 @@ import{
     SafeAreaView,
     StatusBar,
     Image,
-    View
+    View,
 } from 'react-native';
 import { ConversionInput } from '../../components/ConversionInput';
 import currencyStyles from '../../styles/CurrencyConverter-styles';
-import { Ionicons } from '@expo/vector-icons';
+import styles from '../../styles/ConversionInput-styles';
 
 export default function CurrencyConverter(){
     return(
         <SafeAreaView style={currencyStyles.container}>
             <StatusBar barStyle='dark-content'/>
-            <View>
-                <Ionicons
-                    name="repeat-outline"
-                    size={30}
-                    style={currencyStyles.icon}
-                />
+            <View style={currencyStyles.view}>
                 <Image
                     style={currencyStyles.image}
                     source={require('../../assets/ConverterCircle.png')}
@@ -27,7 +22,6 @@ export default function CurrencyConverter(){
             </View>
             <TouchableOpacity>
                 <ConversionInput
-                    style={currencyStyles.input} 
                     text="SGD"
                     value="123"
                     onButtonPress={() => alert('todo!')}
