@@ -43,12 +43,12 @@ const styles = StyleSheet.create({
         height: 51,
         width: '75%',
         borderRadius:20,
-        justifyContent:'center',
-        alignItems:'center',
-        position:'absolute',
-        bottom:120,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: 120,
     },
-    buttonText:{
+    buttonText: {
         color: colors.introText,
     },
     image1: {
