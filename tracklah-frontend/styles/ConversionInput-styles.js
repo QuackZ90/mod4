@@ -13,6 +13,11 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 2,
+        top: "10%",
+        left: "5%",
+        width: "85%",
+        justifyContent: "center",
+        alignItems: "center"
     },
     button: {
         padding: 15,

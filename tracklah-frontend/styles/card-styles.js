@@ -13,13 +13,11 @@ const cardStyles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,
     },
-
     cardContent: {
         fontWeight: "bold",
         marginHorizontal: 18,
         marginVertical: 20
     },
-
     totalExText: {
         fontSize: 58,
         fontWeight: "bold",
