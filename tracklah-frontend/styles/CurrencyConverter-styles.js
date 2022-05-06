@@ -9,7 +9,7 @@ const currencyStyles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: colors.mainBackground,
     },
-    view:{
+    view: {
         backgroundColor: colors.drawer,
         width: "90%",
         height: "90%",
@@ -30,9 +30,15 @@ const currencyStyles = StyleSheet.create({
         alignItems: "center",
         width: screen.width * 0.50,
         height: screen.width * 0.50,
-        left: "20%",
+        left: "22%",
         top: "10%",
         resizeMode: 'contain',
+    },
+    text: {
+        color: colors.introText,
+        fontSize: 13,
+        textAlign: "center",
+        top: "15%"
     },
 });
  
