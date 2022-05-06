@@ -26,13 +26,11 @@ const currencyStyles = StyleSheet.create({
     },
     image: {
         position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
         width: screen.width * 0.50,
         height: screen.width * 0.50,
         left: "22%",
-        top: "10%",
-        resizeMode: 'contain',
+        marginTop: "20%",
+        resizeMode: "contain"
     },
     text: {
         color: colors.introText,
