@@ -150,6 +150,9 @@ export default function SimpleAddExpenses({navigation}){
                             setOpen={setOpenDropDown}
                             setValue={setCat}
                             setItems={setFixedCat}
+                            searchable={true}
+                            searchPlaceholder="Search..."
+                            listMode="MODAL"
                             containerStyle={{
                                 width: '100%',
                                 borderWidth:0,

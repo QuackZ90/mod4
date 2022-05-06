@@ -43,7 +43,7 @@ export default function AddExpenses({navigation}){
         {label: 'JPY', value: 'jpy'},
     ]);
 
-    const [ exchangeRate, setExchangeRate ] = useState(1);
+    const [ exchangeRate, setExchangeRate ] = useState("1.00");
 
     const [ date, setDate ] = useState(initialDate);
     const [ isDatePickerVisible, setDatePickerVisibility ] = useState(false);
@@ -306,6 +306,8 @@ export default function AddExpenses({navigation}){
                         setOpen={setOpenDropDown}
                         setValue={setCat}
                         setItems={setFixedCat}
+                        searchable={true}
+                        searchPlaceholder="Search..."
                         listMode="MODAL"
                         containerStyle={{
                             width: '94%',
