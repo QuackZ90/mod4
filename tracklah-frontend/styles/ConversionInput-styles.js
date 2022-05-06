@@ -13,15 +13,26 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 2,
+        top: "20%",
+        left: "2.5%",
+        width: "80%",
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    containerDisabled: {
+        backgroundColor: "#B6A4A4"
     },
     button: {
         padding: 15,
+        backgroundColor: colors.listBackground,
         borderRightColor: colors.border,
         borderRightWidth: 1,
+        borderTopLeftRadius: 20,
+        borderBottomLeftRadius: 20
     },
     buttonText: {
         fontSize: 10,
-        color: colors.beige,
+        color: colors.homeText,
         fontWeight: "bold"
     },
     input: {

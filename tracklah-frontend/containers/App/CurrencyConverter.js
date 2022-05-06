@@ -4,40 +4,44 @@ import{
     SafeAreaView,
     StatusBar,
     Image,
-    View
+    View,
+    Text
 } from 'react-native';
 import { ConversionInput } from '../../components/ConversionInput';
 import currencyStyles from '../../styles/CurrencyConverter-styles';
-import { Ionicons } from '@expo/vector-icons';
+import styles from '../../styles/ConversionInput-styles';
+import moment from 'moment';
 
 export default function CurrencyConverter(){
+
+    const baseCurrency = "SGD"
+    const quoteCurrency = "USD"
+    const conversionRate = 1.8973
+
     return(
         <SafeAreaView style={currencyStyles.container}>
             <StatusBar barStyle='dark-content'/>
-            <View>
-                <Ionicons
-                    name="repeat-outline"
-                    size={30}
-                    style={currencyStyles.icon}
-                />
+            <View style={currencyStyles.view}>
                 <Image
                     style={currencyStyles.image}
                     source={require('../../assets/ConverterCircle.png')}
                 />
             </View>
-            <TouchableOpacity>
                 <ConversionInput
-                    style={currencyStyles.input} 
-                    text="SGD"
+                    text={baseCurrency}
                     value="123"
                     onButtonPress={() => alert('todo!')}
+                    onChangeText={text => console.log('text', text)}
+                    keyboardType="numeric"
                 />
                 <ConversionInput 
-                    text="USD"
+                    text={quoteCurrency}
                     value="123"
                     onButtonPress={() => alert('todo!')}
+                    editable={false}
                 />
-            </TouchableOpacity>
+            <Text style={currencyStyles.text}>{`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${moment().format("MMM Do YYYY")}.`}</Text>
+            
         </SafeAreaView>
     );
 };
