@@ -102,7 +102,7 @@ export default function AddExpenses({navigation}){
         let result = await ImagePicker.launchCameraAsync({
           mediaTypes: ImagePicker.MediaTypeOptions.All,
           allowsEditing: true,
-          aspect: [4, 3],
+          aspect: [3, 4],
           quality: 1,
         });
     
@@ -113,8 +113,6 @@ export default function AddExpenses({navigation}){
         }
     };
 
-
-    
     const [ tickBgCol, setTickBgCol ] = useState("#D3BABA");
 
     const colorTick = () => {
@@ -204,6 +202,15 @@ export default function AddExpenses({navigation}){
         setSpendEarn(false);
     };
     
+    const MyCloseIcon = () => (
+            <View style={styles.modalCloseIconStyle}>
+                <Ionicons 
+                    name="close-outline"
+                    size= {30}
+                    color='white'
+                />
+            </View>
+    );
 
     return(
         <View style={{justifyContent:"center",flex:1, paddingTop:0, backgroundColor: "#F4E0DB"}}>
@@ -308,7 +315,31 @@ export default function AddExpenses({navigation}){
                         setItems={setFixedCat}
                         searchable={true}
                         searchPlaceholder="Search..."
+                        searchPlaceholderTextColor="white"
+                        searchContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}
+                        searchTextInputStyle={{
+                            color: "white",
+                            backgroundColor: "#968484",
+                            borderWidth: 0,
+                            borderRadius: 20,
+                        }}
                         listMode="MODAL"
+                        modalContentContainerStyle={{
+                            backgroundColor: "#F4E0DB",
+                        }}
+                        listItemLabelStyle={{
+                            color: "white",
+                        }}
+                        listItemContainerStyle={{
+                            backgroundColor: "#968484",
+                            borderRadius: 20,
+                            height: 40,
+                            margin: 5,
+                        }}
+                        CloseIconComponent={() => <MyCloseIcon/>}                       
+
                         containerStyle={{
                             width: '94%',
                             borderWidth:0,
@@ -598,6 +629,14 @@ const styles = StyleSheet.create({
     modalContainer: {
         flexDirection: 'column',
 
+    },
+    modalCloseIconStyle: {
+        backgroundColor:  "#968484",
+        borderRadius: 20,
+        width: 38,
+        height: 38,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
