@@ -22,10 +22,12 @@ export default function CurrencyConverter(){
         <SafeAreaView style={currencyStyles.container}>
             <StatusBar barStyle='dark-content'/>
             <View style={currencyStyles.view}>
-                <Image
-                    style={currencyStyles.image}
-                    source={require('../../assets/ConverterCircle.png')}
-                />
+                <TouchableOpacity>
+                    <Image
+                        style={currencyStyles.image}
+                        source={require('../../assets/ConverterCircle.png')}
+                    />
+                </TouchableOpacity>
             </View>
                 <ConversionInput
                     text={baseCurrency}
@@ -41,7 +43,6 @@ export default function CurrencyConverter(){
                     editable={false}
                 />
             <Text style={currencyStyles.text}>{`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${moment().format("MMM Do YYYY")}.`}</Text>
-            
         </SafeAreaView>
     );
 };

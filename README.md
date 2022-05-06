@@ -13,3 +13,4 @@ Features:
 
 Attributions:
 <a href="https://www.flaticon.com/free-stickers/economy" title="economy stickers">Economy stickers created by paulalee - Flaticon</a>
+<a href="https://www.flaticon.com/free-icons/repeat" title="repeat icons">Repeat icons created by Pavel Kozlov - Flaticon</a>
