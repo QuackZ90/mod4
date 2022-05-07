@@ -1,8 +1,8 @@
-import{View, Text, TouchableOpacity, Alert, Dimensions} from 'react-native';
+import{View, Text, TouchableOpacity, Alert} from 'react-native';
 import { VictoryPie, VictoryLegend, VictoryLabel, VictoryTooltip } from 'victory-native';
 import React, { useContext, useState } from "react";
 import { UserContext } from '../../contexts';
-import {chartStyles, colorScale} from "../../styles/"
+import {chartStyles, colorScale, victoryStyles, height, width} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
 import { calculateCategoryTotal} from '../../components/';
 import { useFocusEffect } from '@react-navigation/native'
@@ -17,7 +17,6 @@ export default function ViewPie(){
     const [titleLabel, setTitleLabel] = useState('');
     const [selectedData, setSelectedData] = useState([]);
 
-    //Dropdown Picker useState
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(null);
     const [items, setItems] = useState([
@@ -29,7 +28,6 @@ export default function ViewPie(){
         {label: 'Last 60 Days', value: 'last60days'},
         {label: 'Last 90 Days', value: 'last90days'},
         {label: 'Current Year', value: 'currentyr'},
-
     ]);
 
     function setSelectDataByPeriod(period) {
@@ -102,37 +100,30 @@ export default function ViewPie(){
                     let defaultData = itemData.filter((item => moment(item.date,ourDateFormat).isSame(today,'month')));
                     setSelectedData(defaultData)
                     console.log(`---Default: Currenth Month Data---`,defaultData)
-
             }
-
     }
 
-    //Get All Items
     const getAllItems =  async () => {
-    await expensesAPI.get('protected/items', {
-        headers: {
-            Authorization : userLoggedIn.jwt
+        await expensesAPI.get('protected/items', {
+            headers: {
+                Authorization : userLoggedIn.jwt
+            }
+        })
+            .then((response) => {
+            setItemData(response.data.data);
+            })
+            .catch((err)=> {
+            console.log(err)
+            })
         }
-    })
-        .then((response) => {
-        setItemData(response.data.data);
-        // console.log("ViewPie Getting all items:",response.data.data)
-        })
-        .catch((err)=> {
-        console.log(err)
-        })
-    }
-
-    useFocusEffect( 
-        React.useCallback(
-        () => {
-        //console.log('UseFocusEffect: Getting all items for ViewPie...')
-        getAllItems();
-    }, [])
+        useFocusEffect( 
+            React.useCallback(
+            () => {
+            getAllItems();
+        }, [])
     );
 
     const chartTitle = `${userLoggedIn.name}'s ${titleLabel}'s Expenses`
-
     const displayData = [
         { category: "Food and \n Groceries", amount: calculateCategoryTotal('food', selectedData)},
         { category: "Transport", amount: calculateCategoryTotal('transport', selectedData) },
@@ -143,8 +134,6 @@ export default function ViewPie(){
         { category: "All Other \n Miscellaneous", amount: calculateCategoryTotal('misc', selectedData) },
     ]
 
-    const pieHeight = Dimensions.get("window").height * 0.5
-    const pieWidth = Dimensions.get("window").width;
     const filteredDisplayData = displayData.filter(item => item.amount > 0)
     const totalforPercentage = filteredDisplayData.reduce((acc, array ) => acc + (Number(array.amount) || 0 ), 0)
     const legendName = filteredDisplayData.map(legend => ( { name: legend.category } ))
@@ -158,7 +147,6 @@ export default function ViewPie(){
             category: item.category,
         }
     })
-    //console.log("----Display Data With Percentage", displayDataWithPercentage)
 
     const exportExp = () => {
         Alert.alert("Export", "Exporting..." )
@@ -166,94 +154,56 @@ export default function ViewPie(){
 
     return(
             <View style={chartStyles.chart}>
-                <Text style={{textAlign:"center", marginTop: 20}}>{chartTitle}</Text>
-                <TouchableOpacity onPress={exportExp}>
-                    <AntDesign name="export" size={24} color="black"  style={{ alignSelf: 'flex-end', position: 'relative'}} />
-                </TouchableOpacity>
-                <DropDownPicker
-                    open={open}
-                    value={value}
-                    items={items}
-                    setOpen={setOpen}
-                    setValue={setValue}
-                    setItems={setItems}
-                    onSelectItem={(item) => {
-                    setSelectedData(item.value)
-                    setSelectDataByPeriod(item.value)
-                    setTitleLabel(item.label)
-                    }}
-                    style={chartStyles.dropdownpicker}
-                />
-                <VictoryPie
-                    width={pieWidth} height={pieHeight}
-                    data={displayDataWithPercentage} 
-                    x="category" y="amount"
-                    colorScale={colorScale}
-                    radius={pieWidth*0.36}
-                    style={{
-                        data: {
-                        fillOpacity: 0.9, 
-                        stroke: "#968484", 
-                        strokeWidth: 0,
-                        },
-                        labels: {
-                        fontSize: 12, 
-                        fill: "brown",
-                        },
-                    }}
-                    labelRadius={(pieWidth*0.4)/2.8}
-                        labelComponent={<VictoryTooltip
-                        renderInPortal={false} 
-                        labelComponent={<VictoryLabel lineHeight={1.3} 
-                        /> }
-                    />} 
-                    animate={{
-                        duration: 2000,
-                        easing: "bounce",
-                        onLoad: { duration: 1000 },                       
-                      }} 
-                    // events={[
-                    // {
-                    //     target: 'data',
-                    //     eventHandlers: {
-                    //     onPressIn: () => {
-                    //         return [
-                    //         {
-                    //             target: 'labels',
-                    //             eventKey: 'all',
-                    //             mutation: () => ({active: false}),
-                    //         },
-                    //         ];
-                    //     },
-                    //     onPressOut: () => {
-                    //         return [
-                    //         {
-                    //             target: 'labels',
-                    //             mutation: () => ({active: true}),
-                                
-                    //             }
-                    //         ];
-                    //     },
-                    //     },
-                    // },
-                    // ]}
-                />
-                <View style={chartStyles.chart}>
-                    <VictoryLegend 
-                    // x={pieWidth*0.1} 
-                    y={0.22*pieHeight}
-                            // title="Categories"
-                            centerTitle
+                <View style={chartStyles.view}>
+                    <Text style={chartStyles.title}>{chartTitle}</Text>
+                    <TouchableOpacity onPress={exportExp}>
+                        <AntDesign name="export" size={24} color="black" style={chartStyles.exportIcon} />
+                    </TouchableOpacity>
+                    <DropDownPicker
+                        open={open}
+                        value={value}
+                        items={items}
+                        setOpen={setOpen}
+                        setValue={setValue}
+                        setItems={setItems}
+                        onSelectItem={(item) => {
+                        setSelectedData(item.value)
+                        setSelectDataByPeriod(item.value)
+                        setTitleLabel(item.label)
+                        }}
+                        style={chartStyles.dropdownpicker}
+                        dropDownContainerStyle={chartStyles.dropdowncontainerstyle}
+                    />
+                    <VictoryPie
+                        width={width*0.9} height={height*0.4}
+                        data={displayDataWithPercentage} 
+                        x="category" y="amount"
+                        colorScale={colorScale}
+                        radius={width*0.324}
+                        style={victoryStyles.pieStyle}
+                        labelRadius={(width*0.36)/2.8}
+                            labelComponent={<VictoryTooltip
+                            renderInPortal={false} 
+                            labelComponent={<VictoryLabel lineHeight={1.3} 
+                            /> }
+                        />} 
+                        animate={victoryStyles.chartAnimation} 
+                    />
+                    <View style={chartStyles.pielegend}>
+                        <VictoryLegend 
+                            x={width*0.054} 
+                            y={height*0.144}
                             orientation="horizontal"
-                            gutter={20}
+                            symbolSpacer={5}
+                            gutter={15}
                             itemsPerRow={3}
                             colorScale={colorScale}
                             data={legendName}
                             borderPadding={10}
-                            width={pieWidth*0.92} 
-                    />
+                            width={width*0.9} 
+                        />
+                    </View>
                 </View>
             </View>
     )
 }
-
