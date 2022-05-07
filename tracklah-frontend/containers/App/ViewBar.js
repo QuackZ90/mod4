@@ -2,7 +2,7 @@ import{View, Text, Alert, TouchableOpacity} from 'react-native';
 import {VictoryChart, VictoryBar, VictoryTheme, VictoryLabel, VictoryAxis, VictoryTooltip, Background} from 'victory-native';
 import React, {useContext, useState} from "react";
 import { UserContext} from '../../contexts';
-import {styles, barChartWidth,barChartHeight,chartStyles} from "../../styles/"
+import {width, height, chartStyles, victoryStyles} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
 import {calculateTotal} from '../../components/';
 import moment from 'moment';
@@ -14,7 +14,6 @@ export default function ViewBar(){
     const {userLoggedIn} = useContext(UserContext);
     const [itemData, setItemData] = useState([]);
 
-    //Get All Items
     const getAllItems =  async () => {
         await expensesAPI.get('protected/items', {
             headers: {
@@ -23,24 +22,19 @@ export default function ViewBar(){
         })
             .then((response) => {
             setItemData(response.data.data);
-            //console.log("ViewBar Getting all items:",response.data.data)
             })
             .catch((err)=> {
             console.log(err)
             })
         }
-    
         useFocusEffect( 
             React.useCallback(
             () => {
-            //console.log('UseFocusEffect: Getting all items for ViewBar...')
             getAllItems();
         }, [])
         );
     
-
     const chartTitle = `${userLoggedIn.name}'s Income and Expenses`
-    
     const ourDateFormat = 'MMM Do YYYY'
     const today = moment()
     const currentMthYr = moment().format("MMM-YYYY"); 
@@ -64,144 +58,116 @@ export default function ViewBar(){
         Alert.alert("Export", "Exporting..." )
     }
 
+    const renderRowName = (text) => {
+        return (
+        <View style={chartStyles.tablecell}>
+            <Text>{text}</Text>
+        </View>
+        )
+    }
+
+    const renderColumnName = (i) => {
+        return (
+            <View style={chartStyles.tablecell}>
+                <Text>{dataIncomeExpenses[i].type}</Text>
+            </View>
+        )
+    }
+    const renderCell = (i) => {
+        return (
+            <View style={chartStyles.tablecell}>
+                <Text style={chartStyles.text}>
+                    {(dataIncomeExpenses[i].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                </Text>
+            </View>
+        )
+    }
+
+    const renderBalance = (i,n) => {
+        return (
+            <View style={chartStyles.tablecell}>
+                <Text style={chartStyles.text}>
+                    {(dataIncomeExpenses[i].amount - dataIncomeExpenses[n].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                </Text>
+            </View>
+        )
+    }
+
     const displayTable = () => {
 
         return (
             <View style={chartStyles.tablecontainer}>
                 <View style={chartStyles.row}>
-                    <View style={chartStyles.tablecell}>
-                    <Text></Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text>{dataIncomeExpenses[0].type}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text>{dataIncomeExpenses[2].type}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text>{dataIncomeExpenses[4].type}</Text>
-                    </View>
+                        {renderRowName(" ")}
+                        {renderColumnName(0)}
+                        {renderColumnName(2)}
+                        {renderColumnName(4)}
                 </View>
                 <View style={chartStyles.row}>
-                    <View style={chartStyles.tablecell}>
-                    <Text>Income:</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[1].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[3].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[5].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
+                        {renderRowName("Income:")}
+                        {renderCell(1)}
+                        {renderCell(3)}
+                        {renderCell(5)}
                 </View>
                 <View style={chartStyles.row}>
-                    <View style={chartStyles.tablecell}>
-                    <Text>Expenses:</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[0].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[2].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[4].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
+                        {renderRowName("Expense:")}
+                        {renderCell(0)}
+                        {renderCell(2)}
+                        {renderCell(4)}
                 </View>
                 <View style={chartStyles.row}>
-                    <View style={chartStyles.tablecell}>
-                    <Text>Balance:</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[1].amount - dataIncomeExpenses[0].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text  style={chartStyles.text}>{(dataIncomeExpenses[3].amount - dataIncomeExpenses[2].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
-                    <View style={chartStyles.tablecell}>
-                    <Text style={chartStyles.text}>{(dataIncomeExpenses[5].amount - dataIncomeExpenses[4].amount).toFixed(2).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}</Text>
-                    </View>
+                        {renderRowName("Balance:")}
+                        {renderBalance(1,0)}
+                        {renderBalance(3,2)}
+                        {renderBalance(5,4)}
                 </View>
             </View>
         )
     }
 
     return(
-            <View style={styles.container}>
-                <Text style={{textAlign:"center", marginTop: 20}}>{chartTitle}</Text>
-                <TouchableOpacity onPress={exportIncExp}>
-                <AntDesign name="export" size={24} color="black"  style={{ 
-                                                                            height: 25, 
-                                                                            width: 25, 
-                                                                            alignSelf: 'flex-end',
-                                                                            position: 'relative',
-                                                                            right: 50,
-                                                                        }} />
-                </TouchableOpacity>
-
-                <View style={chartStyles.tablecontainer}>
-                {/* Income & Expenses Chart */}
-                    <VictoryChart 
-                    domainPadding={50} 
-                    theme={VictoryTheme.material}
-                    padding={{ left: 80, top: 20, bottom: 100, right: 80 }}
-                    width={barChartWidth} height={barChartHeight}
-                    animate={{
-                        duration: 2000,
-                        onLoad: { duration: 1000 },
-                        easing: "bounce",
-                      }}
-                    style={{
-                    background: { fill: "#D3BABA" },
-                    }}
-                    backgroundComponent={<Background/>}
-                    >
-                        <VictoryBar
-                            style={{ 
-                                data: { 
-                                    fill: ({ datum }) => 
-                                    datum.spend_vs_earn === true ? "#BFD2B5" : "#DDA4A4",
-                                } 
-                            }}
-                            data={dataIncomeExpenses}
-                            x="type"
-                            y="amount"
-                            labels={({ datum }) => `$ ${datum.amount}`}
-                            labelComponent={<VictoryTooltip dy={0} centerOffset={{ x: 25 }} renderInPortal={false} />}
-                        />
-                            <VictoryAxis
-                            tickLabelComponent={<VictoryLabel angle={-90} y={barChartHeight*0.82} />}
-                            style={{
-                                axisLabel: { padding: 85},
-                                grid: { stroke: 'none' },
-                                }}
-                            label="Month / Year"
-                            axisLabelComponent={<VictoryLabel 
-                                />}
-                            animate={{
-                                duration: 2000,
-                                easing: "bounce"
-                              }}
-                            />
-                            <VictoryAxis
-                            dependentAxis={true}
-                            axisLabelComponent={<VictoryLabel 
-                                />}
-                            label="Amount"
-                            style={{
-                                axisLabel: { padding: 50 },
-                                grid: { stroke: 'none' },
-                                }}
-                            animate={{
-                                duration: 2000,
-                                easing: "bounce"
-                                }}
-                            />
-                    </VictoryChart>
-                    </View>
-                    {displayTable()}
+            <View style={chartStyles.chart}>
+                <View style={chartStyles.view}>
+                    <Text style={chartStyles.title}>{chartTitle}</Text>
+                    <TouchableOpacity onPress={exportIncExp}>
+                    <AntDesign name="export" size={24} color="black" style={chartStyles.exportIcon} />
+                    </TouchableOpacity>
+                        <View style={chartStyles.tablecontainer}>
+                            <VictoryChart 
+                            domainPadding={50} 
+                            theme={VictoryTheme.material}
+                            padding={{ left: 80, top: 20, bottom: 100, right: 80 }}
+                            width={width *0.9} height={height*0.4}
+                            animate={victoryStyles.chartAnimation}
+                            style={victoryStyles.barChart}
+                            backgroundComponent={<Background/>}
+                            >
+                                <VictoryBar
+                                    style={victoryStyles.barDataStyle}
+                                    data={dataIncomeExpenses}
+                                    x="type"
+                                    y="amount"
+                                    labels={({ datum }) => `$ ${datum.amount}`}
+                                    labelComponent={<VictoryTooltip dy={0} centerOffset={{ x: 25 }} renderInPortal={false} />}
+                                />
+                                <VictoryAxis
+                                tickLabelComponent={<VictoryLabel angle={-90} y={height*0.315} />}
+                                style={victoryStyles.barXaxis}
+                                label="Month / Year"
+                                axisLabelComponent={<VictoryLabel />}
+                                animate={victoryStyles.barAxisAnimation}
+                                />
+                                <VictoryAxis
+                                dependentAxis={true}
+                                axisLabelComponent={<VictoryLabel />}
+                                label="Amount"
+                                style={victoryStyles.barYaxis}
+                                animate={victoryStyles.barAxisAnimation}
+                                />
+                            </VictoryChart>
+                        </View>
+                        {displayTable()}
+                </View>
             </View>
     )
 }

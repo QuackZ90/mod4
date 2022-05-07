@@ -3,7 +3,7 @@ import styles from "./home-styles";
 import cardStyles from "./card-styles";
 import btnStyles from "./button-styles";
 import colorScale from "./piecolor-style";
-import viewChartStyles, {barChartHeight, barChartWidth, chartStyles} from "./viewchart-styles";
+import {height, width, chartStyles, victoryStyles} from "./viewchart-styles";
 
 export {
     colors, 
@@ -11,8 +11,8 @@ export {
     cardStyles, 
     btnStyles,
     colorScale,
-    viewChartStyles,
-    barChartHeight,
-    barChartWidth,
-    chartStyles
+    height,
+    width,
+    chartStyles,
+    victoryStyles,
 };
