@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/preset-env": "^7.1.6",
     "@babel/preset-typescript": "^7.16.7",
+    "@onytgvx/react-native-aws3": "^0.0.13",
     "@react-native-community/datetimepicker": "^6.1.2",
     "@react-navigation/drawer": "^6.4.1",
     "@react-navigation/material-top-tabs": "^6.2.1",
@@ -24,6 +25,7 @@
     "expo": "~44.0.0",
     "expo-image-picker": "~12.0.1",
     "expo-status-bar": "~1.2.0",
+    "form-data": "^4.0.0",
     "moment": "^2.29.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",

@@ -8,6 +8,10 @@ import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+import { RNS3 } from "@onytgvx/react-native-aws3";
+import { S3ACCESSKEY, S3SECRETKEY } from "@env";
+
+const FormData = require('form-data');
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -77,12 +81,55 @@ export default function AddExpenses({navigation}){
     const toggleSwitchSE = () => setSpendEarn(previousState => !previousState);
 
     const [image, setImage] = useState(null);
+    const [imageURL, setImageURL] = useState(null);
     const [imgModalVisible, setImgModalVisible] = useState(false);
+
+    const uploadToS3 = async (imageUri) => {
+
+        const file = {
+            uri: imageUri,
+            name: `${new Date().getTime()}.jpg`,
+            type: "image/jpeg"
+        };
+
+        console.log("file details in uploadToS3", file);
+
+        const s3options = {
+            keyPrefix: "",
+            bucket: "tracklah",
+            region: "us-east-1",
+            accessKey: S3ACCESSKEY,
+            secretKey: S3SECRETKEY,
+            successActionStatus: 201,
+        };
+
+        let aws3URL;
+
+        await RNS3.put(file, s3options)
+            .then(response => {
+
+                console.log(response);
+                if (response.status !== 201)
+                    throw new Error("Failed to upload image to S3");
+                else {
+                    aws3URL = response.body.postResponse.location;
+                    console.log(
+                    "Successfully uploaded image to s3. s3 bucket url: ",
+                    response.body.postResponse.location
+                    );                    
+                }
+            })
+            .catch(error => {
+                console.log(error);
+            });
+        
+        return aws3URL;
+    };
 
     const pickImage = async () => {
         // This function is to allow use to pick image from their library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [4, 3],
           quality: 1,
@@ -103,7 +150,7 @@ export default function AddExpenses({navigation}){
         console.log("camera permission", permission);
 
         let result = await ImagePicker.launchCameraAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          mediaTypes: ImagePicker.MediaTypeOptions.Images,
           allowsEditing: true,
           aspect: [3, 4],
           quality: 1,
@@ -113,7 +160,7 @@ export default function AddExpenses({navigation}){
     
         if (!result.cancelled) {
           setImage(result.uri);
-        }
+        };
     };
 
     const [ tickBgCol, setTickBgCol ] = useState("#D3BABA");
@@ -151,13 +198,17 @@ export default function AddExpenses({navigation}){
     },[category]);
 
     const handleSubmit = async () => {
+
+        let awsURL = await uploadToS3(image);
+        console.log("imageURL in handleSubmit", awsURL);
+
         item = {
             amount: amount,
             date: date,
             time: time,
             description: description,
             category: category,
-            receipt_image: null,
+            receipt_image: awsURL,
             auto_recurring: autorecurring,
             spend_vs_earn: spendEarn,
         }
@@ -201,6 +252,7 @@ export default function AddExpenses({navigation}){
         setTime(moment().format("hh:mm a"))
         setDes(null);
         setCat(null);
+        setImageURL(null);
         setAutoRecur(false);
         setSpendEarn(false);
     };
