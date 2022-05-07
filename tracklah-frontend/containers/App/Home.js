@@ -107,7 +107,7 @@ export default function Home({navigation}){
                 <TouchableOpacity
                     style={btnStyles.button}
                     title="Graph Chart"
-                    onPress={()=>navigation.navigate("Income and Expenses Bar Chart")}
+                    onPress={()=>navigation.navigate("Income and Expenses Chart")}
                     onLayout={layoutEvent =>
                         setButtonIconSize(layoutEvent.nativeEvent.layout.width*0.75)
                       }
