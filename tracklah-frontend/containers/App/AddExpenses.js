@@ -1,4 +1,4 @@
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert, Modal, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, Switch, Alert, Modal, Image, Dimensions } from 'react-native';
 import { useState, useEffect } from 'react';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -8,6 +8,9 @@ import { useContext } from 'react';
 import { UserContext } from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 export default function AddExpenses({navigation}){
 
@@ -239,24 +242,43 @@ export default function AddExpenses({navigation}){
                         placeholder={currency}
                         searchable={true}
                         searchPlaceholder="Search..."
+                        searchPlaceholderTextColor="white"
+                        searchContainerStyle={{
+                            borderBottomWidth: 0,
+                        }}
+                        searchTextInputStyle={{
+                            color: "white",
+                            backgroundColor: "#968484",
+                            borderWidth: 0,
+                            borderRadius: 20,
+                            fontSize: 15,
+                            fontWeight: 'normal',
+                        }}
                         listMode="MODAL"
+                        modalContentContainerStyle={{
+                            backgroundColor: "#F4E0DB",
+                        }}
+                        listItemContainerStyle={{
+                            backgroundColor: "#968484",
+                            borderRadius: 20,
+                            height: 40,
+                            margin: 5,
+                        }}
+                        listItemLabelStyle={{
+                            color: "white",
+                            fontSize: 15,
+                            fontWeight: 'normal',
+                        }}
+                        selectedItemLabelStyle={{
+                            fontWeight: "bold"
+                        }}
+                        CloseIconComponent={() => <MyCloseIcon/>}  
                         textStyle={[styles.boldtext, { margin:0, borderWidth:0 }]}
                         containerStyle={{
                             width: '33%',
                             paddingVertical:0,                                                  
                         }}
-                        listItemLabelStyle={{
-                            fontSize:15, 
-                            fontWeight:'normal',
-                        }}
-                        selectedItemLabelStyle={{
-                            fontWeight: "bold"
-                        }}
-                        searchTextInputStyle={{
-                            fontSize:15, 
-                            fontWeight:'normal',
-                        }}
-
+                        
                     />
                                         
                     <TextInput
@@ -418,59 +440,78 @@ export default function AddExpenses({navigation}){
                             }}
                         >
                             <View style={styles.modalContainer}>
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    style={styles.modalButton}
-                                    onPress={pickImage}>
-                                        
-                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
-                                        Select Receipt Image from Gallery
-                                    </Text>
-                                    
+                                <View style={[styles.pane, {alignItems:'center', paddingTop:5, paddingBottom:50}]}>
+                                    <TouchableOpacity onPress={()=>setImgModalVisible(!imgModalVisible)}>
+                                        <Ionicons 
+                                            name="chevron-down-outline"
+                                            size= {20}
+                                            color='white'
+                                        />
+                                    </TouchableOpacity>
 
-                                </TouchableOpacity>
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    style={styles.modalButton}
-                                    onPress={snapImage}>
+                                    <View style={styles.rowstretch}>
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            style={styles.modalButton}
+                                            onPress={pickImage}>
+                                                
+                                            <Text style={[styles.boldtext, {textAlign:'center', fontSize:18}]}>
+                                                Gallery
+                                            </Text>
+                                            
 
-                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
-                                        Use Camera to Capture Receipt Image
-                                    </Text>
-                                    
-                                </TouchableOpacity>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            style={styles.modalButton}
+                                            onPress={snapImage}>
 
-                                <View style={{width: 300, height: 300, backgroundColor:'transparent', borderWidth:1, alignSelf:'center'}}>
-                                    {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
-                                </View>          
+                                            <Text style={[styles.boldtext, {textAlign:'center', fontSize:18}]}>
+                                                Camera
+                                            </Text>
+                                            
+                                        </TouchableOpacity>
+                                    </View>
 
 
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    style={[styles.modalButton]}
-                                    onPress={() => {
-                                        setImgModalVisible(!imgModalVisible);
-                                        if(image === null){
-                                            Alert.alert("No image selected.");
-                                        }
-                                    }}>
-                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
-                                        OK
-                                    </Text>                                    
-                                </TouchableOpacity>
+                                    <View style={{width: 300, height: 300, backgroundColor:'#C4C4C4', alignSelf:'center', borderRadius:50, margin:30}}>
+                                        {image && <Image source={{ uri: image }} style={{ width: 300, height: 300 }} />}
+                                    </View>   
 
-                                <TouchableOpacity
-                                    activeOpacity={1}
-                                    style={[styles.modalButton]}
-                                    onPress={() => {
-                                        setImage(null);
-                                        setImgModalVisible(!imgModalVisible);
-                                        console.log("cancel button clicked", image);                                     
-                                    }}>
-                                    <Text style={[styles.boldtext, {textAlign:'center'}]}>
-                                        Cancel
-                                    </Text>                                    
-                                </TouchableOpacity>
+
+                                    <View style={styles.rowstretch}>       
+
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            style={styles.modalButton}
+                                            onPress={() => {
+                                                setImgModalVisible(!imgModalVisible);
+                                                if(image === null){
+                                                    Alert.alert("No image selected.");
+                                                }
+                                            }}>
+                                            <Text style={[styles.boldtext, {textAlign:'center', fontSize:18}]}>
+                                                OK
+                                            </Text>                                    
+                                        </TouchableOpacity>
+
+                                        <TouchableOpacity
+                                            activeOpacity={1}
+                                            style={styles.modalButton}
+                                            onPress={() => {
+                                                setImage(null);
+                                                setImgModalVisible(!imgModalVisible);
+                                                console.log("cancel button clicked", image);                                     
+                                            }}>
+                                            <Text style={[styles.boldtext, {textAlign:'center', fontSize:18}]}>
+                                                Cancel
+                                            </Text>                                    
+                                        </TouchableOpacity>
+
+                                    </View>
+
+                                </View>
+                                
                             </View>
                             
                         </Modal>
@@ -551,6 +592,7 @@ const styles = StyleSheet.create({
         paddingVertical: 0,
         borderRadius: 20,
         zIndex:0,
+        minHeight: 0.8*windowHeight,
     },
     rowstretch: {
         flexDirection: 'row',
@@ -622,13 +664,15 @@ const styles = StyleSheet.create({
     },
     modalButton:{
         backgroundColor: "#D3BABA",
-        padding: 10,
         margin: 10,
         borderRadius: 20,
+        flex:1,
     },
     modalContainer: {
         flexDirection: 'column',
-
+        backgroundColor: '#F4E0DB',
+        minHeight: windowHeight,
+        paddingTop: 20,
     },
     modalCloseIconStyle: {
         backgroundColor:  "#968484",

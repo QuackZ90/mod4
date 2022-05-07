@@ -113,6 +113,16 @@ export default function SimpleAddExpenses({navigation}){
         setDes(null);
         setCat(null);
     };
+
+    const MyCloseIcon = () => (
+        <View style={styles.modalCloseIconStyle}>
+            <Ionicons 
+                name="close-outline"
+                size= {30}
+                color='white'
+            />
+        </View>
+    );
     
 
     return(
@@ -152,7 +162,30 @@ export default function SimpleAddExpenses({navigation}){
                             setItems={setFixedCat}
                             searchable={true}
                             searchPlaceholder="Search..."
+                            searchPlaceholderTextColor="white"
+                            searchContainerStyle={{
+                                borderBottomWidth: 0,
+                            }}
+                            searchTextInputStyle={{
+                                color: "white",
+                                backgroundColor: "#968484",
+                                borderWidth: 0,
+                                borderRadius: 20,
+                            }}
                             listMode="MODAL"
+                            modalContentContainerStyle={{
+                                backgroundColor: "#F4E0DB",
+                            }}
+                            listItemLabelStyle={{
+                                color: "white",
+                            }}
+                            listItemContainerStyle={{
+                                backgroundColor: "#968484",
+                                borderRadius: 20,
+                                height: 40,
+                                margin: 5,
+                            }}
+                            CloseIconComponent={() => <MyCloseIcon/>}
                             containerStyle={{
                                 width: '100%',
                                 borderWidth:0,
@@ -282,5 +315,13 @@ const styles = StyleSheet.create({
         zIndex: 10,
         top: 25,
 
+    },
+    modalCloseIconStyle: {
+        backgroundColor:  "#968484",
+        borderRadius: 20,
+        width: 38,
+        height: 38,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

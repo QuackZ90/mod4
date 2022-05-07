@@ -6,10 +6,10 @@ const screen = Dimensions.get('window');
 const currencyStyles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
         backgroundColor: colors.mainBackground,
+        justifyContent: "center"
     },
-    view:{
+    view: {
         backgroundColor: colors.drawer,
         width: "90%",
         height: "90%",
@@ -26,13 +26,17 @@ const currencyStyles = StyleSheet.create({
     },
     image: {
         position: "absolute",
-        justifyContent: "center",
-        alignItems: "center",
         width: screen.width * 0.50,
         height: screen.width * 0.50,
-        left: "20%",
-        top: "10%",
-        resizeMode: 'contain',
+        left: "22%",
+        marginTop: "20%",
+        resizeMode: "contain"
+    },
+    text: {
+        color: colors.introText,
+        fontSize: 13,
+        textAlign: "center",
+        top: "15%"
     },
 });
  
