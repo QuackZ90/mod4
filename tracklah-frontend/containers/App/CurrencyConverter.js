@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import{
     TouchableOpacity,
     SafeAreaView,
@@ -11,12 +11,45 @@ import { ConversionInput } from '../../components/ConversionInput';
 import currencyStyles from '../../styles/CurrencyConverter-styles';
 import styles from '../../styles/ConversionInput-styles';
 import moment from 'moment';
+import currencyAPI from '../../api/currencyAPI';
+import { UserContext} from '../../contexts';
+import { CURRENCY_KEY } from '@env';
 
+
+ 
 export default function CurrencyConverter(){
 
     const baseCurrency = "SGD"
-    const quoteCurrency = "USD"
+    // const quoteCurrency = "USD"
     const conversionRate = 1.8973
+
+    const {userLoggedIn} = useContext(UserContext);
+    const [currencyRate, setCurrencyRate] = useState([]);
+    const [quoteCurrency, setQuoteCurrency] = useState([]);
+
+    const getCurrencyRates =  async (base, symbols) => {
+        await currencyAPI.get(`latest?access_key=${CURRENCY_KEY}& base = USD
+        & symbols = GBP,JPY,EUR`, {
+            headers: {
+                // Authorization : userLoggedIn.jwt,
+            }
+        })
+            .then((response) => {
+            setCurrencyRate(response.data);
+            console.log(response.data);
+            })
+            .catch((err)=> {
+            console.log(err)
+            })
+        };
+
+    useEffect( 
+        React.useCallback(
+        () => {
+        getCurrencyRates();
+    }, [])
+    );
+
 
     return(
         <SafeAreaView style={currencyStyles.container}>
