@@ -24,8 +24,9 @@ export default function AppNav(){
     return(
         <AppStack.Navigator 
             tabBar={()=>null} 
-            initialRouteName="home" 
+            initialRouteName="home"
             screenOptions={{
+                    headerShown: false,
                     headerStyle: { 
                         backgroundColor: colors.mainBackground
                     },
@@ -65,6 +66,7 @@ export default function AppNav(){
         >
             <AppStack.Screen name = "Overview" component = {Home} 
                 options={{ 
+                    headerShown: false,
                     drawerIcon: ({focused}) => ( <Ionicons name="home-outline" size={24} color={focused ? colors.homeText : '#ccc'} /> )
                 }}
             />

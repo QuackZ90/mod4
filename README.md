@@ -11,6 +11,11 @@ Features:
 - Currency conversion
 - Export file
 
+Improvements to-do:
+- Refactor of codes
+- Refactor of CSS (rem + Tailwind) etc
+- Learnt about different dependencies (eg yarn vs expo)
+
 Attributions:
 <a href="https://www.flaticon.com/free-stickers/economy" title="economy stickers">Economy stickers created by paulalee - Flaticon</a>
 <a href="https://www.flaticon.com/free-icons/repeat" title="repeat icons">Repeat icons created by Pavel Kozlov - Flaticon</a>
