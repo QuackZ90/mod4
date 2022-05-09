@@ -11,6 +11,8 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
+hooks/
+components/CurrentMth.js
 
 # macOS
 .DS_Store
