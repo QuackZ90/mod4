@@ -29,24 +29,24 @@ const styles = StyleSheet.create({
         position: 'absolute',
         justifyContent: 'center',
         width: '30%',
-        bottom: 200
+        bottom: '22%'
     },
     arrow: {
         position: 'absolute',
         justifyContent: 'center',
         width: '30%',
-        bottom: 120
+        bottom: '15%'
     },
     bottomButton:{
         flex: 1,
         backgroundColor: colors.drawer,
         height: 51,
         width: '75%',
-        borderRadius:20,
+        borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 120,
+        bottom: '7%',
     },
     buttonText: {
         color: colors.introText,
