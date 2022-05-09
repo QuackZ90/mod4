@@ -9,6 +9,8 @@ import { useFocusEffect } from '@react-navigation/native'
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
 import expensesAPI from '../../api/expenses'
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 export default function ViewPie(){
 
@@ -148,15 +150,43 @@ export default function ViewPie(){
         }
     })
 
-    const exportExp = () => {
-        Alert.alert("Export", "Exporting..." )
-    }
+    const convertPieToCSV = (objArray) => {
+        let array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+        let str = "";
+        let headerLine = "Category, Amount";
+        str += headerLine + "\r\n";
+    
+        for (let i = 0; i < array.length; i++) {
+          let line = "";
+    
+          for (let index in array[i]) {
+            if (line != "") line += ",";
+            line += array[i][index];
+          }
+          str += line + "\r\n";
+        }
+        return str;
+      };
+    
+    const exportPie = async () => {
+        console.log("Exporting Data");
+        let fileName = "Expense_Breakdown_Data";
+        let fileUri = FileSystem.documentDirectory + fileName + ".csv";
+        let txtFile = convertPieToCSV(displayData);
+    
+        await FileSystem.writeAsStringAsync(fileUri, txtFile, {
+          encoding: FileSystem.EncodingType.UTF8,
+        });
+    
+        await Sharing.shareAsync(fileUri);
+        await FileSystem.deleteAsync(fileUri);
+      };
 
     return(
             <View style={chartStyles.chart}>
                 <View style={chartStyles.view}>
                     <Text style={chartStyles.title}>{chartTitle}</Text>
-                    <TouchableOpacity onPress={exportExp}>
+                    <TouchableOpacity onPress={exportPie}>
                         <AntDesign name="export" size={24} color="black" style={chartStyles.exportIcon} />
                     </TouchableOpacity>
                     <DropDownPicker

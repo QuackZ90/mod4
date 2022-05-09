@@ -6,8 +6,10 @@ import {width, height, chartStyles, victoryStyles} from "../../styles/"
 import { AntDesign } from '@expo/vector-icons';
 import {calculateTotal} from '../../components/';
 import moment from 'moment';
-import expensesAPI from '../../api/expenses'
-import { useFocusEffect } from '@react-navigation/native'
+import expensesAPI from '../../api/expenses';
+import { useFocusEffect } from '@react-navigation/native';
+import * as FileSystem from "expo-file-system";
+import * as Sharing from "expo-sharing";
 
 export default function ViewBar(){
 
@@ -54,9 +56,34 @@ export default function ViewBar(){
         { type: `${currentMthYr}`, amount: Number(calculateTotal(currentMthData,true)), spend_vs_earn: true},
     ]
 
-    const exportIncExp = () => {
-        Alert.alert("Export", "Exporting..." )
-    }
+    const convertToCSV = (objArray) => {
+        var array = typeof objArray != "object" ? JSON.parse(objArray) : objArray;
+        var str = "";
+        var headerLine = "Month, Amount, Income";
+        str += headerLine + "\r\n";
+        for (var i = 0; i < array.length; i++) {
+            var line = "";
+            for (var index in array[i]) {
+            if (line != "") line += ",";
+            line += array[i][index];
+            }
+            str += line + "\r\n";
+        }
+        return str;
+        };
+        
+    const exportFile = async () => {
+        console.log("first");
+        let fileName = "Income_Expense_Data_";
+        let fileUri = FileSystem.documentDirectory + fileName + ".csv";
+        let txtFile = convertToCSV(dataIncomeExpenses);
+        await FileSystem.writeAsStringAsync(fileUri, txtFile, {
+            encoding: FileSystem.EncodingType.UTF8,
+        });
+        await Sharing.shareAsync(fileUri);
+        await FileSystem.deleteAsync(fileUri);
+        };
+
 
     const renderRowName = (text) => {
         return (
@@ -129,7 +156,7 @@ export default function ViewBar(){
             <View style={chartStyles.chart}>
                 <View style={chartStyles.view}>
                     <Text style={chartStyles.title}>{chartTitle}</Text>
-                    <TouchableOpacity onPress={exportIncExp}>
+                    <TouchableOpacity onPress={exportFile}>
                     <AntDesign name="export" size={24} color="black" style={chartStyles.exportIcon} />
                     </TouchableOpacity>
                         <View style={chartStyles.tablecontainer}>
