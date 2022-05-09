@@ -22,9 +22,15 @@ export default function MainNav(){
         <MainStack.Navigator initialRouteName="intro" screenOptions={{
             headerShown:false,
         }}>
-            <MainStack.Screen name = "intro" component = {IntroNav} />
-            <MainStack.Screen name = "account" component = {AccountNav} />
-            <MainStack.Screen name = "app" component = {AppNav} />
+            <MainStack.Screen name="intro" component={IntroNav} screenOptions={{
+            headerShown:false,
+        }}/>
+            <MainStack.Screen name="account" component={AccountNav} screenOptions={{
+            headerShown:false,
+        }}/>
+            <MainStack.Screen name="app" component={AppNav} screenOptions={{
+            headerShown:false,
+        }}/>
     
         </MainStack.Navigator>
     </UserContext.Provider>

@@ -1,7 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import colors from './colors';
 
-const screen = Dimensions.get('window');
+export const height = Dimensions.get("window").height;
+export const width = Dimensions.get("window").width;
 
 const currencyStyles = StyleSheet.create({
     container: {
@@ -22,14 +23,15 @@ const currencyStyles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,
         top: "5%",
-        left: "5%"
+        left: "5%",
+        top: height * 0.1
     },
     image: {
         position: "absolute",
-        width: screen.width * 0.50,
-        height: screen.width * 0.50,
+        width: width * 0.50,
+        height: height * 0.50,
         left: "22%",
-        marginTop: "20%",
+        marginBottom: height * 0.1,
         resizeMode: "contain"
     },
     text: {

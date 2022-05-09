@@ -1,5 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import colors from './colors';
+
+export const height = Dimensions.get("window").height;
+export const width = Dimensions.get("window").width;
 
 const cardStyles = StyleSheet.create({
     card: {
