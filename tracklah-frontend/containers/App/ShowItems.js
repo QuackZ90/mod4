@@ -80,30 +80,31 @@ export default function ThisMonthItems({navigation}){
     }, [])
     );
 
-    const Item = ({ onPress, date, title, amount }) => (
-        <View style={styles.item}>
+    const Item = ({ onPressDelete, date, title, amount, onPress }) => (
+        <TouchableOpacity style={styles.item} onPress={onPress}>
             {/* <Text style={styles.date}>{date.slice(0,8)}</Text> */}
             <Text style={styles.title}>{title}</Text>          
             <Text style={styles.amount}>${amount.$numberDecimal}</Text>
-            <TouchableOpacity style={styles.trashcontainer} onPress={onPress}>
+            <TouchableOpacity style={styles.trashcontainer} onPress={onPressDelete}>
                     <Ionicons 
                         name="trash-outline"
                         size= {20}
                     />
             </TouchableOpacity>
-        </View>
+        </TouchableOpacity>
     );
 
     const renderItem = ({ item }) => {
 
-        // console.log("item in renderItem", item);
+        console.log("item in renderItem", item);
 
         return (
             <Item 
-                onPress={()=>handleDeleteItem(item._id)}
+                onPressDelete={()=>handleDeleteItem(item._id)}
                 date={item.date}
                 title={item.description}
                 amount={item.amount}
+                onPress={()=>navigation.navigate("Show One Item", item)}
             />           
         )
     };

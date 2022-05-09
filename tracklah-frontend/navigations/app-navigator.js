@@ -5,14 +5,17 @@ import Home from "../containers/App/Home";
 import ViewPie from "../containers/App/ViewPie";
 import ViewBar from "../containers/App/ViewBar";
 import ShowItems from "../containers/App/ShowItems";
+import ShowOneItem from "../containers/App/ShowOneItem";
 import { colors } from '../styles'
 import AmendUserData from "../containers/Account/UserData";
 import CurrencyConverter from "../containers/App/CurrencyConverter";
 import { Ionicons, AntDesign, Entypo } from '@expo/vector-icons';
 import { UserContext, defaultUserLoggedIn} from "../contexts";
 import { useContext } from "react";
+import { data } from "currency-codes";
 
 const AppStack = createDrawerNavigator();
+const itemData = { value: 'hello'};
 
 export default function AppNav(){
 
@@ -78,6 +81,16 @@ export default function AppNav(){
                     drawerItemStyle: { display: 'none' }
                 }} 
             />
+
+            <AppStack.Screen name = "Show One Item" 
+                // component={ShowOneItem}
+                // initialParams={itemData}
+                options={{
+                    drawerItemStyle: { display: 'none' }
+                }} 
+            >
+            {props => <ShowOneItem {...props} extraData={itemData} />}
+            </AppStack.Screen>
             <AppStack.Screen name = "List Current Month Items" component = {ShowItems} 
                 options={{ 
                     drawerIcon: ({focused}) => ( <Ionicons name="list-outline" size={24} color={focused ? colors.homeText : '#ccc'} /> )
