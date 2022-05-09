@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
         shadowRadius: 2,
         top: "20%",
         left: "2.5%",
-        width: "80%",
-        justifyContent: "center",
+        width: width * 0.8,
+        justifyContent: "flex-start",
         alignItems: "center"
     },
     containerDisabled: {
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         borderRightColor: colors.border,
         borderRightWidth: 1,
         borderTopLeftRadius: 20,
-        borderBottomLeftRadius: 20
+        borderBottomLeftRadius: 20,
     },
     buttonText: {
         fontSize: 10,
@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         padding: 10,
+        right: width * 0.3,      
     }
 });
 
