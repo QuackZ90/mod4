@@ -10,6 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { RNS3 } from "@onytgvx/react-native-aws3";
 import { S3ACCESSKEY, S3SECRETKEY } from "@env";
+import cc from 'currency-codes';
 
 const FormData = require('form-data');
 
@@ -37,18 +38,23 @@ export default function AddExpenses({navigation}){
     const [ amount, setAmount ] = useState(null);
     const [ currency, setCurr ] = useState(defaultCurr);
     const [ openCurrDropDown, setOpenCurrDropDown ] = useState(false);
-    const [ fixedCurr, setFixedCurr ] = useState([
-        {label: 'SGD', value: 'sgd'},
-        {label: 'USD', value: 'usd'},
-        {label: 'MYR', value: 'myr'},
-        {label: 'THB', value: 'thb'},
-        {label: 'AUD', value: 'aud'},
-        {label: 'CNY', value: 'cny'},
-        {label: 'EUR', value: 'eur'},
-        {label: 'TWD', value: 'twd'},
-        {label: 'GBP', value: 'gbp'},
-        {label: 'JPY', value: 'jpy'},
-    ]);
+    const [ fixedCurr, setFixedCurr ] = useState(
+        cc.codes().map(curr=>{
+            return{label:curr,value:curr}
+        })
+        // [
+        // {label: 'SGD', value: 'sgd'},
+        // {label: 'USD', value: 'usd'},
+        // {label: 'MYR', value: 'myr'},
+        // {label: 'THB', value: 'thb'},
+        // {label: 'AUD', value: 'aud'},
+        // {label: 'CNY', value: 'cny'},
+        // {label: 'EUR', value: 'eur'},
+        // {label: 'TWD', value: 'twd'},
+        // {label: 'GBP', value: 'gbp'},
+        // {label: 'JPY', value: 'jpy'},
+        // ]
+    );
 
     const [ exchangeRate, setExchangeRate ] = useState("1.00");
 
