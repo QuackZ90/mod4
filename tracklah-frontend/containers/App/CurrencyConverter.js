@@ -5,57 +5,56 @@ import{
     StatusBar,
     Image,
     View,
-    Text
+    Text,
+    Dimensions
 } from 'react-native';
 import { ConversionInput } from '../../components/ConversionInput';
 import currencyStyles from '../../styles/CurrencyConverter-styles';
 import styles from '../../styles/ConversionInput-styles';
 import moment from 'moment';
-import currencyAPI from '../../api/currencyAPI';
-import { UserContext} from '../../contexts';
-import { CURRENCY_KEY } from '@env';
+import { UserContext } from '../../contexts';
+import getCurrencyRates from '../../actions/ConvertCurrency';
 
+export const height = Dimensions.get("window").height;
+export const width = Dimensions.get("window").width;
 
  
 export default function CurrencyConverter(){
 
-    const baseCurrency = "SGD"
-    // const quoteCurrency = "USD"
-    const conversionRate = 1.8973
-
-    const {userLoggedIn} = useContext(UserContext);
+    const {userLoggedIn} = useContext(UserContext);    
+    
+    const [baseCurrency, setBaseCurrency] = useState(userLoggedIn.defaultCurrency);
     const [currencyRate, setCurrencyRate] = useState([]);
-    const [quoteCurrency, setQuoteCurrency] = useState([]);
-
-    const getCurrencyRates =  async (base, symbols) => {
-        await currencyAPI.get(`latest?access_key=${CURRENCY_KEY}& base = USD
-        & symbols = GBP,JPY,EUR`, {
-            headers: {
-                // Authorization : userLoggedIn.jwt,
-            }
-        })
-            .then((response) => {
-            setCurrencyRate(response.data);
-            console.log(response.data);
-            })
-            .catch((err)=> {
-            console.log(err)
-            })
-        };
+    const [quoteCurrency, setQuoteCurrency] = useState(userLoggedIn.defaultCurrency);
+    const [baseAmount, setBaseAmount] = useState(123);
+    const [quoteAmount, setQuoteAmount] = useState(123)
 
     useEffect( 
-        React.useCallback(
         () => {
-        getCurrencyRates();
-    }, [])
-    );
+            if (baseCurrency === quoteCurrency){
+                setCurrencyRate(1);
+            }else{
+                console.log('base currency',baseCurrency);
+                console.log('quote currency', quoteCurrency);
+                getCurrencyRates(baseCurrency, quoteCurrency).then(response=>{
+                console.log('conversion rate', response[quoteCurrency]);
+                setCurrencyRate(response[quoteCurrency])
+                }).catch(err=>{
+                    console.log(err);
+                });
+            }
+    }, [quoteCurrency, baseCurrency]);
 
 
     return(
         <SafeAreaView style={currencyStyles.container}>
             <StatusBar barStyle='dark-content'/>
             <View style={currencyStyles.view}>
-                <TouchableOpacity onPress={() => alert('todo!')}>
+                <TouchableOpacity onPress={() =>{
+                    const temp = baseCurrency;
+                    setBaseCurrency(quoteCurrency);
+                    setQuoteCurrency(temp);
+                }}>
                     <Image
                         style={currencyStyles.image}
                         source={require('../../assets/ConverterCircle.png')}
@@ -63,19 +62,27 @@ export default function CurrencyConverter(){
                 </TouchableOpacity>
             </View>
                 <ConversionInput
-                    text={baseCurrency}
-                    value="123"
-                    onButtonPress={() => alert('todo!')}
+                    style={{
+                        right: width * 0.2,
+                    }}                
+                    amount={baseAmount}
+                    setAmount = {setBaseAmount}
                     onChangeText={text => console.log('text', text)}
                     keyboardType="numeric"
+                    currency = {baseCurrency}
+                    setCurrency = {setBaseCurrency}
                 />
                 <ConversionInput 
-                    text={quoteCurrency}
-                    value="123"
-                    onButtonPress={() => alert('todo!')}
+                    style={{
+                        right: width * 0.2,
+                    }}                                
+                    amount={quoteAmount}
+                    setAmount = {setQuoteAmount}
                     editable={false}
+                    currency ={quoteCurrency}
+                    setCurrency = {setQuoteCurrency}
                 />
-            <Text style={currencyStyles.text}>{`1 ${baseCurrency} = ${conversionRate} ${quoteCurrency} as of ${moment().format("MMM Do YYYY")}.`}</Text>
+            <Text style={currencyStyles.text}>{`1 ${baseCurrency} = ${currencyRate} ${quoteCurrency} as of ${moment().format("MMM Do YYYY")}.`}</Text>
         </SafeAreaView>
     );
 };

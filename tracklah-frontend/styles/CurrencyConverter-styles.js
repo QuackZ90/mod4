@@ -30,8 +30,7 @@ const currencyStyles = StyleSheet.create({
         position: "absolute",
         width: width * 0.50,
         height: height * 0.50,
-        left: "22%",
-        marginBottom: height * 0.1,
+        left: width * 0.2,
         resizeMode: "contain"
     },
     text: {
