@@ -1,5 +1,8 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import colors from './colors';
+
+export const height = Dimensions.get("window").height;
+export const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
     container: {
@@ -25,6 +28,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 20,
         color: "#786767",
+        marginTop: height * 0.1
     },
     row:{
         width: "90%",

@@ -1,5 +1,8 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 import colors from './colors';
+
+export const height = Dimensions.get("window").height;
+export const width = Dimensions.get("window").width;
 
 const createLoginStyles = StyleSheet.create({
     container: {
@@ -27,11 +30,12 @@ const createLoginStyles = StyleSheet.create({
 
     inputBox:{
         backgroundColor: colors.drawer,
-        height:34,
-        width:'75%',
-        margin:5,
-        borderRadius:20,
-        paddingHorizontal:15,
+        height: 35,
+        width: '75%',
+        margin: 5,
+        borderRadius: 20,
+        paddingHorizontal: 15,
+        top: height * 0.25
     },
 
     inputText:{
@@ -48,7 +52,7 @@ const createLoginStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: 43,
+        bottom: height * 0.2,
     },
 
     validInput:{
