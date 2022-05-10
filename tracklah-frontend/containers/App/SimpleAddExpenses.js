@@ -229,7 +229,7 @@ export default function SimpleAddExpenses({navigation}){
                     <TextInput
                         multiline
                         numberOfLines={4}
-                        style={[styles.input, {height: 120, width:'100%'}]}
+                        style={[styles.input, {height: 120, width:'100%', textAlign:'left', paddingLeft: 10}]}
                         onChangeText={setDes}
                         value={description}         
                     />
