@@ -22,8 +22,7 @@ const currencyStyles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 2,
-        top: "5%",
-        left: "5%",
+        left: width * 0.05,
         top: height * 0.1
     },
     image: {
@@ -37,7 +36,7 @@ const currencyStyles = StyleSheet.create({
         color: colors.introText,
         fontSize: 13,
         textAlign: "center",
-        top: "15%"
+        top: height * 0.15,
     },
 });
  
