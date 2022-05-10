@@ -60,7 +60,7 @@ export default function Home({navigation}){
                 date={item.date}
                 title={item.description}
                 amount={item.amount}
-                onPress={()=>navigation.navigate("Show One Item", item)}
+                // onPress={()=>navigation.navigate("Show One Item", item)}
             />           
         )
     };
@@ -122,13 +122,13 @@ export default function Home({navigation}){
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate("List Current Month Items")}>
                     <Card>
+                        {recentItems[0]?
                         <FlatList
                         style={cardStyles.recentItems}
                         data={recentItems}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id}
-                        >
-                        </FlatList>
+                        />:null}
                     </Card>                   
                 </TouchableOpacity>
             </View>
