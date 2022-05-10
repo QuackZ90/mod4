@@ -115,7 +115,11 @@ export const chartStyles = StyleSheet.create({
     },
     title: {
         textAlign:"center", 
-        marginTop: 10
+        marginTop: 10,
+        fontWeight: "bold",
     },
+    tableTitle: {
+        fontWeight: "bold",
+    }
 });
 
