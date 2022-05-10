@@ -62,9 +62,6 @@ export default function CurrencyConverter(){
                 </TouchableOpacity>
             </View>
                 <ConversionInput
-                    style={{
-                        right: width * 0.2,
-                    }}                
                     amount={baseAmount}
                     setAmount = {setBaseAmount}
                     onChangeText={text => {setAmount(text)}}
@@ -73,9 +70,6 @@ export default function CurrencyConverter(){
                     setCurrency = {setBaseCurrency}
                 />
                 <ConversionInput 
-                    style={{
-                        right: width * 0.2,
-                    }}                                
                     amount={quoteAmount}
                     //amount={quoteAmount=baseAmount*currencyRate}
                     setAmount = {setQuoteAmount}

@@ -43,6 +43,10 @@ const styles = StyleSheet.create({
         backgroundColor: "#F4E0DB",
         borderRadius: 20,
         marginVertical: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     }
 });
 

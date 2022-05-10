@@ -39,12 +39,28 @@ export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amo
                     borderWidth:1,
                     maxWidth: width * 0.3            
                 }}
+                searchable={true}
+                searchPlaceholder="Search..."
+                searchPlaceholderTextColor="white"
+                searchTextInputStyle={{
+                    color: "white",
+                    backgroundColor: "#968484",
+                    borderWidth: 0,
+                    borderRadius: 20,
+                }}
                 listMode="MODAL"
                 modalContentContainerStyle={{
                     backgroundColor: "#F4E0DB",
                 }}
                 containerStyle={{
-
+                    width: '94%',
+                    borderWidth:0,
+                }}
+                listItemContainerStyle={{
+                    backgroundColor: "#968484",
+                    borderRadius: 20,
+                    height: 40,
+                    margin: 5,
                 }}
                 open={openCurrDropDown}
                 value={currency}
@@ -53,7 +69,6 @@ export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amo
                 setValue={setCurrency}
                 setItems={setFixedCurr}
                 placeholder={currency}
-                searchable={true}
             >
             </DropDownPicker>
             <TextInput 
