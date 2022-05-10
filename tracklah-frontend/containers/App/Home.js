@@ -79,7 +79,20 @@ export default function Home({navigation}){
             <View style={styles.row}>
                 <Text style={styles.welcomeText}>Welcome {userLoggedIn.name}</Text>
             </View>
-            <View style={styles.row}>          
+
+            <View style={{position:"absolute", top:34, right:50, zIndex:1000}}>
+                <TouchableOpacity
+                    style={{borderColor:"#968484", borderWidth:0, top: 0, backgroundColor: "#968484", borderRadius:70, borderWidth:3 }} 
+                    onPress={()=>navigation.navigate("Add Expense Item")}>
+                <AntDesign 
+                    style={styles.addIcon}
+                    name="pluscircle"
+                    size= {60}
+                />
+                </TouchableOpacity>
+            </View>
+
+            <View style={[styles.row, {zIndex:0}]}>          
                 <Card>
                     <Text style={{fontWeight: "bold", color: "#E2E2E2", left:5, fontSize:15}}>{moment().format("MMMM").toString().toUpperCase()} EXPENSES:</Text>
                     <Text style={{color: "#E2E2E2", left:5, fontSize:12}}>(Up till {moment().format("Do MMM").toString()})</Text>
@@ -91,6 +104,9 @@ export default function Home({navigation}){
                     </Text>
                 </Card>
             </View>
+
+
+
             <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}, styles.row]}>
                 <TouchableOpacity
                     style={btnStyles.button}
@@ -132,17 +148,8 @@ export default function Home({navigation}){
                     </Card>                   
                 </TouchableOpacity>
             </View>
-            <View style={{position:"absolute", bottom:50}}>
-                <TouchableOpacity
-                    style={{borderColor:"red", borderWidth:0}} 
-                    onPress={()=>navigation.navigate("Add Expense Item")}>
-                <AntDesign 
-                    style={styles.addIcon}
-                    name="pluscircle"
-                    size= {60} 
-                />
-                </TouchableOpacity>
-            </View>
+
         </View>
     )
 };
+

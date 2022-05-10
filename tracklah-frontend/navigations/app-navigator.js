@@ -83,8 +83,6 @@ export default function AppNav(){
             />
 
             <AppStack.Screen name = "Show One Item" 
-                // component={ShowOneItem}
-                // initialParams={itemData}
                 options={{
                     drawerItemStyle: { display: 'none' }
                 }} 
