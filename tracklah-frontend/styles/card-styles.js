@@ -37,6 +37,17 @@ const cardStyles = StyleSheet.create({
         flex: 1,
         width: 218,
         height: 215,
+    },
+    recentItems: {
+        // flexWrap: "wrap",
+        flexDirection: "row",
+        borderRadius: 20,
+        elevation: 5,
+        backgroundColor: colors.mainBackground,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     }
 });
 

@@ -13,7 +13,7 @@ import { Dimensions } from 'react-native';
 export const height = Dimensions.get("window").height;
 export const width = Dimensions.get("window").width;
 
-export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amount, setAmount, ...props}) => {
+export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amount, setAmount, keyboardType, ...props}) => {
 
     const [fixedCurr, setFixedCurr] = useState(
         cc.codes().map(curr=>{
@@ -57,7 +57,7 @@ export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amo
             >
             </DropDownPicker>
             <TextInput 
-                style={[styles.input,{borderRadius:20, borderWidth:1, borderColor:'red', width:width*0.5}]}
+                style={[styles.input, {borderRadius:20, borderWidth:1, borderColor:'red',}]}
                 value = {amount.toString()}
                 onChangeText = {text => {setAmount(text)}}
                 {...props}
