@@ -51,7 +51,7 @@ export const chartStyles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.mainBackground,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     pielegend: {
         flex: 1,
@@ -60,6 +60,11 @@ export const chartStyles = StyleSheet.create({
         alignItems: "center",
         borderRadius: 20,
         margin: '5%',
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
     view:{
         backgroundColor: colors.drawer,
@@ -81,11 +86,11 @@ export const chartStyles = StyleSheet.create({
         borderRadius: 20,
         width: "80%",
         margin: "2%",
-        alignSelf: "center",
-        
+        alignSelf: "center",    
     },
     dropdowncontainerstyle: {
         backgroundColor: "#D3BABA",
+        borderRadius: 20,
         width: "80%",
         margin: "2%",
         alignSelf: "center",
@@ -96,6 +101,11 @@ export const chartStyles = StyleSheet.create({
         borderRadius: 20,
         margin: '5%',
         width: width*0.805,
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
     tablecell: {
         width: 0.20*width,

@@ -21,7 +21,12 @@ const createLoginStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 20,
-        margin: 15
+        margin: 15,
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
 
     buttonText:{
@@ -35,7 +40,11 @@ const createLoginStyles = StyleSheet.create({
         margin: 5,
         borderRadius: 20,
         paddingHorizontal: 15,
-        //top: height * 0.25
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
 
     inputText:{
@@ -53,6 +62,11 @@ const createLoginStyles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: height * 0.05,
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
 
     validInput:{

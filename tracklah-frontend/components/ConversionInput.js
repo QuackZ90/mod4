@@ -8,6 +8,8 @@ import cc from 'currency-codes';
 import { useState } from 'react';
 import { Dimensions } from 'react-native';
 import { colors } from "../styles";
+import { Ionicons } from '@expo/vector-icons';
+
 
 export const height = Dimensions.get("window").height;
 export const width = Dimensions.get("window").width;
@@ -36,6 +38,16 @@ export const ConversionInput = ({
         containerStyles.push(styles.containerDisabled)
     };
     console.log(amount);
+
+    const MyCloseIcon = () => (
+        <View style={styles.modalCloseIconStyle}>
+            <Ionicons 
+                name="close-outline"
+                size= {30}
+                color='white'
+            />
+        </View>
+    );
 
     return (
         <View style={containerStyles}>
@@ -70,6 +82,7 @@ export const ConversionInput = ({
                     height: 40,
                     margin: 5,
                 }}
+                CloseIconComponent={() => <MyCloseIcon/>}  
                 open={openCurrDropDown}
                 value={currency}
                 items={fixedCurr}

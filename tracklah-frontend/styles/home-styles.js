@@ -12,7 +12,12 @@ const styles = StyleSheet.create({
     addIcon: {
         justifyContent: "center",
         alignItems: "center",
-        color: "#D3BABA"
+        color: "#D3BABA",
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
     graphIcon: {
         width: "80%",
