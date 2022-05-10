@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 0,
         borderRadius: 20,
-        zIndex:0,
+        zIndex: 0,
         minHeight: height * 0.8,
     },
     rowstretch: {

@@ -39,7 +39,6 @@ const cardStyles = StyleSheet.create({
         height: 215,
     },
     recentItems: {
-        // flexWrap: "wrap",
         flexDirection: "row",
         borderRadius: 20,
         elevation: 5,
