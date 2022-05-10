@@ -10,11 +10,28 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { RNS3 } from "@onytgvx/react-native-aws3";
 import { S3ACCESSKEY, S3SECRETKEY } from "@env";
+import cc from 'currency-codes';
+import getCurrencyRates from '../../actions/ConvertCurrency'
 
 const FormData = require('form-data');
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+function  CurrencyExchangeRateStatus({status}){
+
+    switch(status.toLowerCase()){
+        case "idle":
+            return(<></>);
+        case "fetching":
+            return(<><Text style={[styles.text,{color:'black'}]}>Fetching exchange rate data...</Text></>);
+        case "error":
+            return(<><Text style={[styles.text, {color:'red'}]}>Error fetching exchange rate. Please try again later or input your desired exchange rate.</Text></>);
+        default:
+            return(<></>);
+    }
+
+}
 
 export default function AddExpenses({navigation}){
 
@@ -35,20 +52,15 @@ export default function AddExpenses({navigation}){
     }
 
     const [ amount, setAmount ] = useState(null);
+    const [convertedAmount, setConvertedAmount] = useState(null);
     const [ currency, setCurr ] = useState(defaultCurr);
+    const [ getCurrStatus, setGetCurrStatus] = useState('idle'); //idle,fetching,error
     const [ openCurrDropDown, setOpenCurrDropDown ] = useState(false);
-    const [ fixedCurr, setFixedCurr ] = useState([
-        {label: 'SGD', value: 'sgd'},
-        {label: 'USD', value: 'usd'},
-        {label: 'MYR', value: 'myr'},
-        {label: 'THB', value: 'thb'},
-        {label: 'AUD', value: 'aud'},
-        {label: 'CNY', value: 'cny'},
-        {label: 'EUR', value: 'eur'},
-        {label: 'TWD', value: 'twd'},
-        {label: 'GBP', value: 'gbp'},
-        {label: 'JPY', value: 'jpy'},
-    ]);
+    const [ fixedCurr, setFixedCurr ] = useState(
+        cc.codes().map(curr=>{
+            return{label:curr,value:curr}
+        })
+    );
 
     const [ exchangeRate, setExchangeRate ] = useState("1.00");
 
@@ -197,6 +209,34 @@ export default function AddExpenses({navigation}){
         }
     },[category]);
 
+    //fetch conversion rate upon change in currency / default currency
+    useEffect(()=>{
+        
+        if (currency===defaultCurr){
+            setGetCurrStatus(()=>"idle");
+            setExchangeRate (()=>"1.00");
+        }else{
+            setGetCurrStatus(()=>"fetching");
+            getCurrencyRates(currency, defaultCurr).then(response=>{
+                console.log(response[defaultCurr]);
+                setExchangeRate(()=>response[defaultCurr].toFixed(4));
+                setGetCurrStatus(()=>"idle");
+            }).catch(err=>{
+                console.log(err);
+                setGetCurrStatus(()=>"error")
+            })
+        }
+    }, [currency,defaultCurr]);
+
+    //convert to default currency upon change in amount or rates
+
+    useEffect(()=>{
+
+        const converted = amount===null||parseFloat(amount)==0?0:parseFloat(amount) * parseFloat(exchangeRate);
+        setConvertedAmount(converted.toFixed(2));
+
+    },[amount, exchangeRate])
+
     const handleSubmit = async () => {
 
         let awsURL = await uploadToS3(image);
@@ -266,6 +306,9 @@ export default function AddExpenses({navigation}){
                 />
             </View>
     );
+
+
+
 
     return(
         <View style={{justifyContent:"center",flex:1, paddingTop:0, backgroundColor: "#F4E0DB"}}>
@@ -350,7 +393,10 @@ export default function AddExpenses({navigation}){
 
                             <TextInput
                                 style={[styles.input, {margin:0}]}
-                                onChangeText={setExchangeRate}
+                                onChangeText={text=>{
+                                    setGetCurrStatus(()=>"idle");
+                                    setExchangeRate(text);
+                                }}
                                 value={exchangeRate}
                                 placeholder="1.00"
                                 keyboardType="numeric"            
@@ -371,8 +417,12 @@ export default function AddExpenses({navigation}){
                             opacity: 0.7,
                             color: 'white',
                             minHeight: 50,
-                        }]}>SGD {amount === null ? 0 : (amount/exchangeRate).toFixed(2)}</Text>                    
+                        }]}>{defaultCurr} {convertedAmount}</Text>                    
                     </View>
+                </View>
+
+                <View>
+                    <CurrencyExchangeRateStatus status={getCurrStatus}></CurrencyExchangeRateStatus>
                 </View>
 
 
