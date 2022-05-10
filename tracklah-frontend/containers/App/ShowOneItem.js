@@ -41,7 +41,7 @@ export default function ShowOneItem( {route, navigation} ){
                         <Text style={[styles.text, {marginLeft:0, fontWeight: 'bold'}]}>{route.params.date}</Text>
                     </View>
                     <View style={[styles.innercol, styles.inputView, {flexDirection: 'column', marginHorizontal:0, marginLeft:5, paddingLeft: 0, alignItems:'center'}]}>
-                        <Text style={[styles.text, {marginLeft:0, fontWeight: 'bold'}]}>{route.params.time ? route.params.time: "no time specified"}</Text>
+                        <Text style={[styles.text, {marginLeft:0, fontWeight: 'bold'}]}>{route.params.time ? route.params.time: "--:-- am"}</Text>
                     </View>
                 </View>
 
@@ -79,8 +79,6 @@ export default function ShowOneItem( {route, navigation} ){
 
     )
 }
-
-
 
 const styles = StyleSheet.create({
     pane: {
