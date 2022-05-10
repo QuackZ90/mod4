@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 2,
-        top: "20%",
-        left: "2.5%",
+        top: height * 0.1,
+        left: width * 0.05,
         width: width * 0.8,
         justifyContent: "flex-start",
         alignItems: "center"
@@ -41,7 +41,8 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         padding: 10,
-        right: width * 0.3,      
+        width: '100%',
+        // right: width * 0.3,      
     }
 });
 

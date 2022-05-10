@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     },
     item: {
         flexDirection: 'row',
-        width: width * 0.9,
+        width: '90%',
         justifyContent: 'space-between',
         paddingVertical: 10,
         paddingHorizontal: 15,
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
         shadowColor: "#000",
         shadowOpacity: 0.5,
         shadowRadius: 2,
+        left: width * 0.05
     }
 });
 

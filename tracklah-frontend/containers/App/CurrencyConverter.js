@@ -61,11 +61,12 @@ export default function CurrencyConverter(){
                     />
                 </TouchableOpacity>
             </View>
+            <View>
                 <ConversionInput
+                    style={{flex: 1, }}
                     amount={baseAmount}
                     setAmount = {setBaseAmount}
-                    onChangeText={text => {setAmount(text)}}
-                    keyboardType="numeric"
+                    // onChangeText={text => {setBaseAmount(text)}}
                     currency = {baseCurrency}
                     setCurrency = {setBaseCurrency}
                 />
@@ -77,6 +78,7 @@ export default function CurrencyConverter(){
                     currency ={quoteCurrency}
                     setCurrency = {setQuoteCurrency}
                 />
+            </View>
             <Text style={currencyStyles.text}>{`1 ${baseCurrency} = ${currencyRate} ${quoteCurrency} as of ${moment().format("MMM Do YYYY")}.`}</Text>
         </SafeAreaView>
     );

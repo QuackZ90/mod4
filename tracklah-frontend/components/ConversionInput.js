@@ -1,19 +1,27 @@
 import { 
-    TouchableOpacity,
     TextInput,
     View,
-    Text
 } from "react-native";
 import styles from '../styles/ConversionInput-styles';
 import DropDownPicker from 'react-native-dropdown-picker';
 import cc from 'currency-codes';
 import { useState } from 'react';
 import { Dimensions } from 'react-native';
+import { colors } from "../styles";
 
 export const height = Dimensions.get("window").height;
 export const width = Dimensions.get("window").width;
 
-export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amount, setAmount, keyboardType, ...props}) => {
+export const ConversionInput = ({
+    text, 
+    onButtonPress, 
+    currency, 
+    setCurrency, 
+    amount, 
+    setAmount, 
+    keyboardType, 
+    ...props
+}) => {
 
     const [fixedCurr, setFixedCurr] = useState(
         cc.codes().map(curr=>{
@@ -50,14 +58,14 @@ export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amo
                 }}
                 listMode="MODAL"
                 modalContentContainerStyle={{
-                    backgroundColor: "#F4E0DB",
+                    backgroundColor: colors.mainBackground,
                 }}
                 containerStyle={{
                     width: '94%',
                     borderWidth:0,
                 }}
                 listItemContainerStyle={{
-                    backgroundColor: "#968484",
+                    backgroundColor: colors.drawer,
                     borderRadius: 20,
                     height: 40,
                     margin: 5,
@@ -72,11 +80,11 @@ export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amo
             >
             </DropDownPicker>
             <TextInput 
-                style={[styles.input, {borderRadius:20, borderWidth:1, borderColor:'red',}]}
+                style={[styles.input, {borderRadius:20, borderWidth:1, borderColor:'red', width: width}]}
                 value = {amount.toString()}
-                // onChangeText = {text => {setAmount(text)}}
+                onChangeText = {text => {setAmount(text)}}
                 {...props}
-
+                keyboardType="numeric"
             />
         </View>
     );
