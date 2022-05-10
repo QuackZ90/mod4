@@ -42,8 +42,20 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         width: width * 2,
-        // right: width * 0.3,      
-    }
+    },
+    modalCloseIconStyle: {
+        backgroundColor:  "#968484",
+        borderRadius: 20,
+        width: 38,
+        height: 38,
+        justifyContent: 'center',
+        alignItems: 'center',
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
+    },
 });
 
 export default styles;

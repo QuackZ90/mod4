@@ -19,7 +19,7 @@ const cardStyles = StyleSheet.create({
     cardContent: {
         fontWeight: "bold",
         marginHorizontal: 18,
-        marginVertical: 20
+        marginVertical: 20,
     },
     totalExText: {
         fontSize: 58,
@@ -28,7 +28,12 @@ const cardStyles = StyleSheet.create({
         marginRight: 10,
         marginBottom: 15,
         left: "15%",
-        top: "20%"
+        top: "20%",
+        elevation: 5,
+        shadowOffset: {width: 1, height: 1}, 
+        shadowColor: "#000",
+        shadowOpacity: 0.5,
+        shadowRadius: 2,
     },
     graphsCard:{
         flexDirection: "row",
