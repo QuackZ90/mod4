@@ -96,7 +96,7 @@ export default function ViewBar(){
     const renderColumnName = (i) => {
         return (
             <View style={chartStyles.tablecell}>
-                <Text>{dataIncomeExpenses[i].type}</Text>
+                <Text style={chartStyles.tableTitle}>{dataIncomeExpenses[i].type}</Text>
             </View>
         )
     }
