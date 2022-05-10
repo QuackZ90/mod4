@@ -10,7 +10,6 @@ import{
 } from 'react-native';
 import { ConversionInput } from '../../components/ConversionInput';
 import currencyStyles from '../../styles/CurrencyConverter-styles';
-import styles from '../../styles/ConversionInput-styles';
 import moment from 'moment';
 import { UserContext } from '../../contexts';
 import getCurrencyRates from '../../actions/ConvertCurrency';
@@ -26,8 +25,8 @@ export default function CurrencyConverter(){
     const [baseCurrency, setBaseCurrency] = useState(userLoggedIn.defaultCurrency);
     const [currencyRate, setCurrencyRate] = useState([]);
     const [quoteCurrency, setQuoteCurrency] = useState(userLoggedIn.defaultCurrency);
-    const [baseAmount, setBaseAmount] = useState(123);
-    const [quoteAmount, setQuoteAmount] = useState(123)
+    const [baseAmount, setBaseAmount] = useState(0);
+    const [quoteAmount, setQuoteAmount] = useState(0)
 
     useEffect( 
         () => {
@@ -64,7 +63,7 @@ export default function CurrencyConverter(){
             </View>
             <View>
                 <ConversionInput
-                    style={{left: -width*0.1}}
+                    style={{left: -width*0.3}}
                     amount={baseAmount}
                     setAmount = {setBaseAmount}
                     onChangeText={text => {setBaseAmount(text)}}
@@ -73,7 +72,7 @@ export default function CurrencyConverter(){
                     keyboardType="numeric"
                 />
                 <ConversionInput 
-                    style={{left: -width*0.1}}
+                    style={{left: -width*0.3}}
                     amount={converted}
                     setAmount = {setQuoteAmount}
                     editable={false}
