@@ -1,8 +1,8 @@
-import React, {useContext, useState} from 'react';
-import {UserContext} from '../../contexts';
-import{ View, Text, TouchableOpacity, FlatList } from 'react-native';
+import React, { useContext, useState } from 'react';
+import { UserContext } from '../../contexts';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import { styles, cardStyles, btnStyles } from '../../styles';
-import {Card, calculateTotal} from '../../components';
+import { Card, calculateTotal} from '../../components';
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
@@ -25,6 +25,8 @@ export default function Home({navigation}){
                 Authorization : userLoggedIn.jwt
             }
         })
+            response.data.data.sort((data1, data2)=>moment(data1.date, "MMM Do YYYY").date()-moment(data2.date, "MMM Do YYYY").date());
+
             setItemData(response.data.data);
             } catch(err) {
             console.log(err)
@@ -40,13 +42,9 @@ export default function Home({navigation}){
     );
      
     const totalExpenses = calculateTotal(itemData).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ','); // Thousand separator(String)
-
-    let todayData = itemData.filter((item => item.date === moment().format("MMM Do YYYY") ))
-    //console.log("todayData", todayData)
  
-    const Item = ({ onPress, date, title, amount }) => (
+    const Item = ({ onPress, date, onPressDelete, title, amount }) => (
         <View style={styles.item}>
-            {/* <Text style={styles.date}>{date.slice(0,8)}</Text> */}
             <Text style={styles.title}>{title}</Text>          
             <Text style={styles.amount}>${amount.$numberDecimal}</Text>
         </View>
@@ -58,15 +56,23 @@ export default function Home({navigation}){
 
         return (
             <Item 
-                onPress={()=>handleDeleteItem(item._id)}
+                // onPressDelete={()=>handleDeleteItem(item._id)}
                 date={item.date}
                 title={item.description}
                 amount={item.amount}
+                onPress={()=>navigation.navigate("Show One Item", item)}
             />           
         )
     };
 
-    todayData.sort();
+    let recentItems = [];
+    // let recentItems = [itemData[0], itemData[1], itemData[2], itemData[3], itemData[4]];
+    itemData.reverse();
+    console.log("ITEM DATA", itemData);
+
+    recentItems.push(itemData[0], itemData[1], itemData[2], itemData[3], itemData[4]);
+    // recentItems.push([...recentItems]);
+    console.log("RECENT", recentItems);
 
     return(
         <View style={[styles.container,{alignItems:"center"}]}>
@@ -117,7 +123,8 @@ export default function Home({navigation}){
                     onPress={()=>navigation.navigate("List Current Month Items")}>
                     <Card>
                         <FlatList
-                        data={todayData}
+                        style={cardStyles.recentItems}
+                        data={recentItems}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id}
                         >
