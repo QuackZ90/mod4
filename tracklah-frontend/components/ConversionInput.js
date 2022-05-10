@@ -59,7 +59,7 @@ export const ConversionInput = ({text, onButtonPress, currency, setCurrency, amo
             <TextInput 
                 style={[styles.input, {borderRadius:20, borderWidth:1, borderColor:'red',}]}
                 value = {amount.toString()}
-                onChangeText = {text => {setAmount(text)}}
+                // onChangeText = {text => {setAmount(text)}}
                 {...props}
 
             />

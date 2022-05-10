@@ -105,8 +105,6 @@ export default function Home({navigation}){
                 </Card>
             </View>
 
-
-
             <View style={[cardStyles.graphsCard, {justifyContent:"space-between"}, styles.row]}>
                 <TouchableOpacity
                     style={btnStyles.button}
@@ -134,13 +132,14 @@ export default function Home({navigation}){
                     />
                 </TouchableOpacity>
             </View>
+            
             <View style={styles.row}>
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate("List Current Month Items")}>
                     <Card>
                         {recentItems[0]?
                         <FlatList
-                        style={cardStyles.recentItems}
+                        style={styles.row}
                         data={recentItems}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id}
