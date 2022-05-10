@@ -77,6 +77,7 @@ export default function CurrencyConverter(){
                         right: width * 0.2,
                     }}                                
                     amount={quoteAmount}
+                    //amount={quoteAmount=baseAmount*conversionRate}
                     setAmount = {setQuoteAmount}
                     editable={false}
                     currency ={quoteCurrency}
