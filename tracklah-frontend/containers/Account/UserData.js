@@ -1,4 +1,4 @@
-import { View, Text, TextInput, Pressable, Alert} from 'react-native';
+import { View, Text, TextInput, Pressable, Alert, Dimensions} from 'react-native';
 import { useState, useEffect, useCallback,useRef } from 'react';
 import { useContext } from 'react';
 import {UserContext, defaultUserLoggedIn} from '../../contexts/UserContext';
@@ -10,6 +10,9 @@ import {MaterialCommunityIcons as MaterialIcons} from '@expo/vector-icons';
 import userAccountAPI from '../../api/userAccount';
 import expensesAPI from '../../api/expenses';
 import { useFocusEffect } from '@react-navigation/native';
+
+
+export const height = Dimensions.get("window").height;
 
 
 let LabelForEditableFields = ({labelName, editState, setEditState, ...otherProps})=>{
@@ -350,7 +353,7 @@ export default function AmendUserData({navigation}){
 
 
 
-            <Pressable style={[createLoginStyles.bottomButton,{bottom:145}]} onPress={()=>{
+            <Pressable style={[createLoginStyles.bottomButton,{bottom:height*0.15}]} onPress={()=>{
 
                 setCreationStatus(()=>"loading");
                 Alert.alert("Confirm submission",
