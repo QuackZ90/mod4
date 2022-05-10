@@ -1,5 +1,7 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Dimensions } from 'react-native';
 import colors from './colors';
+export const height = Dimensions.get("window").height;
+export const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
     container: {
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         resizeMode: 'contain',
         width: '60%',
-        top: '-2%',
+        top: -height*0.15,
     }
 });
 

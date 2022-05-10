@@ -28,12 +28,23 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 20,
         color: "#786767",
-        marginTop: height * 0.1
+        marginTop: height * 0.01
     },
     row:{
         width: "90%",
         maxWidth: 400,
         marginVertical: "2.5%"
+
+    },
+    item: {
+        flexDirection: 'row',
+        width: width*0.8,
+        justifyContent: 'space-between',
+        paddingVertical: 10,
+        paddingHorizontal: 15,
+        backgroundColor: "#F4E0DB",
+        borderRadius: 20,
+        marginVertical: 5,
     }
 });
 

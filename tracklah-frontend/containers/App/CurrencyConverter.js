@@ -67,7 +67,7 @@ export default function CurrencyConverter(){
                     }}                
                     amount={baseAmount}
                     setAmount = {setBaseAmount}
-                    onChangeText={text => console.log('text', text)}
+                    // onChangeText={text => console.log('text', text)}
                     keyboardType="numeric"
                     currency = {baseCurrency}
                     setCurrency = {setBaseCurrency}
