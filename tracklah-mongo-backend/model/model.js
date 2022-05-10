@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema({
     userId: { type: Number, required: true },
     items: [{
         amount: mongoose.Types.Decimal128,
+        foreign_currency: String,
+        foreign_currency_amount: mongoose.Types.Decimal128,
+        forex: mongoose.Types.Decimal128,
         date: String,
         time: String,
         description: String,
