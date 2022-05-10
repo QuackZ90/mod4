@@ -7,6 +7,7 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import expensesAPI from '../../api/expenses';
+import { width } from './CurrencyConverter';
 
 export default function Home({navigation}){
 
@@ -139,7 +140,7 @@ export default function Home({navigation}){
                     <Card>
                         {recentItems[0]?
                         <FlatList
-                        style={styles.row}
+                        style={[styles.row, {width: width*0.9, left: -width*0.05}]}
                         data={recentItems}
                         renderItem={renderItem}
                         keyExtractor={(item) => item._id}

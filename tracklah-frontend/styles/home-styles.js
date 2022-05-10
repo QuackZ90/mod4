@@ -32,13 +32,11 @@ const styles = StyleSheet.create({
     },
     row:{
         width: "90%",
-        maxWidth: 400,
-        marginVertical: "2.5%"
-
+        marginVertical: "2.5%",
     },
     item: {
         flexDirection: 'row',
-        width: width*0.8,
+        width: width * 0.9,
         justifyContent: 'space-between',
         paddingVertical: 10,
         paddingHorizontal: 15,
