@@ -35,7 +35,7 @@ const createLoginStyles = StyleSheet.create({
         margin: 5,
         borderRadius: 20,
         paddingHorizontal: 15,
-        top: height * 0.25
+        //top: height * 0.25
     },
 
     inputText:{
@@ -52,7 +52,7 @@ const createLoginStyles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         position: 'absolute',
-        bottom: height * 0.2,
+        bottom: height * 0.05,
     },
 
     validInput:{
