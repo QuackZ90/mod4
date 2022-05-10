@@ -24,10 +24,22 @@ export default function ShowOneItem( {route, navigation} ){
 
                 <View style={styles.rowstretch}>
                     <View style={[styles.innercol, styles.inputView, {flexDirection: 'column', marginHorizontal:0, marginRight:5, paddingLeft: 0, alignItems:'center'}]}>
-                        <Text style={[styles.text, {marginLeft:0}]}>Exchange Rate</Text>
+                    {route.params.forex != undefined ?
+                        <Text style={[styles.text, {marginLeft:0}]}>
+                             {route.params.forex.$numberDecimal} {route.params.foreign_currency}/{defaultCurr}
+                        </Text> : 
+                        <Text style={[styles.text, {marginLeft:0, fontSize:12}]}>
+                        no data
+                        </Text>}
                     </View>
                     <View style={[styles.innercol, styles.inputView, {flexDirection: 'column', marginHorizontal:0, marginLeft:5, paddingLeft: 0, alignItems:'center'}]}>
-                        <Text style={[styles.text, {marginLeft:0}]}>Txn amount in Foreign Currency</Text>
+                    {route.params.foreign_currency_amount != undefined ?
+                        <Text style={[styles.text, {marginLeft:0}]}>
+                            {route.params.foreign_currency}$ {route.params.foreign_currency_amount.$numberDecimal}
+                        </Text> :
+                        <Text style={[styles.text, {marginLeft:0, fontSize:12}]}>
+                        no data
+                        </Text> }
                     </View>
                 </View>
 

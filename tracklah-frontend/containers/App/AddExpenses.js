@@ -12,6 +12,7 @@ import { RNS3 } from "@onytgvx/react-native-aws3";
 import { S3ACCESSKEY, S3SECRETKEY } from "@env";
 import cc from 'currency-codes';
 import getCurrencyRates from '../../actions/ConvertCurrency'
+import currencyAPI from '../../api/currencyAPI';
 
 const FormData = require('form-data');
 
@@ -52,7 +53,7 @@ export default function AddExpenses({navigation}){
     }
 
     const [ amount, setAmount ] = useState(null);
-    const [convertedAmount, setConvertedAmount] = useState(null);
+    const [ convertedAmount, setConvertedAmount] = useState(null);
     const [ currency, setCurr ] = useState(defaultCurr);
     const [ getCurrStatus, setGetCurrStatus] = useState('idle'); //idle,fetching,error
     const [ openCurrDropDown, setOpenCurrDropDown ] = useState(false);
@@ -93,7 +94,6 @@ export default function AddExpenses({navigation}){
     const toggleSwitchSE = () => setSpendEarn(previousState => !previousState);
 
     const [image, setImage] = useState(null);
-    const [imageURL, setImageURL] = useState(null);
     const [imgModalVisible, setImgModalVisible] = useState(false);
 
     const uploadToS3 = async (imageUri) => {
@@ -243,7 +243,10 @@ export default function AddExpenses({navigation}){
         console.log("imageURL in handleSubmit", awsURL);
 
         item = {
-            amount: amount,
+            amount: convertedAmount, // converted amount
+            foreign_currency: currency,
+            foreign_currency_amount: amount,
+            forex: exchangeRate,
             date: date,
             time: time,
             description: description,
@@ -288,11 +291,14 @@ export default function AddExpenses({navigation}){
 
         // reset the variables to initial state after submission.
         setAmount(null);
+        setConvertedAmount(null);
+        setCurr(defaultCurr);
+        setExchangeRate("1.00")
         setDate(moment().format("MMM Do YYYY"));
         setTime(moment().format("hh:mm a"))
         setDes(null);
         setCat(null);
-        setImageURL(null);
+        setImage(null);
         setAutoRecur(false);
         setSpendEarn(false);
     };
@@ -636,7 +642,7 @@ export default function AddExpenses({navigation}){
                     <TextInput
                         multiline
                         numberOfLines={4}
-                        style={[styles.input, {height: 80, width:'100%'}]}
+                        style={[styles.input, {height: 80, width:'100%', textAlign:'left', paddingLeft: 10}]}
                         onChangeText={setDes}
                         value={description}         
                     />
