@@ -45,6 +45,7 @@ export default function CurrencyConverter(){
             }
     }, [quoteCurrency, baseCurrency]);
 
+    const converted = baseAmount * currencyRate;
 
     return(
         <SafeAreaView style={currencyStyles.container}>
@@ -63,16 +64,17 @@ export default function CurrencyConverter(){
             </View>
             <View>
                 <ConversionInput
-                    style={{flex: 1, }}
+                    style={{left: -width*0.1}}
                     amount={baseAmount}
                     setAmount = {setBaseAmount}
-                    // onChangeText={text => {setBaseAmount(text)}}
+                    onChangeText={text => {setBaseAmount(text)}}
                     currency = {baseCurrency}
                     setCurrency = {setBaseCurrency}
+                    keyboardType="numeric"
                 />
                 <ConversionInput 
-                    amount={quoteAmount}
-                    //amount={quoteAmount=baseAmount*currencyRate}
+                    style={{left: -width*0.1}}
+                    amount={converted}
                     setAmount = {setQuoteAmount}
                     editable={false}
                     currency ={quoteCurrency}

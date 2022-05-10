@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
         left: width * 0.05,
         width: width * 0.8,
         justifyContent: "flex-start",
-        alignItems: "center"
+        alignItems: "center",
     },
     containerDisabled: {
         backgroundColor: "#B6A4A4"
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     input: {
         flex: 1,
         padding: 10,
-        width: '100%',
+        width: width * 2,
         // right: width * 0.3,      
     }
 });
