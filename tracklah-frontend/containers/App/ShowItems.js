@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, StyleSheet, TouchableOpacity, FlatList, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, FlatList } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import expensesAPI from '../../api/expenses';
 import { useContext } from 'react';
@@ -6,8 +6,7 @@ import { UserContext } from '../../contexts/UserContext';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import moment from 'moment';
-
-const windowWidth = Dimensions.get('window').width;
+import styles from '../../styles/showItems-styles';
 
 export default function ThisMonthItems({navigation}){
 
@@ -131,59 +130,3 @@ export default function ThisMonthItems({navigation}){
     )
 }
 
-const styles = StyleSheet.create({
-    pane: {
-        backgroundColor: "#968484",
-        marginBottom: 60,
-        marginHorizontal: 20,
-        paddingHorizontal: 20,
-        paddingTop: 5,
-        paddingBottom: 20,
-        borderRadius: 20,
-        alignItems: 'center',
-    },
-    mainBg: {
-        backgroundColor: "#F4E0DB",
-    },
-    container: {
-      flex: 1,
-      marginTop: StatusBar.currentHeight || 0,
-    },
-    item: {
-        flexDirection: 'row',
-        width: windowWidth*0.8,
-        justifyContent: 'space-between',
-        paddingVertical: 10,
-        paddingHorizontal: 15,
-        backgroundColor: "#F4E0DB",
-        borderRadius: 20,
-        marginVertical: 5,
-    },
-    title: {
-        fontSize: 12,
-        paddingHorizontal: 0,
-        textTransform: 'uppercase',
-        width: 120,
-        textAlignVertical: 'center',
-        textAlign: 'center',
-    },
-    date: {
-        fontSize: 20,
-        paddingHorizontal: 10,
-        textTransform: 'capitalize',
-        fontWeight: 'bold',
-        textAlignVertical: 'center',
-    },
-    amount: {
-        fontSize: 20,
-        marginLeft: 70,
-        paddingHorizontal: 10,
-        fontWeight: 'bold',
-        textAlignVertical: 'center',
-    },
-    trashcontainer:{
-        flexDirection: 'column',
-        justifyContent: 'center',
-
-    }
-});
