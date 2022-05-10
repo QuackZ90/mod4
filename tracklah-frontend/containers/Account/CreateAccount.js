@@ -6,6 +6,7 @@ import createLoginStyles from '../../styles/createLogin';
 import SelectDropdown from 'react-native-select-dropdown';
 import cc from 'currency-codes';
 import { useFocusEffect } from '@react-navigation/native';
+import colors from '../../styles/colors';
 
 import userAccountAPI from '../../api/userAccount';
 import expensesAPI from '../../api/expenses';
@@ -356,8 +357,21 @@ export default function CreateAccount({navigation}){
                     fontWeight:"normal",
                     marginHorizontal:0,
                     fontSize:12,
+                    }
                 }
-                }/>
+                dropdownStyle={{
+                    backgroundColor:colors.drawer,
+                    borderRadius:20,
+                }}
+
+                rowTextStyle={{
+                    color: colors.introText,
+                    fontSize:12,
+                }}
+                rowStyle={{
+                    height:35,
+                }}
+                />
 
 
 
