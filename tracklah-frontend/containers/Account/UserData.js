@@ -159,7 +159,6 @@ export default function AmendUserData({navigation}){
     },[editName,editEmail,initialName,initialEmail,editPassword])
 
 
-    //console.log(userLoggedIn, setUserLoggedIn);
 
     function handleTextUpdate(value, updateState){
 

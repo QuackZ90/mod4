@@ -114,7 +114,6 @@ export default function CreateAccount({navigation}){
                 try{
                     let results = await userAccountAPI.get('/public/user/?checkemail='+email, {signal:controllerEmailCheck.signal});
 
-                    //console.log(results);
                     console.log("API called to check email:", email, "availability");
 
                     if (results.status===200){
@@ -139,7 +138,6 @@ export default function CreateAccount({navigation}){
     }, [email]);
 
 
-    //console.log(userLoggedIn, setUserLoggedIn);
 
     function handleTextUpdate(value, updateState){
 
