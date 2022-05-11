@@ -36,12 +36,7 @@ export default function AppNav(){
                         borderRadius: 20,
                     },
                     drawerActiveTintColor: colors.mainBackground,
-                    // drawerInactiveTintColor: colors.listBackground,
                     drawerLabelStyle: {
-                        // fontWeight: "bold",
-                        // borderRadius: 20,
-                        // backgroundColor: colors.mainBackground,
-                        // color: colors.homeText,
                         padding: 10,
                     },
                 }}
@@ -51,7 +46,6 @@ export default function AppNav(){
                         <DrawerItemList {...props} />
                         <DrawerItem label="Logout"
                         labelStyle={{
-                            // color: colors.homeText, 
                             padding: 10,
                         }}
                         onPress={() => {

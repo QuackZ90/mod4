@@ -93,7 +93,6 @@ export const ConversionInput = ({
             >
             </DropDownPicker>
             <TextInput 
-                // style={[styles.input, {borderRadius:20, borderWidth:1, borderColor:'red', width: width}]}
                 value = {amount.toString()}
                 onChangeText = {text => {setAmount(text)}}
                 {...props}
