@@ -7,7 +7,7 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import expensesAPI from '../../api/expenses';
-import { width } from './CurrencyConverter';
+import { height, width } from './CurrencyConverter';
 
 export default function Home({navigation}){
 
@@ -128,7 +128,7 @@ export default function Home({navigation}){
                 </TouchableOpacity>
             </View>
             
-            <View style={styles.row}>
+            <View style={[styles.row, {maxHeight: 0.28*height}]}>
                 <TouchableOpacity 
                     onPress={()=>navigation.navigate("List Current Month Items")}>
                     <Card>
