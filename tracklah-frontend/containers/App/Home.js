@@ -53,26 +53,20 @@ export default function Home({navigation}){
 
     const renderItem = ({ item }) => {
 
-        // console.log("item in renderItem", item);
-
         return (
             <Item 
-                // onPressDelete={()=>handleDeleteItem(item._id)}
                 date={item.date}
                 title={item.description}
                 amount={item.amount}
-                // onPress={()=>navigation.navigate("Show One Item", item)}
             />           
         )
     };
 
     let recentItems = [];
-    // let recentItems = [itemData[0], itemData[1], itemData[2], itemData[3], itemData[4]];
     itemData.reverse();
     console.log("ITEM DATA", itemData);
 
     recentItems.push(itemData[0], itemData[1], itemData[2], itemData[3], itemData[4]);
-    // recentItems.push([...recentItems]);
     console.log("RECENT", recentItems);
 
     return(
