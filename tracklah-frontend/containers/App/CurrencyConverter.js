@@ -50,6 +50,7 @@ export default function CurrencyConverter(){
         <SafeAreaView style={currencyStyles.container}>
             <StatusBar barStyle='dark-content'/>
             <View style={currencyStyles.view}>
+                
                 <TouchableOpacity onPress={() =>{
                     const temp = baseCurrency;
                     setBaseCurrency(quoteCurrency);
@@ -58,8 +59,9 @@ export default function CurrencyConverter(){
                     <Image
                         style={currencyStyles.image}
                         source={require('../../assets/ConverterCircle.png')}
-                    />
+                    />          
                 </TouchableOpacity>
+
             </View>
             <View>
                 <ConversionInput

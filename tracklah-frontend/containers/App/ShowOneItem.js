@@ -27,19 +27,19 @@ export default function ShowOneItem( {route, navigation} ){
                     {route.params.forex != undefined ?
                         <Text style={[styles.text, {marginLeft:0}]}>
                              {route.params.forex.$numberDecimal} {route.params.foreign_currency}/{defaultCurr}
-                        </Text> : 
-                        <Text style={[styles.text, {marginLeft:0, fontSize:12}]}>
+                        </Text> : null }
+                        {/* <Text style={[styles.text, {marginLeft:0, fontSize:12}]}>
                         no data
-                        </Text>}
+                        </Text>} */}
                     </View>
                     <View style={[styles.innercol, styles.inputView, {flexDirection: 'column', marginHorizontal:0, marginLeft:5, paddingLeft: 0, alignItems:'center'}]}>
                     {route.params.foreign_currency_amount != undefined ?
                         <Text style={[styles.text, {marginLeft:0}]}>
                             {route.params.foreign_currency}$ {route.params.foreign_currency_amount.$numberDecimal}
-                        </Text> :
-                        <Text style={[styles.text, {marginLeft:0, fontSize:12}]}>
+                        </Text> : null }
+                        {/* <Text style={[styles.text, {marginLeft:0, fontSize:12}]}>
                         no data
-                        </Text> }
+                        </Text> } */}
                     </View>
                 </View>
 

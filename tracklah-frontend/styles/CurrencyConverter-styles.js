@@ -23,7 +23,7 @@ const currencyStyles = StyleSheet.create({
         shadowOpacity: 0.5,
         shadowRadius: 2,
         left: width * 0.05,
-        top: height * 0.1
+        top: height * 0.05
     },
     image: {
         position: "absolute",
