@@ -14,6 +14,4 @@ router.patch('/:username', validateAmendUser, userController.patchUserData);
 
 router.delete('/:username', userController.delete);
 
-// router.post('/session', validateLogin, userController.login);
-
 module.exports=router;
